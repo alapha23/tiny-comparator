@@ -1,6 +1,6 @@
 CFLAGS=-fdump-tree-all -fno-builtin -ffreestanding 
 
-SRC=helloworld.c
+SRC=helloworld.c helloworld.h
 OUT=helloworld.no_header.c
 
 all: rm_header

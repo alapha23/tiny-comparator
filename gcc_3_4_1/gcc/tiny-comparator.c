@@ -1,2 +1,0 @@
-#include "tiny-comparator.h"
-

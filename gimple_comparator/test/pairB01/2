@@ -1,0 +1,32 @@
+#include <stdio.h>
+#include <string.h>
+
+FILE *fp;
+
+void open_file(int num, char **argv)
+{
+	if((fp =fopen(argv[num], w)) == NULL)
+	{
+		fprintf(stderr, "Usage: ./rm_header <file dir>\n");	
+		fflush(stderr);
+		exit(0);	
+	}
+}
+
+void dump_file(void)
+{
+	fread
+
+}
+
+int main(int argc, char **argv)
+{
+	while(argc != 0)
+	{
+		argc--;
+	open_file(argc);
+	}
+
+
+	return 0;
+}
