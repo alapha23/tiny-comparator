@@ -1,39 +1,35 @@
 
-;; Function main (main, funcdef_no=5, decl_uid=2930, cgraph_uid=5, symbol_order=5)
+;; Function main (main, funcdef_no=5, decl_uid=2452, cgraph_uid=5, symbol_order=5)
 
 
 Analyzing function body size: main
 
 Inline summary for main/5
-  self time:       15
+  self time:       2
   global time:     0
-  self size:       7
+  self size:       3
   global size:     0
   min size:       0
   self stack:      0
   global stack:    0
-    size:2.000000, time:3.000000, predicate:(true)
+    size:1.000000, time:2.000000, predicate:(true)
     size:2.000000, time:0.000000, predicate:(not inlined)
   calls:
-    printf/6 function body not available
-      loop depth: 0 freq:1000 size: 3 time: 12 callee size: 0 stack: 0
 
 main ()
 {
   int b;
   int a;
-  int D.2935;
-  int _6;
+  int D.2457;
+  int _3;
 
   <bb 2> [0.00%]:
-  a_1 = 2;
-  b_2 = 3;
-  a_3 = b_2 - a_1;
-  printf ("a = %d\n", a_3);
-  _6 = 0;
+  a_1 = 22419;
+  b_2 = 33319;
+  _3 = 0;
 
 <L0> [0.00%]:
-  return _6;
+  return _3;
 
 }
 

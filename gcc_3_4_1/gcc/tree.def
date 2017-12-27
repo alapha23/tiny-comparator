@@ -30,7 +30,7 @@ DEFTREECODE (ERROR_MARK, "error_mark", 'x', 0)
 /* Used to represent a name (such as, in the DECL_NAME of a decl node).
    Internally it looks like a STRING_CST node.
    There is only one IDENTIFIER_NODE ever made for any particular name.
-   Use `get_identifier' to get it (or create it, the first time).  */
+   Use 'get_identifier' to get it (or create it, the first time).  */
 DEFTREECODE (IDENTIFIER_NODE, "identifier_node", 'x', 0)
 
 /* Has the TREE_VALUE and TREE_PURPOSE fields.  */
@@ -103,7 +103,7 @@ DEFTREECODE (BLOCK, "block", 'b', 0)
     For non-tagged-types, TYPE_CONTEXT need not be set to anything in
     particular, since any type which is of some type category  (e.g.
     an array type or a function type) which cannot either have a name
-    itself or have named members doesn't really have a "scope" per se.
+    itself or have named members doesn`t really have a "scope" per se.
   The TREE_CHAIN field is used as a forward-references to names for
     ENUMERAL_TYPE, RECORD_TYPE, UNION_TYPE, and QUAL_UNION_TYPE nodes;
     see below.  */
@@ -120,7 +120,7 @@ DEFTREECODE (VOID_TYPE, "void_type", 't', 0)	/* The void type in C */
    Otherwise, the TREE_TYPE is zero.  */
 DEFTREECODE (INTEGER_TYPE, "integer_type", 't', 0)
 
-/* C's float and double.  Different floating types are distinguished
+/* C`s float and double.  Different floating types are distinguished
    by machine mode and by the TYPE_SIZE and the TYPE_PRECISION.  */
 DEFTREECODE (REAL_TYPE, "real_type", 't', 0)
 
@@ -135,9 +135,9 @@ DEFTREECODE (VECTOR_TYPE, "vector_type", 't', 0)
 /* C enums.  The type node looks just like an INTEGER_TYPE node.
    The symbols for the values of the enum type are defined by
    CONST_DECL nodes, but the type does not point to them;
-   however, the TYPE_VALUES is a list in which each element's TREE_PURPOSE
+   however, the TYPE_VALUES is a list in which each element`s TREE_PURPOSE
    is a name and the TREE_VALUE is the value (an INTEGER_CST node).  */
-/* A forward reference `enum foo' when no enum named foo is defined yet
+/* A forward reference 'enum foo' when no enum named foo is defined yet
    has zero (a null pointer) in its TYPE_SIZE.  The tag name is in
    the TYPE_NAME field.  If the type is later defined, the normal
    fields are filled in.
@@ -145,7 +145,7 @@ DEFTREECODE (VECTOR_TYPE, "vector_type", 't', 0)
    treated similarly.  */
 DEFTREECODE (ENUMERAL_TYPE, "enumeral_type", 't', 0)
 
-/* Pascal's boolean type (true or false are the only values);
+/* Pascal`s boolean type (true or false are the only values);
    no special fields needed.  */
 DEFTREECODE (BOOLEAN_TYPE, "boolean_type", 't', 0)
 
@@ -238,7 +238,7 @@ DEFTREECODE (LANG_TYPE, "lang_type", 't', 0)
    32 bits each, giving us a 64 bit constant capability.
    Note: constants of type char in Pascal are INTEGER_CST,
    and so are pointer constants such as nil in Pascal or NULL in C.
-   `(int *) 1' in C also results in an INTEGER_CST.  */
+   '(int *) 1' in C also results in an INTEGER_CST.  */
 DEFTREECODE (INTEGER_CST, "integer_cst", 'c', 0)
 
 /* Contents are in TREE_REAL_CST field.  */
@@ -283,9 +283,9 @@ DEFTREECODE (STRING_CST, "string_cst", 'c', 0)
 
    DECL_INITIAL holds the value to initialize a variable to,
    or the value of a constant.  For a function, it holds the body
-   (a node of type BLOCK representing the function's binding contour
-   and whose body contains the function's statements.)  For a LABEL_DECL
-   in C, it is a flag, nonzero if the label's definition has been seen.
+   (a node of type BLOCK representing the function`s binding contour
+   and whose body contains the function`s statements.)  For a LABEL_DECL
+   in C, it is a flag, nonzero if the label`s definition has been seen.
 
    PARM_DECLs use a special field:
    DECL_ARG_TYPE is the type in which the argument is actually
@@ -395,7 +395,7 @@ DEFTREECODE (CONSTRUCTOR, "constructor", 'e', 1)
    types of all the operands and the expression must all be the same.  */
 
 /* Contains two expressions to compute, one followed by the other.
-   the first value is ignored.  The second one's value is used.  The
+   the first value is ignored.  The second ones value is used.  The
    type of the first expression need not agree with the other types.  */
 DEFTREECODE (COMPOUND_EXPR, "compound_expr", 'e', 2)
 

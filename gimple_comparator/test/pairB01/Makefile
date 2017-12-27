@@ -1,6 +1,13 @@
+CFLAGS=-fdump-tree-all -fno-builtin -ffreestanding 
 
-all:
-	gcc -fdump-tree-all -fno-builtin -ffreestanding helloworld.c 
+SRC=helloworld.c
+OUT=helloworld.no_header.c
+
+all: rm_header
+	gcc $(CFLAGS) $(OUT)
+
+rm_header:
+	./rm_header $(SRC)
 
 # fno-builtin: Don't recognize built-in functions that do not begin with __builtin_ as prefix.
 #

@@ -3,16 +3,22 @@
 
 main ()
 {
+  int f;
+  int d;
+  int c;
   int b;
   int a;
-  int D.2457;
+  int D.2460;
 
   a = 22419;
   b = 33319;
-  D.2457 = 0;
-  goto <D.2458>;
-  <D.2458>:
-  return D.2457;
+  c = 44419;
+  d = 55519;
+  f = 77719;
+  D.2460 = 0;
+  goto <D.2461>;
+  <D.2461>:
+  return D.2460;
 }
 
 

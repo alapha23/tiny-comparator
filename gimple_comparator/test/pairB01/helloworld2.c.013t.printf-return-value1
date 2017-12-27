@@ -1,27 +1,25 @@
 
 ;; Function main (main, funcdef_no=5, decl_uid=2452, cgraph_uid=5, symbol_order=5)
 
-;; 1 loops found
-;;
-;; Loop 0
-;;  header 0, latch 1
-;;  depth 0, outer -1
-;;  nodes: 0 1 2 3
-;; 2 succs { 3 }
-;; 3 succs { 1 }
 main ()
 {
+  int f;
+  int d;
+  int c;
   int b;
   int a;
-  int D.2457;
+  int D.2460;
 
   <bb 2> [0.00%]:
   a = 22419;
   b = 33319;
-  D.2457 = 0;
+  c = 44419;
+  d = 55519;
+  f = 77719;
+  D.2460 = 0;
 
 <L0> [0.00%]:
-  return D.2457;
+  return D.2460;
 
 }
 
