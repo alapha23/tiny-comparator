@@ -1,0 +1,93 @@
+ID: 1846
+type: 0x1000
+   0   : @1851    1   : @1852    2   : @1853   
+                         3   : @1854    4   : @1855   
+
+ID: 1847
+type: 0x103
+  strg: __builtin_mul_overflow_p 
+                         lngt: 24      
+
+ID: 1848
+type: 0x102
+    name: @1856    type: @1857    scpe: @176    
+                         srcp: <built-in>:0            chain: @1858   
+                         body: undefined               link: extern  
+
+ID: 1849
+type: 0x103
+  strg: a        lngt: 1       
+
+ID: 1850
+type: 0x101
+         name: @1859    type: @3       scpe: @1836   
+                         srcp: helloworld.c:8          size: @5      
+                         algn: 32       used: 1       
+
+ID: 1851
+type: 0x2
+        type: @151    
+
+ID: 1852
+type: 0x2
+        type: @151    
+
+ID: 1853
+type: 0x3
+      type: @3       op 0: @1845    op 1: @1860   
+
+ID: 1854
+type: 0x3
+      type: @3       op 0: @1850    op 1: @1861   
+
+ID: 1855
+type: 0x1
+      type: @151     expr: @1862   
+
+
+
+ID: 1856
+type: 0x103
+  strg: __builtin_sadd_overflow lngt: 23      
+
+ID: 1857
+type: 0x104
+    size: @12      algn: 8        retn: @1829   
+                         prms: @1863   
+
+ID: 1858
+type: 0x102
+    name: @1864    type: @1865    scpe: @176    
+                         srcp: <built-in>:0            chain: @1866   
+                         body: undefined               link: extern  
+
+ID: 1859
+type: 0x103
+  strg: b        lngt: 1       
+
+ID: 1860
+type: 0x201
+      type: @3      int: 22419
+
+ID: 1861
+type: 0x201
+      type: @3      int: 33319
+
+ID: 1862
+type: 0x3
+      type: @3       op 0: @1867    op 1: @1868   
+
+ID: 1863
+type: 0x106
+        valu: @3       chan: @1869   
+
+ID: 1864
+type: 0x103
+  strg: __builtin_saddl_overflow 
+                         lngt: 24      
+
+ID: 1865
+type: 0x104
+    size: @12      algn: 8        retn: @1829   
+                         prms: @1870   
+

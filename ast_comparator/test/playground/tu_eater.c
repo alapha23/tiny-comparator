@@ -156,7 +156,7 @@ static NODE_TYPE str2node(char *node_type, node *n)
 static void dump_node(node *n)
 {
 	assert(n!=NULL);
-	printf("ID: %d\ntype: 0x%x\n\n", n->_id, n->_ntype);
+	printf("ID: %d\ntype: 0x%x\n%s\n", n->_id, n->_ntype, n->_inner);
 	fflush(stdout);
 }
 
@@ -200,6 +200,8 @@ void eval_statement(node *n)
 	node *node_list = (node *)calloc(NUM_NODE, sizeof(node));
 	node *temp = calloc(1, sizeof(node));
 
+	dump_node(n);
+
 	while(temp->_ntype != return_expr)
 	{
 		temp = eval_node();
@@ -207,6 +209,14 @@ void eval_statement(node *n)
 		dump_node(temp);
 	}
 
+	printf("\n\n");
+	fflush(stdout);
+// TODO
+	for(int i=0; i < 10; i++)
+	{
+		temp = eval_node();
+		dump_node(temp);
+	}
 }
 
 size_t 
@@ -236,7 +246,10 @@ eval_file(char *name)
 //		dump_node(n);
 
 		if(statement_list == n->_ntype)
+		{
 			eval_statement(n);
+			break;
+		}
 /*		if(1 == check_inner(n, name))
 		{
 			eval_statement(n);					

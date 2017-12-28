@@ -19,7 +19,7 @@ int check_(char *line)
 //	printf("check: %c\n\n", *(line+9));
 	if(*line == '#')
 		if(*(line + 1) == 'i')
-		if(*(line + 9) == '<')
+		if((*(line + 9) == '<') || ((*(line + 9) == '"') ))
 			return 1;
 	return 0;
 	// we don't need include <>
@@ -29,15 +29,15 @@ void write_file(char *buffer, char *filename)
 {
 	char newname[256];
 	char suffix[8];
-	printf("original file name:%s\n", filename);
+//	printf("original file name:%s\n", filename);
 	fflush(stdout);
 	sscanf(filename, "%[^.].%s ", newname, suffix);
-	printf("suffix:%s\n", suffix);
+//	printf("suffix:%s\n", suffix);
 	fflush(stdout);
 	strcat(newname, ".rm_header.");
 	strcat(newname, suffix);
 
-	printf("newfile:%s\n", newname);
+//	printf("newfile:%s\n", newname);
 	fflush(stdout);
 
 	FILE *newfp = fopen(newname, "w");

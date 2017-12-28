@@ -7,6 +7,11 @@ all:
 	gcc -o rm_header rm_header.c
 	./rm_header $(SRC)
 	gcc $(CFLAGS) $(SRC)
+	./tu_eater helloworld.c.001t.tu > ast.txt
+	less ast.txt
+
+tu_eater:
+	gcc -o tu_eater tu_eater.c tu_eater.h
 
 clean:
 	rm rm_header *.*.*
