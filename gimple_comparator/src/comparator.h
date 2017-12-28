@@ -14,7 +14,6 @@
 #define var_decl
 #define function_decl
 #define identifier_node
-#define 
 
 void open_file(const char *name);
 

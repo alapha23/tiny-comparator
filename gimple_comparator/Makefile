@@ -7,3 +7,6 @@ all: comparator
 
 comparator: 
 	$(CC) $(CCFLAGS) -o $@  $(SRC_DIR)/*
+
+clean:
+	rm -f comparator
