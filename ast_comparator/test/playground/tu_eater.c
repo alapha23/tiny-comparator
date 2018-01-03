@@ -22,6 +22,7 @@ eval_node(void)
 	char next;
 
 	n->_inner = (char *)calloc(INNER_SIZE, 1);
+
 	// read a new line
 	if(fgets(line, 72, fp) == NULL)
 	       return NULL;	
@@ -29,6 +30,7 @@ eval_node(void)
 	eval_ntype(line, n);
 
 	while(((next = peek()) != EOF)&&(next != '@'))
+	// next line belongs to this node unless EOF or @
 	{
 		memset(line, 0, 72);
 		fgets(line, 72, fp);
@@ -196,7 +198,6 @@ check_inner(node *n, char *name)
 void eval_statement(node *n)	
 {
 	// from this node we found our love
-	
 	node *node_list = (node *)calloc(NUM_NODE, sizeof(node));
 	node *temp = calloc(1, sizeof(node));
 
@@ -217,12 +218,15 @@ void eval_statement(node *n)
 		temp = eval_node();
 		dump_node(temp);
 	}
+
+	free(temp);
+	free(node_list);
 }
 
 size_t 
 get_filesize(void)
 {
-	// only call this function before you move the ptr
+	// only call this function before you move the ptr to file position
         fseek(fp, 0L, SEEK_END);
         size_t size =(size_t)ftell(fp);
         rewind(fp);
@@ -252,12 +256,10 @@ eval_file(char *name)
 		}
 /*		if(1 == check_inner(n, name))
 		{
-			eval_statement(n);					
-		}
-*/
+			eval_statement(n);
+		}*/
 		memset(n, 0, sizeof(node));
 	}
-
 
         if( fclose(fp) == EOF)
         {
@@ -266,6 +268,6 @@ eval_file(char *name)
                 exit(0);
         }
 
-	free(n->_inner);
+	free(n);
 }
 

@@ -1,4 +1,4 @@
-#define NODE_TYPE int
+#define NODE_TYPE 	int
 
 #define tree_list	0x000
 

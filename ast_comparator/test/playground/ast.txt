@@ -21,7 +21,7 @@ type: 0x103
 ID: 1850
 type: 0x101
          name: @1859    type: @3       scpe: @1836   
-                         srcp: helloworld.c:8          size: @5      
+                         srcp: temp.c:8                size: @5      
                          algn: 32       used: 1       
 
 ID: 1851

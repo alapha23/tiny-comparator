@@ -240,7 +240,7 @@
 @180    identifier_node  strg: sizetype lngt: 8       
 @181    integer_cst      type: @172    int: -1
 @182    tree_list        valu: @92      chan: @191    
-@183    identifier_node  strg: helloworld.c            lngt: 12      
+@183    identifier_node  strg: temp.c   lngt: 6       
 @184    identifier_node  strg: __builtin_acosf         lngt: 15      
 @185    identifier_node  strg: acosf    lngt: 5       
 @186    function_type    size: @12      algn: 8        retn: @89     
@@ -3335,7 +3335,7 @@
                          body: undefined               link: extern  
 @1835   identifier_node  strg: _Bool    lngt: 5       
 @1836   function_decl    name: @1840    type: @1841    scpe: @176    
-                         srcp: helloworld.c:5          link: extern  
+                         srcp: temp.c:5                link: extern  
                          body: @1842   
 @1837   identifier_node  strg: __builtin_add_overflow_p 
                          lngt: 24      
@@ -3353,7 +3353,7 @@
                          srcp: <built-in>:0            chain: @1848   
                          body: undefined               link: extern  
 @1845   var_decl         name: @1849    type: @3       scpe: @1836   
-                         srcp: helloworld.c:7          chain: @1850   
+                         srcp: temp.c:7                chain: @1850   
                          size: @5       algn: 32       used: 1       
 @1846   statement_list   0   : @1851    1   : @1852    2   : @1853   
                          3   : @1854    4   : @1855   
@@ -3364,7 +3364,7 @@
                          body: undefined               link: extern  
 @1849   identifier_node  strg: a        lngt: 1       
 @1850   var_decl         name: @1859    type: @3       scpe: @1836   
-                         srcp: helloworld.c:8          size: @5      
+                         srcp: temp.c:8                size: @5      
                          algn: 32       used: 1       
 @1851   decl_expr        type: @151    
 @1852   decl_expr        type: @151    
@@ -3389,7 +3389,7 @@
 @1866   function_decl    name: @1871    type: @1872    scpe: @176    
                          srcp: <built-in>:0            chain: @1873   
                          body: undefined               link: extern  
-@1867   result_decl      type: @3       scpe: @1836    srcp: helloworld.c:5      
+@1867   result_decl      type: @3       scpe: @1836    srcp: temp.c:5      
                          note: artificial              size: @5      
                          algn: 32      
 @1868   integer_cst      type: @3      int: 0
