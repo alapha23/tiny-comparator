@@ -7,7 +7,8 @@ int main(int argc, char **argv)
 
 	open_file(argv);
 	filesize = get_filesize();
-
+	
+	pool = (node **)calloc(filesize/30, sizeof(node*));
 	eval_file(argv[1]);
 }
 
@@ -36,16 +37,25 @@ eval_node(void)
 		fgets(line, 72, fp);
 		strcat(n->_inner, line);
 	}
+	ADD2POOL(n, pool, n_inpool);
 	return n;
 }
 
-static void stmt_to_dot(node *n)
+static void modify_to_dot(node *n)
 {
+	dot_shape(n->_id, "modify");
 	// TODO
+	// modify content
+}
 
-	printf("TO DOT\n");
-	fflush(stdout);
-	exit(0);
+static void ret_to_dot(node *n)
+{
+	dot_shape(n->_id, "return");
+	// TODO
+	// dump content
+	if(n->prev->_ntype != statement_list)
+		dot_link_dt(n->prev->_id, n->_id);
+
 }
 
 static char  
@@ -63,7 +73,8 @@ static void
 stub_to_dot(node *n)
 {
 	// TODO
-	DEBUG("This is a stub func");
+	DEBUG(Stub);
+	DEBUF("%s", n->_inner);
 }
 
 static void  
@@ -90,7 +101,6 @@ static NODE_TYPE str2node(char *node_type, node *n)
 	{
 		case 's':
 			_t = statement_list;
-			n->to_dot = stmt_to_dot;
 			break;
 		case 'i':
 			if(*(node_type+1) == 'd')
@@ -110,13 +120,17 @@ static NODE_TYPE str2node(char *node_type, node *n)
 			if(*(node_type+2) == 's')
  				_t = result_decl;
 			else if(*(node_type+2) == 't')
+			{
 				_t = return_expr;
+				n->to_dot = ret_to_dot;
+			}
 			break;		
 		case 'd':
 			_t = decl_expr;
 			break;
 		case 'm':
 			_t = modify_expr;
+			n->to_dot = modify_to_dot;
 			break;
 		case 'v':
 			_t = var_decl;
@@ -150,7 +164,7 @@ static NODE_TYPE str2node(char *node_type, node *n)
 	}
 
 	// TODO
-	if(_t != statement_list)
+	if(n->to_dot == NULL)
 		n->to_dot = stub_to_dot;
 	return _t;
 }
@@ -181,45 +195,149 @@ check_inner(node *n, char *name)
 
 	if(NULL == strstr(n->_inner, name))
 	{
-		DEBUF("%s not in ", name);
-		DEBUF("%s", n->_inner);
-		DEBUG("So return 0");
 		return 0;
 	}
 	else
 	{
-		DEBUF("%s in ", name);		
-		DEBUF("%s", n->_inner);
-		DEBUG("So return 1");
 		return 1;
 	}
+}
+
+static node** read_statement(node *n)
+{
+	node **node_list = (node **)calloc(NUM_NODE, sizeof(node*));
+	node *temp;
+	int counter = 1;
+
+	*node_list = n;
+	// first element in the list is the statement_list node
+	while(temp->_ntype != return_expr)
+	{
+
+		temp = eval_node();
+		*(node_list + counter) = temp;
+		counter++;
+	}
+
+	return node_list;
+}
+
+static node **parse_stmt(node **node_list)
+{
+	// first parse the statement
+	int num_node;
+	int expr[NUM_EXPR];	// we assume there is NUM_EXPR=1024 expr
+	int counter = 0;
+	node *statement = *node_list;	// first stmt in the list is the statement_list
+	char *inner = statement->_inner;
+
+	assert(NULL != statement);
+	assert(NULL != node_list);
+	while(1)
+	{
+		if(*(inner + counter) == '\0')
+			break;
+		if(*(inner+counter) == '@')
+		{
+			sscanf(inner + counter - 6, "%d ", &num_node);
+			sscanf(inner + counter + 1, "%d", &expr[num_node]);
+		}
+		counter++;	
+	}
+
+	node **expr_list = (node **)calloc(num_node, sizeof(node));
+	// find the node from the node_list and add to the expr_list
+	counter = 1;
+	int nelms = 1;
+	node *temp = *(node_list+counter);
+	do
+	{
+		for(int i=0; i<= num_node; i++)
+		{
+			if(temp->_id == expr[i])
+			{
+				// Add local decl to local symboltable
+				// TODO
+				if(temp->_ntype == decl_expr)
+					;
+				else
+				{
+					*(expr_list+nelms) = temp;
+					// set prev node
+					(**(expr_list+nelms)).prev = *(expr_list+nelms-1);
+					nelms++;			
+				}
+			}
+		}
+		counter++;
+		temp = *(node_list+counter);
+	}while(temp != NULL);
+	// the first node in expr_list points to the statement_list
+	*expr_list = statement;
+
+	// there are dependencies in the nodes
+	// we are expecting to feed the dependencies
+	// however, it is not necessary to feed all the dependencies
+		
+
+	return expr_list; 
+}
+
+static void 
+dump_list(node **node_list)
+{
+	node *temp;
+
+	node **expr_list = parse_stmt(node_list);	
+
+	int counter = 1;
+
+	assert(expr_list != NULL);
+	// return the node list of all the statements
+	// dump info is fed already
+
+	temp = *(expr_list + counter);
+	do
+	{	
+		temp->to_dot(temp);
+		counter++;
+		temp = *(expr_list + counter);
+	}while(temp != NULL);
+	// following the statement list
+	// the to_dot funtion of the expr is called
+
+	free(expr_list);
+}
+
+static void 
+emit_header(char *scpe, int start_id)
+{
+	fprintf(stdout, "digraph AST {\n");
+	fprintf(stdout, "  graph [fontname=\"Times New Roman\",fontsize=10];\n");
+	fprintf(stdout, "  node  [fontname=\"Courier New\",fontsize=10];\n");
+	fprintf(stdout, "  edge  [fontname=\"Times New Roman\",fontsize=10];\n\n");
+	
+	fprintf(stdout, "  node%d [label=\"scope %s\",shape=box];\n", start_id, scpe);
+	fflush(stdout);
 }
 
 void eval_statement(node *n)	
 {
 	// from this node we found our love
-	node *node_list = (node *)calloc(NUM_NODE, sizeof(node));
-	node *temp = calloc(1, sizeof(node));
+	node **node_list;
+	node *temp;
 
-	dump_node(n);
-
-	while(temp->_ntype != return_expr)
+	do
 	{
+		// we do not need the nodes before the statement_list
 		temp = eval_node();
-		
-		dump_node(temp);
-	}
+	}while(temp->_ntype != statement_list);
 
-	printf("\n\n");
-	fflush(stdout);
-// TODO
-	for(int i=0; i < 10; i++)
-	{
-		temp = eval_node();
-		dump_node(temp);
-	}
-
-	free(temp);
+	node_list = read_statement(temp);
+	dump_list(node_list);
+	// to_dot is called only in dump_list
+	// dump_node is used for debugging
+	
 	free(node_list);
 }
 
@@ -247,10 +365,11 @@ eval_file(char *name)
 		if(n == NULL)
 		// EOF
 			break;
-//		dump_node(n);
 
-		if(statement_list == n->_ntype)
+		if(check_inner(n, "strg: main"))
 		{
+		// eval a scope with name "main"
+			emit_header("main", n->_id);
 			eval_statement(n);
 			break;
 		}
@@ -268,6 +387,10 @@ eval_file(char *name)
                 exit(0);
         }
 
+	fprintf(stdout, "} ");
+	fflush(stdout);
 	free(n);
 }
+
+
 
