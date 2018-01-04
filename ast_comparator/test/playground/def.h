@@ -29,3 +29,6 @@
 #define statement_list	0x1000
 
 
+// I defined this 
+// 
+#define scope_start	0x2000

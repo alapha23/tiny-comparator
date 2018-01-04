@@ -8,11 +8,23 @@ int main(int argc, char **argv)
 	open_file(argv);
 	filesize = get_filesize();
 	
-	pool = (node **)calloc(filesize/30, sizeof(node*));
+	pool = (node **)calloc(filesize/70, sizeof(node*));
 	eval_file(argv[1]);
+	free(pool);
 }
 
 
+/*node* search_pool(int id, node **pool, int n)
+{
+                int i;
+                for(i=0; i<n; i++)
+                {
+                        if(id == (get_by_num(i, pool, n)->_id))
+                                break;
+			node *temp = get_by_num(i, pool, n);
+                }
+                return get_by_num(i, pool, n);
+}*/ 
 
 static node * 
 eval_node(void)
@@ -38,24 +50,42 @@ eval_node(void)
 		strcat(n->_inner, line);
 	}
 	ADD2POOL(n, pool, n_inpool);
+	if(peek() == EOF)
+		return NULL;
+
 	return n;
 }
 
 static void modify_to_dot(node *n)
 {
+	int id1, id2;
+	sscanf(n->_inner, "%*s @%*d op 0: @%d op 1: @%d ", &id1, &id2);
+	DEBUF("op1: %d", id1);
+	DEBUF("op2: %d", id2);
+
+	node *op1 = search_pool(id1, pool, n_inpool);
+	node *op2 = search_pool(id2, pool, n_inpool);
+
+	assert(op1 != NULL);
+	assert(op2 != NULL);
+	
+	dump_node(op1);
+	dump_node(op2);
+	
+
 	dot_shape(n->_id, "modify");
-	// TODO
-	// modify content
+	
+
+	// connect with the previous node
+	dot_link_dt(n->prev->_id, n->_id);
 }
 
 static void ret_to_dot(node *n)
 {
 	dot_shape(n->_id, "return");
-	// TODO
-	// dump content
-	if(n->prev->_ntype != statement_list)
-		dot_link_dt(n->prev->_id, n->_id);
+	
 
+	dot_link_dt(n->prev->_id, n->_id);
 }
 
 static char  
@@ -142,7 +172,10 @@ static NODE_TYPE str2node(char *node_type, node *n)
 				_t = function_type;
 			break;
 		case 't':
-			_t = type_decl;
+			if(*(node_type+1) == 'r')
+				_t = tree_list;
+			else if(*(node_type+9) == 'y')
+				_t = type_decl;
 			break;
 		case 'c':
 			_t = complex_type;
@@ -205,16 +238,28 @@ check_inner(node *n, char *name)
 
 static node** read_statement(node *n)
 {
+	// n is the identifier node of the scope
+
 	node **node_list = (node **)calloc(NUM_NODE, sizeof(node*));
-	node *temp;
+	node *temp = n;
 	int counter = 1;
 
-	*node_list = n;
+	assert(NULL != temp);
+
+
+	DEBUG(debug);
+	DEBUF("%s", temp->_inner);
+
 	// first element in the list is the statement_list node
+	while(temp->_ntype != statement_list)
+	{
+		temp = get_next(temp, pool, n_inpool);
+	}
+	*node_list = temp;	
 	while(temp->_ntype != return_expr)
 	{
 
-		temp = eval_node();
+		temp = get_next(temp, pool, n_inpool);
 		*(node_list + counter) = temp;
 		counter++;
 	}
@@ -284,21 +329,33 @@ static node **parse_stmt(node **node_list)
 }
 
 static void 
-dump_list(node **node_list)
+dump_list(node **node_list, char* scope, node *start_node)
 {
 	node *temp;
-
 	node **expr_list = parse_stmt(node_list);	
-
 	int counter = 1;
-
 	assert(expr_list != NULL);
+
+	node *scope_ident = (node *)calloc(1, sizeof(node));
+	scope_ident->_ntype = scope_start;
+
+	scope_ident->_id = start_node->_id;
+
+	*expr_list = scope_ident;
+
+
+	// the first node is the declaration of the scope
+	
 	// return the node list of all the statements
 	// dump info is fed already
 
 	temp = *(expr_list + counter);
+	temp->prev = *expr_list;
+	// scope_start dont need to to_dot
+	// as we have the emit_header function
 	do
 	{	
+
 		temp->to_dot(temp);
 		counter++;
 		temp = *(expr_list + counter);
@@ -307,6 +364,7 @@ dump_list(node **node_list)
 	// the to_dot funtion of the expr is called
 
 	free(expr_list);
+	free(scope_ident);
 }
 
 static void 
@@ -321,20 +379,23 @@ emit_header(char *scpe, int start_id)
 	fflush(stdout);
 }
 
-void eval_statement(node *n)	
+void eval_statement(node *n, char *scope)
 {
 	// from this node we found our love
+	// n contains name of the scope
 	node **node_list;
-	node *temp;
 
-	do
+/*	do
 	{
-		// we do not need the nodes before the statement_list
+	// we do not need the nodes before the statement_list
 		temp = eval_node();
 	}while(temp->_ntype != statement_list);
+*/
+	node_list = read_statement(n);
+	// read up coming statements utill return
+	dump_list(node_list, scope, n);
 
-	node_list = read_statement(temp);
-	dump_list(node_list);
+	// n is the start of the scope
 	// to_dot is called only in dump_list
 	// dump_node is used for debugging
 	
@@ -354,31 +415,32 @@ get_filesize(void)
 void 
 eval_file(char *name)
 {
-	node *n = (node *)calloc(1, sizeof(node)); 
+	node *n;// = (node *)calloc(1, sizeof(node)); 
 	// n will be the root of ast
 	// statement_list, in our example
-	
+	int target_id;
+	// in this case we only have one target
 	while(1)
 	{
 		n = eval_node();
-
+	
 		if(n == NULL)
 		// EOF
 			break;
 
 		if(check_inner(n, "strg: main"))
 		{
-		// eval a scope with name "main"
-			emit_header("main", n->_id);
-			eval_statement(n);
-			break;
+			target_id = n->_id;
 		}
-/*		if(1 == check_inner(n, name))
-		{
-			eval_statement(n);
-		}*/
-		memset(n, 0, sizeof(node));
+		//memset(n, 0, sizeof(node));
 	}
+
+	node *target_n = search_pool(target_id, pool, n_inpool);
+	// eval a scope with name "main"
+	assert(NULL != target_n);
+	emit_header("main", target_n->_id);
+	eval_statement(target_n, "main");
+
 
         if( fclose(fp) == EOF)
         {
@@ -389,7 +451,6 @@ eval_file(char *name)
 
 	fprintf(stdout, "} ");
 	fflush(stdout);
-	free(n);
 }
 
 

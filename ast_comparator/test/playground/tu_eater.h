@@ -18,13 +18,22 @@
 	fflush(stdout)
 #define dot_link_dt(id1, id2)  fprintf(stdout, "  node%d -> node%d [style=dotted]\n", id1, id2); \
 	fflush(stdout)
-#define ADD2POOL(node, pool, n)  *(pool+n) = node;  \
+#define ADD2POOL(node, pool, n)  *(pool+n) = node; \
 				     	n++
-#define get_by_num(num, pool, n) assert(id > n); \
-					    (*(pool+num))
-#define search_pool(id, pool, n) int i; for(i=0; i<n; i++) \
-	{if(id == get_by_num(i, pool, n)->_id) break;} \
-	get_by_num(i, pool, n)
+#define get_by_num(num, pool, n) ({ \
+	    (*(pool+num)); \
+	    })
+#define search_pool(id, pool, n) ({ \
+		int i, check;	\
+	       	for(i=id-1; i<n; i++) \
+		{if(id == (get_by_num(i, pool, n)->_id)) {check=1;break;}} \
+		if(check) \
+		get_by_num(i, pool, n); \
+		else for(i=0; i<n; i++) \
+		{if(id == (get_by_num(i, pool, n)->_id)) break;} \
+		get_by_num(i, pool, n); \
+		})
+#define get_next(n, pool, n_inpool) (get_by_num(n->_id, pool, n_inpool))
 
 #define INNER_SIZE	512
 #define NUM_EXPR	1024
@@ -49,6 +58,18 @@ FILE	*fp;
 node	**pool;		// a pool containing the nodes
 int	n_inpool=0;	// number of nodes in pool
 
+//node *search_pool(int id, node **pool, int n);// __attribute__((always_inline));
+/*{
+		int i;	
+	       	for(i=0; i<n; i++) 
+		{
+			if(id == (get_by_num(i, pool, n)->_id)) 
+				break;
+		} 
+		return get_by_num(i, pool, n);
+}
+*/
+
 /*
  * open argument file
  */
@@ -61,7 +82,7 @@ void eval_file(char *name);
 
 size_t get_filesize(void);
 
-void eval_statement(node *n);
+void eval_statement(node *n, char* scope);
 // recording function body from that node
 
 /*
@@ -69,6 +90,7 @@ void eval_statement(node *n);
  * return NULL at EOF
  */
 static node *eval_node(void);
+// every node would be added to the pool
 
 static void eval_ntype(char *, node *);
 
@@ -86,8 +108,8 @@ static node** read_statement(node *);
 // read all the necessary nodes for a statement_list
 // return the node list pointing to a list of node pointers
 
-static void dump_list(node **);
-//
+static void dump_list(node **, char*, node *);
+// argu: a list of nodes, name of the scope
 
 static node **parse_stmt(node **node_list);
 // return list of expr nodes

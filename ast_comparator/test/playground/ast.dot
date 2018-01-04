@@ -3,9 +3,35 @@ digraph AST {
   node  [fontname="Courier New",fontsize=10];
   edge  [fontname="Times New Roman",fontsize=10];
 
-  node1840 [label="scpe main",shape=box];
+  node1840 [label="scope main",shape=box];
+ID: 1840
+type: 0x103
+  strg: main     lngt: 4       
+
+ID: 1845
+type: 0x101
+         name: @1849    type: @3       scpe: @1836   
+                         srcp: temp.c:7                chain: @1850   
+                         size: @5       algn: 32       used: 1       
+
+ID: 1860
+type: 0x201
+      type: @3      int: 22419
+
   node1853 [label="modify",shape=ellipse];
+  node1840 -> node1853 [style=dotted]
+ID: 1850
+type: 0x101
+         name: @1859    type: @3       scpe: @1836   
+                         srcp: temp.c:8                size: @5      
+                         algn: 32       used: 1       
+
+ID: 1861
+type: 0x201
+      type: @3      int: 33319
+
   node1854 [label="modify",shape=ellipse];
+  node1853 -> node1854 [style=dotted]
   node1855 [label="return",shape=ellipse];
   node1854 -> node1855 [style=dotted]
 } 
