@@ -25,6 +25,17 @@ int main(int argc, char **argv)
                 }
                 return get_by_num(i, pool, n);
 }*/ 
+/*
+ *
+ *	temp = search_pool(1845, pool, n_inpool);
+	DEBUF("%p", temp->to_dot);
+	DEBUF("%s", temp->_inner);
+	assert(temp->to_dot != NULL);
+	temp->to_dot(temp);
+	dump_node(temp);
+
+ *
+ * **/
 
 static node * 
 eval_node(void)
@@ -56,12 +67,34 @@ eval_node(void)
 	return n;
 }
 
+static void var_decl_to_dot(node *n)
+{
+	int name_i;
+	node *name_n;
+	char name_c[32];
+	sscanf(n->_inner, " name: @%d ", &name_i);
+	name_n = search_pool(name_i, pool, n_inpool);
+	
+	sscanf(name_n->_inner, " strg: %s ", name_c);
+
+	dot_shape(n->_id, name_c);
+	dot_link(n->prev->_id, n->_id);
+}
+
+static void integer_cst_to_dot(node *n)
+{
+	int value;
+	char *buffer = calloc(1, 6);
+	sscanf(n->_inner, " %*s %*s int: %d", &value);
+	sprintf(buffer, "%d", value);
+	dot_shape(n->_id, buffer);
+	dot_link(n->prev->_id, n->_id);
+}
+
 static void modify_to_dot(node *n)
 {
 	int id1, id2;
 	sscanf(n->_inner, "%*s @%*d op 0: @%d op 1: @%d ", &id1, &id2);
-	DEBUF("op1: %d", id1);
-	DEBUF("op2: %d", id2);
 
 	node *op1 = search_pool(id1, pool, n_inpool);
 	node *op2 = search_pool(id2, pool, n_inpool);
@@ -69,21 +102,29 @@ static void modify_to_dot(node *n)
 	assert(op1 != NULL);
 	assert(op2 != NULL);
 	
-	dump_node(op1);
-	dump_node(op2);
-	
+	op1->prev = n;
+	op2->prev = n;
+	op1->to_dot(op1);
+	// op1 is a vardecl, it should be emiting its name
+	op2->to_dot(op2);
 
 	dot_shape(n->_id, "modify");
-	
-
 	// connect with the previous node
 	dot_link_dt(n->prev->_id, n->_id);
 }
 
 static void ret_to_dot(node *n)
 {
+	int expr_id;
+	node *expr;
+
 	dot_shape(n->_id, "return");
-	
+
+	sscanf(n->_inner, " %*s %*s expr: @%d", &expr_id);
+	expr = search_pool(expr_id, pool, n_inpool);
+
+	expr->prev = n;
+	expr->to_dot(expr);	
 
 	dot_link_dt(n->prev->_id, n->_id);
 }
@@ -138,7 +179,10 @@ static NODE_TYPE str2node(char *node_type, node *n)
 			else if(*(node_type+1) == 'n')
 			{
 				if(*(node_type + 8) == 'c')
+				{
 					_t = integer_cst;
+					n->to_dot = integer_cst_to_dot;
+				}
 				else
 					_t = integer_type;
 			}
@@ -164,6 +208,7 @@ static NODE_TYPE str2node(char *node_type, node *n)
 			break;
 		case 'v':
 			_t = var_decl;
+			n->to_dot = var_decl_to_dot;
 			break;
 		case 'f':
 			if(*(node_type+9) == 'd')
@@ -246,11 +291,7 @@ static node** read_statement(node *n)
 
 	assert(NULL != temp);
 
-
-	DEBUG(debug);
-	DEBUF("%s", temp->_inner);
-
-	// first element in the list is the statement_list node
+	// we make first element in the list be the statement_list node
 	while(temp->_ntype != statement_list)
 	{
 		temp = get_next(temp, pool, n_inpool);
@@ -258,12 +299,12 @@ static node** read_statement(node *n)
 	*node_list = temp;	
 	while(temp->_ntype != return_expr)
 	{
-
 		temp = get_next(temp, pool, n_inpool);
 		*(node_list + counter) = temp;
 		counter++;
 	}
 
+	// DEBUG
 	return node_list;
 }
 
@@ -385,12 +426,6 @@ void eval_statement(node *n, char *scope)
 	// n contains name of the scope
 	node **node_list;
 
-/*	do
-	{
-	// we do not need the nodes before the statement_list
-		temp = eval_node();
-	}while(temp->_ntype != statement_list);
-*/
 	node_list = read_statement(n);
 	// read up coming statements utill return
 	dump_list(node_list, scope, n);

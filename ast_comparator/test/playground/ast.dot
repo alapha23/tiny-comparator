@@ -4,34 +4,22 @@ digraph AST {
   edge  [fontname="Times New Roman",fontsize=10];
 
   node1840 [label="scope main",shape=box];
-ID: 1840
-type: 0x103
-  strg: main     lngt: 4       
-
-ID: 1845
-type: 0x101
-         name: @1849    type: @3       scpe: @1836   
-                         srcp: temp.c:7                chain: @1850   
-                         size: @5       algn: 32       used: 1       
-
-ID: 1860
-type: 0x201
-      type: @3      int: 22419
-
+  node1845 [label="a",shape=ellipse];
+  node1853->node1845;
+  node1860 [label="22419",shape=ellipse];
+  node1853->node1860;
   node1853 [label="modify",shape=ellipse];
   node1840 -> node1853 [style=dotted]
-ID: 1850
-type: 0x101
-         name: @1859    type: @3       scpe: @1836   
-                         srcp: temp.c:8                size: @5      
-                         algn: 32       used: 1       
-
-ID: 1861
-type: 0x201
-      type: @3      int: 33319
-
+  node1850 [label="b",shape=ellipse];
+  node1854->node1850;
+  node1861 [label="33319",shape=ellipse];
+  node1854->node1861;
   node1854 [label="modify",shape=ellipse];
   node1853 -> node1854 [style=dotted]
   node1855 [label="return",shape=ellipse];
+  node1868 [label="0",shape=ellipse];
+  node1862->node1868;
+  node1862 [label="modify",shape=ellipse];
+  node1855 -> node1862 [style=dotted]
   node1854 -> node1855 [style=dotted]
 } 

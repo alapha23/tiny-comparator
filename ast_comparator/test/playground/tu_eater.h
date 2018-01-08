@@ -23,13 +23,13 @@
 #define get_by_num(num, pool, n) ({ \
 	    (*(pool+num)); \
 	    })
-#define search_pool(id, pool, n) ({ \
+#define search_pool(id, pool, n_inpool) ({ \
 		int i, check;	\
-	       	for(i=id-1; i<n; i++) \
+	       	for(i=id-1; i < n_inpool; i++) \
 		{if(id == (get_by_num(i, pool, n)->_id)) {check=1;break;}} \
 		if(check) \
 		get_by_num(i, pool, n); \
-		else for(i=0; i<n; i++) \
+		else for(i=0; i < n_inpool; i++) \
 		{if(id == (get_by_num(i, pool, n)->_id)) break;} \
 		get_by_num(i, pool, n); \
 		})
@@ -57,18 +57,6 @@ typedef struct _n
 FILE	*fp;
 node	**pool;		// a pool containing the nodes
 int	n_inpool=0;	// number of nodes in pool
-
-//node *search_pool(int id, node **pool, int n);// __attribute__((always_inline));
-/*{
-		int i;	
-	       	for(i=0; i<n; i++) 
-		{
-			if(id == (get_by_num(i, pool, n)->_id)) 
-				break;
-		} 
-		return get_by_num(i, pool, n);
-}
-*/
 
 /*
  * open argument file
@@ -126,5 +114,9 @@ static void stub_to_dot(node *);
 static void modify_to_dot(node *);
 
 static void ret_to_dot(node *);
+
+static void var_decl_to_dot(node *);
+
+static void integer_cst_to_dot(node *);
 #endif
 
