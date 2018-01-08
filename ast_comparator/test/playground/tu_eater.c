@@ -77,8 +77,8 @@ static void var_decl_to_dot(node *n)
 	
 	sscanf(name_n->_inner, " strg: %s ", name_c);
 
-	dot_shape(n->_id, name_c);
-	dot_link(n->prev->_id, n->_id);
+	n->_dot_id = dot_shape(n->_id, name_c);
+	dot_link(n->prev->_dot_id, n->_dot_id);
 }
 
 static void integer_cst_to_dot(node *n)
@@ -87,8 +87,8 @@ static void integer_cst_to_dot(node *n)
 	char *buffer = calloc(1, 6);
 	sscanf(n->_inner, " %*s %*s int: %d", &value);
 	sprintf(buffer, "%d", value);
-	dot_shape(n->_id, buffer);
-	dot_link(n->prev->_id, n->_id);
+	n->_dot_id = dot_shape(n->_id, buffer);
+	dot_link(n->prev->_dot_id, n->_dot_id);
 }
 
 static void modify_to_dot(node *n)
@@ -101,16 +101,19 @@ static void modify_to_dot(node *n)
 
 	assert(op1 != NULL);
 	assert(op2 != NULL);
-	
+	int t_dot_id = dot_shape(n->_id, "modify");
+	n->_dot_id = t_dot_id;
+	//
+
 	op1->prev = n;
 	op2->prev = n;
 	op1->to_dot(op1);
 	// op1 is a vardecl, it should be emiting its name
 	op2->to_dot(op2);
 
-	dot_shape(n->_id, "modify");
+
 	// connect with the previous node
-	dot_link_dt(n->prev->_id, n->_id);
+	dot_link_dt(n->prev->_dot_id, n->_dot_id);
 }
 
 static void ret_to_dot(node *n)
@@ -118,7 +121,7 @@ static void ret_to_dot(node *n)
 	int expr_id;
 	node *expr;
 
-	dot_shape(n->_id, "return");
+	n->_dot_id = dot_shape(n->_dot_id, "return");
 
 	sscanf(n->_inner, " %*s %*s expr: @%d", &expr_id);
 	expr = search_pool(expr_id, pool, n_inpool);
@@ -126,7 +129,7 @@ static void ret_to_dot(node *n)
 	expr->prev = n;
 	expr->to_dot(expr);	
 
-	dot_link_dt(n->prev->_id, n->_id);
+	dot_link_dt(n->prev->_dot_id, n->_dot_id);
 }
 
 static char  
@@ -391,7 +394,9 @@ dump_list(node **node_list, char* scope, node *start_node)
 	// dump info is fed already
 
 	temp = *(expr_list + counter);
+	// connect expr list w
 	temp->prev = *expr_list;
+	temp->prev->_dot_id = 1;
 	// scope_start dont need to to_dot
 	// as we have the emit_header function
 	do
@@ -416,7 +421,8 @@ emit_header(char *scpe, int start_id)
 	fprintf(stdout, "  node  [fontname=\"Courier New\",fontsize=10];\n");
 	fprintf(stdout, "  edge  [fontname=\"Times New Roman\",fontsize=10];\n\n");
 	
-	fprintf(stdout, "  node%d [label=\"scope %s\",shape=box];\n", start_id, scpe);
+	fprintf(stdout, "  node%d [label=\"scope %s\",shape=box];\n", acquire_id(), scpe);
+	inc_id();
 	fflush(stdout);
 }
 

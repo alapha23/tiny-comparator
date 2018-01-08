@@ -11,9 +11,13 @@
 	fflush(stderr)
 #define DEBUF(a, b) fprintf(stderr, a"\n", b); \
 	fflush(stderr)
+#define acquire_id() ({dot_id;})
+#define inc_id()	dot_id++;
 #define char2int(c) ((int)c - 48)
-#define dot_shape(id, label) fprintf(stdout, "  node%d [label=\"%s\",shape=ellipse];\n", id, label); \
-	fflush(stdout)
+#define dot_shape(id, label) ({fprintf(stdout, "  node%d [label=\"%s\",shape=ellipse];\n", acquire_id(), label); \
+	fflush(stdout);\
+	inc_id();})
+// it returns the new inc_id
 #define dot_link(id1, id2)  fprintf(stdout, "  node%d->node%d;\n", id1, id2); \
 	fflush(stdout)
 #define dot_link_dt(id1, id2)  fprintf(stdout, "  node%d -> node%d [style=dotted]\n", id1, id2); \
@@ -47,6 +51,7 @@ typedef struct _n
 {
 	NODE_TYPE _ntype;
 	int	_id;
+	int 	_dot_id;
 	void (* to_dot)(struct _n *);
 	char *_inner;
 	struct _n * prev;		// prev node is connected when generating dot files
@@ -57,6 +62,7 @@ typedef struct _n
 FILE	*fp;
 node	**pool;		// a pool containing the nodes
 int	n_inpool=0;	// number of nodes in pool
+int 	dot_id = 1;
 
 /*
  * open argument file
