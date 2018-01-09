@@ -37,6 +37,7 @@ int main(int argc, char **argv)
  *
  * **/
 
+
 static node * 
 eval_node(void)
 {
@@ -67,6 +68,467 @@ eval_node(void)
 	return n;
 }
 
+static void sub_stmt_to_dot(node *n)
+{
+	node **node_list;
+	int num_stmt;
+
+ 	char *inner = n->_inner;
+	int pos = strlen(inner)-1;
+	while(pos)
+	{
+		if(*(inner+pos) == ':')
+		{
+			// the last node
+			pos--;
+			while(1)
+			{
+				if(*(inner+pos) != ' ')
+					break;
+				pos--;
+			}
+			while(1)
+			{
+				if(*(inner+pos) != ' ')
+				{
+					pos--;
+				}else
+					break;
+			}
+			break;
+		}
+		pos--;
+	}
+	pos++;
+        sscanf(inner+pos, "%d ", &num_stmt);
+
+	// num_stmt+2
+	// prev node is included
+	node_list = calloc(num_stmt+2, sizeof(node *));
+
+	*node_list = n->prev;
+
+	// we use prev node
+	// as current node is stmt_list
+	pos = 3;
+	int nstmt = 1;
+	while(pos != strlen(inner))
+	{
+		if(*(inner+pos) == '@')	
+		{
+			node *temp;
+			int temp_id;
+			sscanf(inner+pos, "@%d ", &temp_id);
+			temp = search_pool(temp_id, pool, n_inpool);
+
+			*(node_list+nstmt) = temp;
+			// it is vital to connect them with prev ptr
+			temp->prev = *(node_list+nstmt-1);
+			nstmt++;
+		}
+		pos++;	
+	}
+
+	// now dump all the stmt
+	// now pos stands for which node in the list we are dumping
+	pos = 1;	
+	while(pos != nstmt)
+	{
+		(*(node_list+pos))->to_dot(*(node_list+pos));
+		pos++;
+	}
+}
+
+static void eq_to_dot(node *n)
+{
+	int id1, id2;
+	sscanf(n->_inner, "%*s @%*d op 0: @%d op 1: @%d ", &id1, &id2);
+
+	node *op1 = search_pool(id1, pool, n_inpool);
+	node *op2 = search_pool(id2, pool, n_inpool);
+
+	assert(op1 != NULL);
+	assert(op2 != NULL);
+	int t_dot_id = dot_shape(n->_id, "==");
+	n->_dot_id = t_dot_id;
+
+	op1->prev = n;
+	op2->prev = n;
+	op1->to_dot(op1);
+	// op1 is a vardecl, it should be emiting its name
+	op2->to_dot(op2);
+
+	// connect with the previous node
+	dot_link_dt(n->prev->_dot_id, n->_dot_id);
+}
+
+
+static void ne_to_dot(node *n)
+{
+	int id1, id2;
+	sscanf(n->_inner, "%*s @%*d op 0: @%d op 1: @%d ", &id1, &id2);
+
+	node *op1 = search_pool(id1, pool, n_inpool);
+	node *op2 = search_pool(id2, pool, n_inpool);
+
+	assert(op1 != NULL);
+	assert(op2 != NULL);
+	int t_dot_id = dot_shape(n->_id, "!=");
+	n->_dot_id = t_dot_id;
+
+	op1->prev = n;
+	op2->prev = n;
+	op1->to_dot(op1);
+	// op1 is a vardecl, it should be emiting its name
+	op2->to_dot(op2);
+
+	// connect with the previous node
+	dot_link_dt(n->prev->_dot_id, n->_dot_id);
+}
+
+
+static void gt_to_dot(node *n)
+{
+	int id1, id2;
+	sscanf(n->_inner, "%*s @%*d op 0: @%d op 1: @%d ", &id1, &id2);
+
+	node *op1 = search_pool(id1, pool, n_inpool);
+	node *op2 = search_pool(id2, pool, n_inpool);
+
+	assert(op1 != NULL);
+	assert(op2 != NULL);
+	int t_dot_id = dot_shape(n->_id, ">");
+	n->_dot_id = t_dot_id;
+
+	op1->prev = n;
+	op2->prev = n;
+	op1->to_dot(op1);
+	// op1 is a vardecl, it should be emiting its name
+	op2->to_dot(op2);
+
+	// connect with the previous node
+	dot_link_dt(n->prev->_dot_id, n->_dot_id);
+}
+
+static void ge_to_dot(node *n)
+{
+	int id1, id2;
+	sscanf(n->_inner, "%*s @%*d op 0: @%d op 1: @%d ", &id1, &id2);
+
+	node *op1 = search_pool(id1, pool, n_inpool);
+	node *op2 = search_pool(id2, pool, n_inpool);
+
+	assert(op1 != NULL);
+	assert(op2 != NULL);
+	int t_dot_id = dot_shape(n->_id, ">=");
+	n->_dot_id = t_dot_id;
+
+	op1->prev = n;
+	op2->prev = n;
+	op1->to_dot(op1);
+	// op1 is a vardecl, it should be emiting its name
+	op2->to_dot(op2);
+
+	// connect with the previous node
+	dot_link_dt(n->prev->_dot_id, n->_dot_id);
+}
+
+static void lt_to_dot(node *n)
+{
+	int id1, id2;
+	sscanf(n->_inner, "%*s @%*d op 0: @%d op 1: @%d ", &id1, &id2);
+
+	node *op1 = search_pool(id1, pool, n_inpool);
+	node *op2 = search_pool(id2, pool, n_inpool);
+
+	assert(op1 != NULL);
+	assert(op2 != NULL);
+	int t_dot_id = dot_shape(n->_id, "<");
+	n->_dot_id = t_dot_id;
+
+	op1->prev = n;
+	op2->prev = n;
+	op1->to_dot(op1);
+	// op1 is a vardecl, it should be emiting its name
+	op2->to_dot(op2);
+
+	// connect with the previous node
+	dot_link_dt(n->prev->_dot_id, n->_dot_id);
+}
+
+static void le_to_dot(node *n)
+{
+	int id1, id2;
+	sscanf(n->_inner, "%*s @%*d op 0: @%d op 1: @%d ", &id1, &id2);
+
+	node *op1 = search_pool(id1, pool, n_inpool);
+	node *op2 = search_pool(id2, pool, n_inpool);
+
+	assert(op1 != NULL);
+	assert(op2 != NULL);
+	int t_dot_id = dot_shape(n->_id, "<=");
+	n->_dot_id = t_dot_id;
+
+	op1->prev = n;
+	op2->prev = n;
+	op1->to_dot(op1);
+	// op1 is a vardecl, it should be emiting its name
+	op2->to_dot(op2);
+
+	// connect with the previous node
+	dot_link_dt(n->prev->_dot_id, n->_dot_id);
+}
+
+
+static void cond_to_dot(node *n)
+{
+	int id1, id2;
+	sscanf(n->_inner, "%*s @%*d op 0: @%d op 1: @%d ", &id1, &id2);
+
+	node *op1 = search_pool(id1, pool, n_inpool);
+	node *op2 = search_pool(id2, pool, n_inpool);
+
+	assert(op1 != NULL);
+	assert(op2 != NULL);
+	int t_dot_id = dot_shape(n->_id, "if");
+	n->_dot_id = t_dot_id;
+
+	op1->prev = n;
+	op2->prev = n;
+	op1->to_dot(op1);
+	// op1 is a vardecl, it should be emiting its name
+	op2->to_dot(op2);
+
+	// connect with the previous node
+	dot_link_dt(n->prev->_dot_id, n->_dot_id);
+}
+static void plus_to_dot(node *n)
+{
+	int id1, id2;
+	sscanf(n->_inner, "%*s @%*d op 0: @%d op 1: @%d ", &id1, &id2);
+
+	node *op1 = search_pool(id1, pool, n_inpool);
+	node *op2 = search_pool(id2, pool, n_inpool);
+
+	assert(op1 != NULL);
+	assert(op2 != NULL);
+	int t_dot_id = dot_shape(n->_id, "plus_expr");
+	n->_dot_id = t_dot_id;
+
+	op1->prev = n;
+	op2->prev = n;
+	op1->to_dot(op1);
+	// op1 is a vardecl, it should be emiting its name
+	op2->to_dot(op2);
+
+	// connect with the previous node
+	dot_link_dt(n->prev->_dot_id, n->_dot_id);
+}
+
+static void call_to_dot(node *n)
+{
+	node *fn;
+	node *addr;
+	node *name;
+	node **argu;
+	char label[64] = "call ";
+	char func_name[48];
+	int fn_id, addr_id, name_id;
+	int num_arg;
+
+/*
+ * format of call_expr
+ * type: @3	fn  : @xxxx	0   : @xxxx	1  : @xxxx	....
+ * */
+
+	// first obtain the name of the function
+	sscanf(n->_inner, " type: %*s fn  : @%d ", &addr_id);
+	addr = search_pool(addr_id, pool, n_inpool);
+	sscanf(addr->_inner, " type: %*s op 0: @%d", &fn_id);
+	fn = search_pool(fn_id, pool, n_inpool);
+	sscanf(fn->_inner, " name: @%d ", &name_id);
+	name = search_pool(name_id, pool, n_inpool);
+	sscanf(name->_inner, " strg: %s ", func_name);
+
+	strcat(label, func_name);
+
+	n->_dot_id = dot_shape(n->_id, label);
+
+	// obtain the argument list of the function
+	// first decide num if arguments
+	char *inner = n->_inner;
+	int pos = strlen(inner)-1;
+	while(pos)
+	{
+		if(*(inner+pos) == ':')
+		{
+			// the last node
+			pos--;
+			while(1)
+			{
+				if(*(inner+pos) != ' ')
+					break;
+				pos--;
+			}
+			while(1)
+			{
+				if(*(inner+pos) != ' ')
+				{
+					pos--;
+				}else
+					break;
+			}
+			break;
+		}
+		pos--;
+	}
+	pos++;
+	if((*(inner+pos) >=48) && (*(inner + pos)<=57))
+	{
+		node *temp; 
+		int arg_id;
+
+		// if there is any argument
+		sscanf(inner+pos, "%d ", &num_arg);
+
+		argu = calloc(num_arg+1, sizeof(node *));
+		pos += 4;
+		do
+		{
+			// obtain node id of arguments
+			sscanf(inner+pos+3, "%d", &arg_id);
+			do{	
+				pos--;
+			}while(*(inner+pos)!= ':');
+	
+			temp = search_pool(arg_id, pool, n_inpool); 
+			*(argu + num_arg) = temp; 
+			num_arg--;
+
+//			DEBUF("type:%d", temp->_id);
+			temp->prev = n;
+			temp->to_dot(temp);
+		}while(num_arg+1);
+
+	}
+	dot_link_dt(n->prev->_dot_id, n->_dot_id);
+}
+
+static void post_inc_to_dot(node *n)
+{
+	int id1, id2;
+	sscanf(n->_inner, "%*s @%*d op 0: @%d op 1: @%d ", &id1, &id2);
+
+	node *op1 = search_pool(id1, pool, n_inpool);
+	node *op2 = search_pool(id2, pool, n_inpool);
+
+	assert(op1 != NULL);
+	assert(op2 != NULL);
+	int t_dot_id = dot_shape(n->_id, "post_inc");
+	n->_dot_id = t_dot_id;
+
+	op1->prev = n;
+	op2->prev = n;
+	op1->to_dot(op1);
+	// op1 is a vardecl, it should be emiting its name
+	op2->to_dot(op2);
+
+	// connect with the previous node
+	dot_link_dt(n->prev->_dot_id, n->_dot_id);	
+}
+
+static void post_dec_to_dot(node *n)
+{
+	int id1, id2;
+	sscanf(n->_inner, "%*s @%*d op 0: @%d op 1: @%d ", &id1, &id2);
+
+	node *op1 = search_pool(id1, pool, n_inpool);
+	node *op2 = search_pool(id2, pool, n_inpool);
+
+	assert(op1 != NULL);
+	assert(op2 != NULL);
+	int t_dot_id = dot_shape(n->_id, "post_dec");
+	n->_dot_id = t_dot_id;
+
+	op1->prev = n;
+	op2->prev = n;
+	op1->to_dot(op1);
+	// op1 is a vardecl, it should be emiting its name
+	op2->to_dot(op2);
+
+	// connect with the previous node
+	dot_link_dt(n->prev->_dot_id, n->_dot_id);	
+}
+
+static void pre_inc_to_dot(node *n)
+{
+	int id1, id2;
+	sscanf(n->_inner, "%*s @%*d op 0: @%d op 1: @%d ", &id1, &id2);
+
+	node *op1 = search_pool(id1, pool, n_inpool);
+	node *op2 = search_pool(id2, pool, n_inpool);
+
+	assert(op1 != NULL);
+	assert(op2 != NULL);
+	int t_dot_id = dot_shape(n->_id, "pre_inc");
+	n->_dot_id = t_dot_id;
+
+	op1->prev = n;
+	op2->prev = n;
+	op1->to_dot(op1);
+	// op1 is a vardecl, it should be emiting its name
+	op2->to_dot(op2);
+
+	// connect with the previous node
+	dot_link_dt(n->prev->_dot_id, n->_dot_id);	
+}
+
+static void pre_dec_to_dot(node *n)
+{
+	int id1, id2;
+	sscanf(n->_inner, "%*s @%*d op 0: @%d op 1: @%d ", &id1, &id2);
+
+	node *op1 = search_pool(id1, pool, n_inpool);
+	node *op2 = search_pool(id2, pool, n_inpool);
+
+	assert(op1 != NULL);
+	assert(op2 != NULL);
+	int t_dot_id = dot_shape(n->_id, "pre_dec");
+	n->_dot_id = t_dot_id;
+
+	op1->prev = n;
+	op2->prev = n;
+	op1->to_dot(op1);
+	// op1 is a vardecl, it should be emiting its name
+	op2->to_dot(op2);
+
+	// connect with the previous node
+	dot_link_dt(n->prev->_dot_id, n->_dot_id);	
+}
+
+static void binary_to_dot(node *n, char*type)
+{
+	int id1, id2;
+	sscanf(n->_inner, "%*s @%*d op 0: @%d op 1: @%d ", &id1, &id2);
+
+	node *op1 = search_pool(id1, pool, n_inpool);
+	node *op2 = search_pool(id2, pool, n_inpool);
+
+	assert(op1 != NULL);
+	assert(op2 != NULL);
+	int t_dot_id = dot_shape(n->_id, type);
+	n->_dot_id = t_dot_id;
+
+	op1->prev = n;
+	op2->prev = n;
+	op1->to_dot(op1);
+	// op1 is a vardecl, it should be emiting its name
+	op2->to_dot(op2);
+
+	// connect with the previous node
+	dot_link_dt(n->prev->_dot_id, n->_dot_id);
+}
+
 static void var_decl_to_dot(node *n)
 {
 	int name_i;
@@ -81,6 +543,23 @@ static void var_decl_to_dot(node *n)
 	dot_link(n->prev->_dot_id, n->_dot_id);
 }
 
+static void indirect_ref_to_dot(node *n)
+{
+	// this function is called as the left hand of a modification
+	// when left hand is referencing a ref
+	int var_id;
+	node *var;
+
+	// indirect ref only have one op
+	sscanf(n->_inner, " type: @%*d op 0: @%d", &var_id );
+	var = search_pool(var_id, pool, n_inpool);
+
+	n->_dot_id = dot_shape(n->_id, "*");
+	var->prev = n;
+	var->to_dot(var);
+	dot_link(n->prev->_dot_id, n->_dot_id);
+}
+
 static void integer_cst_to_dot(node *n)
 {
 	int value;
@@ -89,6 +568,76 @@ static void integer_cst_to_dot(node *n)
 	sprintf(buffer, "%d", value);
 	n->_dot_id = dot_shape(n->_id, buffer);
 	dot_link(n->prev->_dot_id, n->_dot_id);
+}
+
+static void div_to_dot(node *n)
+{
+	int id1, id2;
+	sscanf(n->_inner, "%*s @%*d op 0: @%d op 1: @%d ", &id1, &id2);
+
+	node *op1 = search_pool(id1, pool, n_inpool);
+	node *op2 = search_pool(id2, pool, n_inpool);
+
+	assert(op1 != NULL);
+	assert(op2 != NULL);
+	int t_dot_id = dot_shape(n->_id, "div");
+	n->_dot_id = t_dot_id;
+
+	op1->prev = n;
+	op2->prev = n;
+	op1->to_dot(op1);
+	// op1 is a vardecl, it should be emiting its name
+	op2->to_dot(op2);
+
+	// connect with the previous node
+	dot_link_dt(n->prev->_dot_id, n->_dot_id);
+}
+
+static void mod_to_dot(node *n)
+{
+	int id1, id2;
+	sscanf(n->_inner, "%*s @%*d op 0: @%d op 1: @%d ", &id1, &id2);
+
+	node *op1 = search_pool(id1, pool, n_inpool);
+	node *op2 = search_pool(id2, pool, n_inpool);
+
+	assert(op1 != NULL);
+	assert(op2 != NULL);
+	int t_dot_id = dot_shape(n->_id, "mod");
+	n->_dot_id = t_dot_id;
+
+	op1->prev = n;
+	op2->prev = n;
+	op1->to_dot(op1);
+	// op1 is a vardecl, it should be emiting its name
+	op2->to_dot(op2);
+
+	// connect with the previous node
+	dot_link_dt(n->prev->_dot_id, n->_dot_id);
+}
+
+static void mult_to_dot(node *n)
+{
+	int id1, id2;
+	sscanf(n->_inner, "%*s @%*d op 0: @%d op 1: @%d ", &id1, &id2);
+
+	node *op1 = search_pool(id1, pool, n_inpool);
+	node *op2 = search_pool(id2, pool, n_inpool);
+
+	assert(op1 != NULL);
+	assert(op2 != NULL);
+	int t_dot_id = dot_shape(n->_id, "mult");
+	n->_dot_id = t_dot_id;
+	//
+
+	op1->prev = n;
+	op2->prev = n;
+	op1->to_dot(op1);
+	// op1 is a vardecl, it should be emiting its name
+	op2->to_dot(op2);
+
+	// connect with the previous node
+	dot_link_dt(n->prev->_dot_id, n->_dot_id);
 }
 
 static void modify_to_dot(node *n)
@@ -111,6 +660,28 @@ static void modify_to_dot(node *n)
 	// op1 is a vardecl, it should be emiting its name
 	op2->to_dot(op2);
 
+
+	// connect with the previous node
+	dot_link_dt(n->prev->_dot_id, n->_dot_id);
+}
+
+static void pointer_plus_to_dot(node *n)
+{
+	// TODO
+	int id1, id2;
+	sscanf(n->_inner, "%*s @%*d op 0: @%d op 1: @%d ", &id1, &id2);
+
+	node *op1 = search_pool(id1, pool, n_inpool);
+	node *op2 = search_pool(id2, pool, n_inpool);
+
+	assert(op1 != NULL);
+	assert(op2 != NULL);
+
+	op1->prev = n->prev;
+	op2->prev = n->prev;
+	op1->to_dot(op1);
+	// op1 is a vardecl, it should be emiting its name
+	op2->to_dot(op2);
 
 	// connect with the previous node
 	dot_link_dt(n->prev->_dot_id, n->_dot_id);
@@ -173,25 +744,98 @@ static NODE_TYPE str2node(char *node_type, node *n)
 	NODE_TYPE _t;
 	switch(*node_type)
 	{
-		case 's':
-			_t = statement_list;
-			break;
-		case 'i':
-			if(*(node_type+1) == 'd')
- 				_t = identifier_node;
-			else if(*(node_type+1) == 'n')
+		case 'g':
+			if(*(node_type+1) == 't')
 			{
-				if(*(node_type + 8) == 'c')
-				{
-					_t = integer_cst;
-					n->to_dot = integer_cst_to_dot;
-				}
-				else
-					_t = integer_type;
+				_t = gt_expr;
+				n->to_dot = gt_to_dot;
+			}else if(*(node_type+1) == 'e')
+			{
+				_t = ge_expr;
+				n->to_dot = ge_to_dot;
 			}
 			break;
+		case 'l':
+			if(*(node_type+1) == 't')
+			{
+				_t = lt_expr;
+				n->to_dot = lt_to_dot;
+			}else if(*(node_type+1) == 'e')
+			{
+				_t = le_expr;
+				n->to_dot = le_to_dot;
+			}
+			break;
+		case 's':
+			_t = statement_list;
+			n->to_dot = sub_stmt_to_dot;
+			break;
+		case 'i':
+			switch(*(node_type+8))
+			{
+				case 'e':
+	 				_t = identifier_node;
+					break;
+				case 'c':
+					_t = integer_cst;
+					n->to_dot = integer_cst_to_dot;
+					break;
+				case 't':
+					_t = integer_type;
+					break;
+				case '_':
+					_t = indirect_ref;
+					n->to_dot = indirect_ref_to_dot;
+					break;
+				default:
+					DEBUF("Unknown node type: %s", node_type);
+			}
+			break;
+		case 'n':
+			_t = ne_expr;
+			n->to_dot = ne_to_dot;
+			break;
+		case 'e':
+			_t = eq_expr;
+			n->to_dot = eq_to_dot;
+			break;
 		case 'p':
-			_t = pointer_type;
+			switch(*(node_type + 4))
+			{
+				case 't':
+					if(*(node_type+8) == 'p')
+					{
+						_t = pointer_plus_expr;
+						n->to_dot = pointer_plus_to_dot;
+					}
+					else
+						_t = pointer_type;
+					break;
+				case 'n':
+					_t = preincrement_expr;
+					n->to_dot = pre_inc_to_dot;
+					break;
+				case 'e':
+					_t = predecrement_expr;
+					n->to_dot = pre_dec_to_dot;
+					break;
+				case 'i':
+					_t = postincrement_expr;
+					n->to_dot = post_inc_to_dot;
+					break;
+				case 'd':
+					_t = postdecrement_expr;
+					n->to_dot = post_dec_to_dot;
+					break;
+				case '_':
+					_t = plus_expr;
+					n->to_dot = plus_to_dot;
+					break;
+				default:
+					fprintf(stderr, "Unknown node type:%s\n", node_type);
+					fflush(stderr);
+					exit(0);
+			}
 			break;
 		case 'r':
 			if(*(node_type+2) == 's')
@@ -206,8 +850,17 @@ static NODE_TYPE str2node(char *node_type, node *n)
 			_t = decl_expr;
 			break;
 		case 'm':
-			_t = modify_expr;
-			n->to_dot = modify_to_dot;
+			if(*(node_type+1) == 'o')
+			{
+				_t = modify_expr;
+				n->to_dot = modify_to_dot;
+
+			}
+			else if(*(node_type+1) == 'u')
+			{
+				_t = mult_expr;
+				n->to_dot = mult_to_dot;
+			}
 			break;
 		case 'v':
 			_t = var_decl;
@@ -221,12 +874,43 @@ static NODE_TYPE str2node(char *node_type, node *n)
 			break;
 		case 't':
 			if(*(node_type+1) == 'r')
-				_t = tree_list;
+			{
+				switch(*(node_type+6))
+				{
+					case 'd':
+						_t = trunc_div_expr;
+						n->to_dot = div_to_dot;
+						break;
+					case 'm':
+						_t = trunc_mod_expr;
+						n->to_dot = mod_to_dot;
+						break;
+					case 'i':
+						_t = tree_list;
+						break;
+				}
+			}
 			else if(*(node_type+9) == 'y')
 				_t = type_decl;
 			break;
 		case 'c':
-			_t = complex_type;
+			switch(*(node_type+2))
+			{
+				case 'l':
+					_t = call_expr;
+					n->to_dot = call_to_dot;
+					break;
+				case 'm':
+					_t = complex_type;
+					break;
+				case 'n':
+					_t = cond_expr;
+					n->to_dot = cond_to_dot;
+					break;
+				default:
+					DEBUF("Unknown node type: %s", node_type);
+					exit(0);
+			}
 			break;
 		case 'a':
 			_t = array_type;
@@ -426,7 +1110,7 @@ emit_header(char *scpe, int start_id)
 	fflush(stdout);
 }
 
-void eval_statement(node *n, char *scope)
+static void eval_statement(node *n, char *scope)
 {
 	// from this node we found our love
 	// n contains name of the scope

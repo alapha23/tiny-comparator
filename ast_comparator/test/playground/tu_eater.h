@@ -76,7 +76,6 @@ void eval_file(char *name);
 
 size_t get_filesize(void);
 
-void eval_statement(node *n, char* scope);
 // recording function body from that node
 
 /*
@@ -97,6 +96,9 @@ static char peek(void);
 
 static int check_inner(node *, char *);
 // search for srcp: <filename>.c in the node
+
+static void eval_statement(node *n, char* scope);
+
 
 static node** read_statement(node *);
 // read all the necessary nodes for a statement_list
@@ -119,10 +121,36 @@ static void stub_to_dot(node *);
 
 static void modify_to_dot(node *);
 
+static void mult_to_dot(node *);
+
+static void div_to_dot(node *);
+
+static void mod_to_dot(node *);
+
 static void ret_to_dot(node *);
 
 static void var_decl_to_dot(node *);
 
 static void integer_cst_to_dot(node *);
+
+static void binary_to_dot(node *n, char *type);
+
+static void call_to_dot(node *n);
+
+static void plus_to_dot(node *n);
+
+static void gt_to_dot(node *n);
+
+static void ge_to_dot(node *n);
+
+static void lt_to_dot(node *n);
+
+static void le_to_dot(node *n);
+
+static void cond_to_dot(node *n);
+
+static void sub_stmt_to_dot(node *n);
+
+static void pointer_plus_to_dot(node *n);
 #endif
 
