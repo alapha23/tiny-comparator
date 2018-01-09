@@ -139,6 +139,81 @@ static void sub_stmt_to_dot(node *n)
 	}
 }
 
+static void addr_to_dot(node *n)
+{
+	node *ptr_type;
+	node *type;
+	int ptr_type_id, type_id;
+
+	// check type of addr
+	sscanf(n->_inner, " type: @%d ", &ptr_type_id);
+	ptr_type = search_pool(ptr_type_id, pool, n_inpool);
+	sscanf(ptr_type->_inner, " %*s %*s %*s %*d ptd : @%d", &type_id);
+	type = search_pool(type_id, pool, n_inpool);
+
+	if(type->_ntype == array_type)
+	{
+		// print if it is needed
+		node *op;
+		int op_id;
+		sscanf(n->_inner, " type: @%*d op 0: @%d ", &op_id);
+		op = search_pool(op_id, pool, n_inpool);
+		op->prev = n->prev;
+		op->to_dot(op);
+	}
+}
+
+static void string_cst_to_dot(node *n)
+{
+	int size;
+	int type_id, size_id;
+	node *type;
+	node *size_n;
+	
+	// obtain the size of the string
+	sscanf(n->_inner, " type: @%d ", &type_id);
+	type = search_pool(type_id, pool, n_inpool);
+
+	sscanf(type->_inner, " size: @%d ", &size_id);
+	size_n = search_pool(size_id, pool, n_inpool);
+
+	sscanf(size_n->_inner, " type: @%*d %*s %d ", &size);
+
+	char value[size];
+	int pos = 0;
+	char *inner = n->_inner + 12;
+	// TODO
+	//sscanf(n->_inner, " %*s %*s strg: %s", value);
+	while(pos != strlen(inner))
+	{
+		if(*(inner+pos) == ':')
+		{
+			pos += 2;
+			int counter = 0;
+			while((*(inner+pos+counter) != 'l') && counter <= size)
+			{
+				value[counter] = *(inner+pos+counter);	
+				counter++;
+			}
+			break;
+		}
+		pos++;
+	}
+	n->_dot_id = dot_shape(n->_id, value);
+	dot_link(n->prev->_dot_id, n->_dot_id);
+}
+
+static void nop_to_dot(node *n)
+{
+	int op_id;
+	node *op;
+
+	sscanf(n->_inner, " type: @%*d op 0: @%d", &op_id);
+	op = search_pool(op_id, pool, n_inpool);
+	op->prev = n->prev;
+	op->to_dot(op);
+}
+
 static void eq_to_dot(node *n)
 {
 	int id1, id2;
@@ -667,18 +742,19 @@ static void modify_to_dot(node *n)
 
 static void pointer_plus_to_dot(node *n)
 {
-	// TODO
 	int id1, id2;
 	sscanf(n->_inner, "%*s @%*d op 0: @%d op 1: @%d ", &id1, &id2);
 
 	node *op1 = search_pool(id1, pool, n_inpool);
 	node *op2 = search_pool(id2, pool, n_inpool);
 
+	n->_dot_id = dot_shape(n->_id, "poiner_plus");
+
 	assert(op1 != NULL);
 	assert(op2 != NULL);
 
-	op1->prev = n->prev;
-	op2->prev = n->prev;
+	op1->prev = n;
+	op2->prev = n;
 	op1->to_dot(op1);
 	// op1 is a vardecl, it should be emiting its name
 	op2->to_dot(op2);
@@ -767,8 +843,19 @@ static NODE_TYPE str2node(char *node_type, node *n)
 			}
 			break;
 		case 's':
-			_t = statement_list;
-			n->to_dot = sub_stmt_to_dot;
+			switch(*(node_type+2))
+			{
+				case 'a':
+					_t = statement_list;
+					n->to_dot = sub_stmt_to_dot;
+					break;
+				case 'r':
+					_t = string_cst;
+					n->to_dot = string_cst_to_dot;
+					break;
+				default:
+					DEBUF("Unknown node type: %s", node_type);
+			}
 			break;
 		case 'i':
 			switch(*(node_type+8))
@@ -792,8 +879,19 @@ static NODE_TYPE str2node(char *node_type, node *n)
 			}
 			break;
 		case 'n':
-			_t = ne_expr;
-			n->to_dot = ne_to_dot;
+			switch(*(node_type+1))
+			{
+				case 'e':
+					_t = ne_expr;
+					n->to_dot = ne_to_dot;
+					break;
+				case 'o':
+					_t = nop_expr;
+					n->to_dot = nop_to_dot;
+					break;
+				default:
+					DEBUF("Unknown node type: %s", node_type);
+			}
 			break;
 		case 'e':
 			_t = eq_expr;
@@ -809,7 +907,9 @@ static NODE_TYPE str2node(char *node_type, node *n)
 						n->to_dot = pointer_plus_to_dot;
 					}
 					else
+					{
 						_t = pointer_type;
+					}
 					break;
 				case 'n':
 					_t = preincrement_expr;
@@ -854,7 +954,6 @@ static NODE_TYPE str2node(char *node_type, node *n)
 			{
 				_t = modify_expr;
 				n->to_dot = modify_to_dot;
-
 			}
 			else if(*(node_type+1) == 'u')
 			{
@@ -913,7 +1012,18 @@ static NODE_TYPE str2node(char *node_type, node *n)
 			}
 			break;
 		case 'a':
-			_t = array_type;
+			switch(*(node_type + 1))
+			{
+				case 'r':
+					_t = array_type;
+					break;
+				case 'd':
+					_t = addr_expr;
+					n->to_dot = addr_to_dot;
+					break;
+				default:
+					DEBUF("Unknown node type: %s", node_type);
+			}
 			break;
 		case 'b':
 			if(*(node_type+1) == 'o')
@@ -1142,7 +1252,7 @@ eval_file(char *name)
 {
 	node *n;// = (node *)calloc(1, sizeof(node)); 
 	// n will be the root of ast
-	// statement_list, in our example
+	// identifier node of main function, in our example
 	int target_id;
 	// in this case we only have one target
 	while(1)

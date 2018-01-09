@@ -152,5 +152,11 @@ static void cond_to_dot(node *n);
 static void sub_stmt_to_dot(node *n);
 
 static void pointer_plus_to_dot(node *n);
+
+static void nop_to_dot(node *n);
+
+static void string_cst_to_dot(node *n);
+
+static void addr_to_dot(node *n);
 #endif
 

@@ -13,7 +13,7 @@ int main(void)
 
   a = 22419;
   ++a;
-  b = a;
+  b = a*a;
   d = 55519 % a;
   f = 77719;
 
@@ -25,9 +25,11 @@ int main(void)
   }
 
   int *c;
+  a = 1;
   *c = 1;
-  *(c+1) = 2;
-//  char* c_a = "abc";
+  *(c+1+a) = 3;
+  char* c_a = "abc";
+  printf("test: %d fdfdsa\n", a);
 //  char c_b;
 
 

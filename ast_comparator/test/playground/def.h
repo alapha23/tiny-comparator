@@ -41,9 +41,11 @@
 #define eq_expr		0x11b
 #define indirect_ref	0x11c
 #define pointer_plus_expr	0x11d
+#define nop_expr	0x11d
 
 
 #define integer_cst	0x201
+#define string_cst	0x202
 
 #define statement_list	0x1000
 
