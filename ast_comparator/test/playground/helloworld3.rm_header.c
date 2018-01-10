@@ -6,9 +6,14 @@ int add(int n, int a)
 
 int main(void)
 {
-  int a;
+  char a;
   
-  int b;
+  int b[20] = {3};
+
+
+  a = (char)*(b+3);
+  
+
 /*  int d;
   int f;
 
@@ -19,7 +24,7 @@ int main(void)
   f = 77719;
 */
 
-  if( a == 0)
+/*  if( a == 0)
   { 
 	  a++;
 	  b++;
@@ -29,9 +34,10 @@ int main(void)
 	a++;
 	a--;
   }
+  */
 
 
-  int *c;
+/*  int *c;
   a = 100;
 
   do
@@ -51,7 +57,7 @@ int main(void)
 	  a--;
 	  a -= 3;
   }
-
+*/
 
   return 0;
 }

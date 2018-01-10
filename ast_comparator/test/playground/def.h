@@ -2,11 +2,9 @@
 
 #define tree_list	0x000
 
-#define return_expr     0x001
-#define decl_expr       0x002
-#define modify_expr     0x003
-#define result_decl	0x004
-#define bind_expr	0x005
+#define constructor	0x001
+
+
 // result_decl: result of all the decl in the scope
 
 #define var_decl	0x101
@@ -42,6 +40,16 @@
 #define indirect_ref	0x11c
 #define pointer_plus_expr	0x11d
 #define nop_expr	0x11d
+#define goto_expr	0x11e
+#define label_expr	0x11f
+#define convert_expr	0x120	// used in casting
+#define return_expr     0x121
+#define decl_expr       0x122
+#define modify_expr     0x123
+#define result_decl	0x124
+#define bind_expr	0x125
+
+// minus_expr
 
 
 #define integer_cst	0x201

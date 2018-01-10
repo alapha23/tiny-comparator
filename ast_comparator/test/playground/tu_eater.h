@@ -113,6 +113,15 @@ static node **parse_stmt(node **node_list);
 
 static void emit_header(char *scpe, int start_id);
 
+static int *read_op_inner(char *inner, int *num_op);
+// dirty help function
+//
+// int num = 0;
+// int *num_op = &num;
+// read_op_inner(inner, num_op);
+// or
+// read_op_inner(inner, &num);
+
 static void stmt_to_dot(node *);
 // it writes to the dot file
 
@@ -133,30 +142,48 @@ static void var_decl_to_dot(node *);
 
 static void integer_cst_to_dot(node *);
 
-static void binary_to_dot(node *n, char *type);
+// static void binary_to_dot(node *n, char *type);
 
-static void call_to_dot(node *n);
+static void call_to_dot(node *);
 
-static void plus_to_dot(node *n);
+static void plus_to_dot(node *);
 
-static void gt_to_dot(node *n);
+static void gt_to_dot(node *);
 
-static void ge_to_dot(node *n);
+static void ge_to_dot(node *);
 
-static void lt_to_dot(node *n);
+static void lt_to_dot(node *);
 
-static void le_to_dot(node *n);
+static void le_to_dot(node *);
 
-static void cond_to_dot(node *n);
+static void cond_to_dot(node *);
 
-static void sub_stmt_to_dot(node *n);
+static void sub_stmt_to_dot(node *);
 
-static void pointer_plus_to_dot(node *n);
+static void pointer_plus_to_dot(node *);
 
-static void nop_to_dot(node *n);
+static void nop_to_dot(node *);
 
-static void string_cst_to_dot(node *n);
+static void string_cst_to_dot(node *);
 
-static void addr_to_dot(node *n);
+static void addr_to_dot(node *);
+
+static void else_to_dot(node *);
+
+static void goto_to_dot(node *);
+
+static void label_to_dot(node *);
 #endif
+
+// TODO
+// -array == pointer
+// -else
+// -while
+// -cast
+// -do while
+// switch
+// struct*
+// union*
+// extern*
+// inline 
 
