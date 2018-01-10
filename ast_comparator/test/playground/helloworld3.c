@@ -8,12 +8,11 @@ int add(int n, int a)
 
 int main(void)
 {
-  char a;
+  int a;
   
   int b[20] = {3};
 
 
-  a = (char)*(b+3);
   
   switch(*b)
   {
@@ -29,30 +28,28 @@ int main(void)
   }
 
 
-/*  int d;
+  int d;
   int f;
 
   a = 22419;
   ++a;
-  b = a*a;
   d = 55519 % a;
   f = 77719;
-*/
 
-/*  if( a == 0)
+
+  if( a == 0)
   { 
 	  a++;
-	  b++;
   }else if(a == 1)
   {
   	a--;
 	a++;
 	a--;
   }
-  */
+  
 
 
-/*  int *c;
+  int *c;
   a = 100;
 
   do
@@ -72,7 +69,15 @@ int main(void)
 	  a--;
 	  a -= 3;
   }
-*/
+
+  while(1)
+  {
+	  int shit = 5;
+	  shit--;
+	  a--;
+	  a++;
+	  a--;
+  }
 
   return 0;
 }

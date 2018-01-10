@@ -162,6 +162,11 @@ static void sub_stmt_to_dot(node *n)
 			sscanf(inner+pos, "@%d ", &temp_id);
 			temp = search_pool(temp_id, pool, n_inpool);
 
+			if(temp->_ntype == decl_expr)
+			{
+				pos++;
+				continue;
+			}
 			*(node_list+nstmt) = temp;
 			// it is vital to connect them with prev ptr
 			temp->prev = *(node_list+nstmt-1);
@@ -176,7 +181,8 @@ static void sub_stmt_to_dot(node *n)
 	while(pos != nstmt)
 	{
 
-		(*(node_list+pos))->to_dot(*(node_list+pos));
+		if((*(node_list+pos))->_ntype!=decl_expr)
+			(*(node_list+pos))->to_dot(*(node_list+pos));
 		pos++;
 
 	}
@@ -253,6 +259,31 @@ static void nop_to_dot(node *n)
 	op = search_pool(op_id, pool, n_inpool);
 	op->prev = n->prev;
 	op->to_dot(op);
+}
+
+static void bind_to_dot(node *n)
+{
+	int body_id;
+	node *body;
+	sscanf(n->_inner, " %*s %*s %*s %*s body: @%d", &body_id);
+	body = search_pool(body_id, pool, n_inpool);
+	body->prev = n->prev;
+	body->to_dot(body);
+
+	int counter = strlen(body->_inner)-1;
+	int last_node_id;
+	node *last_node;
+	while(counter != 0)
+	{
+		if(*(body->_inner+counter) == '@')
+		{
+			sscanf(body->_inner+counter+1, "%d", &last_node_id);
+			break;
+		}
+		counter--;
+	}
+	last_node =  search_pool(last_node_id, pool, n_inpool);
+	n->_dot_id = last_node->_dot_id;
 }
 
 static void eq_to_dot(node *n)
@@ -1474,7 +1505,10 @@ static NODE_TYPE str2node(char *node_type, node *n)
 			if(*(node_type+1) == 'o')
 				_t = boolean_type;
 			else if(*(node_type+1) == 'i')
+			{
 				_t = bind_expr;
+				n->to_dot = bind_to_dot;
+			}	
 			break;
 
 		default:
@@ -1680,10 +1714,34 @@ static void eval_statement(node *n, char *scope)
 	// n contains name of the scope
 	node **node_list;
 	node *temp;
-	do
+
+	int ident_id = n->_id;
+	char value[64];
+	sprintf(value, "name: @%d", ident_id);
+	temp = *pool;
+	while(1)
 	{
-		n = get_next(n, pool, n_inpool);
-	}while(n->_ntype != statement_list);
+		temp = get_next(temp, pool, n_inpool);
+		if(temp->_ntype == function_decl)
+		{
+			if(check_inner(temp, value))
+			{
+				break;
+			}
+		}
+	};
+	char *body = strstr(temp->_inner, "body:");
+	int body_id;
+	sscanf(body, "body: @%d", &body_id);
+	temp = search_pool(body_id, pool, n_inpool);
+	int bind_id;
+	sscanf(temp->_inner, " %*s %*s %*s %*s body: @%d", &bind_id);
+	n = search_pool(bind_id, pool, n_inpool);
+	if(n->_ntype != statement_list)
+	{
+		DEBUF("node type %d unexpected", n->_ntype);
+		exit(0);
+	}
 
 	int num_op = 0;
 	int op[NUM_EXPR];

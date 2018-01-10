@@ -188,6 +188,8 @@ static void case_label_to_dot(node *);
 static void parm_decl_to_dot(node *);
 
 static void truth_andif_to_dot(node *);
+
+static void bind_to_dot(node *);
 #endif
 
 // TODO
