@@ -18,10 +18,54 @@ digraph AST {
   node4->node5;
   node2->node4;
   node1 -> node2 [style=dotted]
-  node9 [label="return",shape=ellipse];
-  node10 [label="modify",shape=ellipse];
-  node11 [label="0",shape=ellipse];
+  node9 [label="switch",shape=ellipse];
+  node10 [label="*",shape=ellipse];
+  node11 [label="b",shape=ellipse];
   node10->node11;
-  node9 -> node10 [style=dotted]
+  node9->node10;
+  node12 [label="case",shape=ellipse];
+  node13 [label="1",shape=ellipse];
+  node12->node13;
+  node9 -> node12 [style=dotted]
+  node14 [label="goto label1884",shape=ellipse];
+  node12->node14;
+  node15 [label="case",shape=ellipse];
+  node16 [label="2",shape=ellipse];
+  node15->node16;
+  node14 -> node15 [style=dotted]
+  node17 [label="post_inc",shape=ellipse];
+  node18 [label="a",shape=ellipse];
+  node17->node18;
+  node19 [label="1",shape=ellipse];
+  node17->node19;
+  node15 -> node17 [style=dotted]
+  node20 [label="goto label1884",shape=ellipse];
+  node17->node20;
+  node21 [label="case",shape=ellipse];
+  node22 [label="3",shape=ellipse];
+  node21->node22;
+  node20 -> node21 [style=dotted]
+  node23 [label="post_dec",shape=ellipse];
+  node24 [label="a",shape=ellipse];
+  node23->node24;
+  node25 [label="1",shape=ellipse];
+  node23->node25;
+  node21 -> node23 [style=dotted]
+  node26 [label="default:",shape=ellipse];
+  node23 -> node26 [style=dotted]
+  node27 [label="post_inc",shape=ellipse];
+  node28 [label="a",shape=ellipse];
+  node27->node28;
+  node29 [label="1",shape=ellipse];
+  node27->node29;
+  node26 -> node27 [style=dotted]
   node2 -> node9 [style=dotted]
+  node30 [label="label1884:",shape=ellipse];
+  node9 -> node30 [style=dotted]
+  node31 [label="return",shape=ellipse];
+  node32 [label="modify",shape=ellipse];
+  node33 [label="0",shape=ellipse];
+  node32->node33;
+  node31 -> node32 [style=dotted]
+  node30 -> node31 [style=dotted]
 } 

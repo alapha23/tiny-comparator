@@ -13,6 +13,19 @@ int main(void)
 
   a = (char)*(b+3);
   
+  switch(*b)
+  {
+	  case 1:
+		  break;
+	  case 2:
+		  a++;
+		  break;
+	  case 3:
+		  a--;
+	  default:
+		  a++; 
+  }
+
 
 /*  int d;
   int f;

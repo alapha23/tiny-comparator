@@ -159,8 +159,10 @@ static void sub_stmt_to_dot(node *n)
 	pos = 1;	
 	while(pos != nstmt)
 	{
+
 		(*(node_list+pos))->to_dot(*(node_list+pos));
 		pos++;
+
 	}
 }
 
@@ -695,7 +697,6 @@ static void call_to_dot(node *n)
 			*(argu + num_arg) = temp; 
 			num_arg--;
 
-//			DEBUF("type:%d", temp->_id);
 			temp->prev = n;
 			temp->to_dot(temp);
 		}while(num_arg+1);
@@ -984,6 +985,55 @@ static void convert_to_dot(node *n)
 	dot_link(name2->prev->_dot_id, name2->_dot_id);
 }
 
+static void switch_to_dot(node *n)
+{
+	// @xxx   switch_expr      type: @3       cond: @1882    body: @1883
+	// body should be a statement_list
+	int cond_id, body_id;
+	node *cond;
+	node *body;
+
+	sscanf(n->_inner, " type: %*s cond: @%d body: @%d", &cond_id, &body_id);
+	cond = search_pool(cond_id, pool, n_inpool);
+	body = search_pool(body_id, pool, n_inpool);
+
+	n->_dot_id = dot_shape(n->_id, "switch");
+
+	cond->prev = n;
+	cond->to_dot(cond);
+
+
+	body->prev = n;
+
+	body->to_dot(body);
+	
+	dot_link_dt(n->prev->_dot_id, n->_dot_id);
+
+}
+
+static void case_label_to_dot(node *n)
+{
+	int low_id, name_id;
+	node *low;
+	//node *name;
+
+	if(strlen(n->_inner) < strlen("type: @151     name: @1921    low : @1893"))
+	{
+
+		n->_dot_id = dot_shape(n->_id, "default:");
+	}
+	else{
+		sscanf(n->_inner, " %*s %*s name: @%d low : @%d ", &name_id, &low_id);
+		low = search_pool(low_id, pool, n_inpool);
+	
+		n->_dot_id = dot_shape(n->_id, "case");
+	
+	low->prev = n;
+	low->to_dot(low);
+	}
+	dot_link_dt(n->prev->_dot_id, n->_dot_id);
+}
+
 static void pointer_plus_to_dot(node *n)
 {
 	int id1, id2;
@@ -1116,6 +1166,10 @@ static NODE_TYPE str2node(char *node_type, node *n)
 				case 'r':
 					_t = string_cst;
 					n->to_dot = string_cst_to_dot;
+					break;
+				case 'i':
+					_t = switch_expr;
+					n->to_dot = switch_to_dot;
 					break;
 				default:
 					DEBUF("Unknown node type: %s", node_type);
@@ -1276,6 +1330,10 @@ static NODE_TYPE str2node(char *node_type, node *n)
 					break;
 				case 's':
 					_t = constructor;
+					break;
+				case 'e':
+					_t = case_label_expr;
+					n->to_dot = case_label_to_dot;
 					break;
 				default:
 					DEBUF("Unknown node type: %s", node_type);

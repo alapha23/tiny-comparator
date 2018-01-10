@@ -173,6 +173,10 @@ static void else_to_dot(node *);
 static void goto_to_dot(node *);
 
 static void label_to_dot(node *);
+
+static void switch_to_dot(node *);
+
+static void case_label_to_dot(node *);
 #endif
 
 // TODO
@@ -181,7 +185,7 @@ static void label_to_dot(node *);
 // -while
 // -cast
 // -do while
-// switch
+// -switch
 // struct*
 // union*
 // extern*

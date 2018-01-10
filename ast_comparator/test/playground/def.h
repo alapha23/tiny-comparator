@@ -48,8 +48,9 @@
 #define modify_expr     0x123
 #define result_decl	0x124
 #define bind_expr	0x125
-
-// minus_expr
+#define switch_expr	0x126
+#define case_label_expr	0x127
+#define minus_expr	0x128
 
 
 #define integer_cst	0x201
