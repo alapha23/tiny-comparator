@@ -5,17 +5,27 @@ int add(int n, int a)
 	return n-1-a;
 }
 
+void g(void);
+void h(void);
 
 int main(void)
 {
-  char a;
-  
-  int b[20] = {3};
+  int i, j;
+  //a = (char)*(b+3);
 
+  int a = i == 2;
+  int b = j == 3;
+  if (a || b)
+    g();
+  else
+    h();
 
-  a = (char)*(b+3);
-  
-  switch(*b)
+  if ((i == 2) && (j == 3))
+    g();
+  else
+    h();
+
+  /*switch(*b)
   {
 	  case 1:
 		  break;
@@ -27,7 +37,7 @@ int main(void)
 	  default:
 		  a++; 
   }
-
+*/
 
 /*  int d;
   int f;

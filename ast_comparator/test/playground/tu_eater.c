@@ -53,6 +53,22 @@ eval_node(void)
 	       return NULL;	
 	// set type, to_do, _inner and id 
 	eval_ntype(line, n);
+	/*if(n->_id >= 12549)
+	{
+		DEBUG(debug);
+		while(((next = peek()) != EOF)&&(next != '@'))
+		{
+			memset(line, 0, 72);
+			fgets(line, 72, fp);
+			strcat(n->_inner, line);
+		}
+		ADD2POOL(n, pool, n_inpool);
+		if(peek() == EOF)
+			return NULL;
+	
+		DEBUF("%d", n->_id);
+		return n;	
+	}*/
 
 	while(((next = peek()) != EOF)&&(next != '@'))
 	// next line belongs to this node unless EOF or @
@@ -72,7 +88,7 @@ static int *read_op_inner(char *inner, int *num_op)
 {
 	char ch = ':';
 	// we suppose the form is type: @x op 0: @xx op 1: @xx
-	int *op = calloc(3, sizeof(int));
+	int *op = calloc(NUM_EXPR, sizeof(int));
 
 	assert(NULL != num_op);
 	// the first one must be a type
@@ -502,6 +518,7 @@ static void cond_to_dot(node *n)
 		else
 		{
 			// if(){}else{}
+			// if(){}else if{}
 
  			n->_dot_id = dot_shape(n->_id, "if");
 			op1->prev = n;
@@ -510,7 +527,8 @@ static void cond_to_dot(node *n)
 			op1->to_dot(op1);
 			// op1 is the comparsion
 			op2->to_dot(op2);
-			op3->to_dot = else_to_dot;
+			if(op3->_ntype == cond_expr)
+				op3->to_dot = else_to_dot;
 			op3->to_dot(op3);
 
 			// connect with the previous node
@@ -970,6 +988,55 @@ static void modify_to_dot(node *n)
 	dot_link_dt(n->prev->_dot_id, n->_dot_id);
 }
 
+static void truth_orif_to_dot(node *n)
+{
+	int id1, id2;
+	sscanf(n->_inner, "%*s @%*d op 0: @%d op 1: @%d ", &id1, &id2);
+
+	node *op1 = search_pool(id1, pool, n_inpool);
+	node *op2 = search_pool(id2, pool, n_inpool);
+
+	assert(op1 != NULL);
+	assert(op2 != NULL);
+	int t_dot_id = dot_shape(n->_id, "||");
+	n->_dot_id = t_dot_id;
+	//
+
+	op1->prev = n;
+	op2->prev = n;
+	op1->to_dot(op1);
+	// op1 is a vardecl, it should be emiting its name
+	op2->to_dot(op2);
+
+	// connect with the previous node
+	dot_link_dt(n->prev->_dot_id, n->_dot_id);
+}
+
+
+static void truth_andif_to_dot(node *n)
+{
+	int id1, id2;
+	sscanf(n->_inner, "%*s @%*d op 0: @%d op 1: @%d ", &id1, &id2);
+
+	node *op1 = search_pool(id1, pool, n_inpool);
+	node *op2 = search_pool(id2, pool, n_inpool);
+
+	assert(op1 != NULL);
+	assert(op2 != NULL);
+	int t_dot_id = dot_shape(n->_id, "&&");
+	n->_dot_id = t_dot_id;
+	//
+
+	op1->prev = n;
+	op2->prev = n;
+	op1->to_dot(op1);
+	// op1 is a vardecl, it should be emiting its name
+	op2->to_dot(op2);
+
+	// connect with the previous node
+	dot_link_dt(n->prev->_dot_id, n->_dot_id);
+}
+
 static void convert_to_dot(node *n)
 {
 	int op_id, type_id, name1_id, name2_id;
@@ -1128,9 +1195,13 @@ static NODE_TYPE str2node(char *node_type, node *n)
 	NODE_TYPE _t;
 	switch(*node_type)
 	{
+		case 'u':
+			_t = union_type;
+			break;
 		case 'g':
 			switch(*(node_type+1))
 			{
+
 				case 't':
 					_t = gt_expr;
 					n->to_dot = gt_to_dot;
@@ -1226,8 +1297,21 @@ static NODE_TYPE str2node(char *node_type, node *n)
 			}
 			break;
 		case 'e':
-			_t = eq_expr;
-			n->to_dot = eq_to_dot;
+			switch(*(node_type+1))
+			{
+				case 'q':
+					_t = eq_expr;
+					n->to_dot = eq_to_dot;
+					break;
+				case 'n':
+					_t = enumeral_type;
+					break;
+				case 'r':
+					_t = error_mark;
+				default:
+					DEBUF("Unknown node type: %s", node_type);
+					exit(0);
+			}
 			break;
 		case 'p':
 			switch(*(node_type + 4))
@@ -1326,6 +1410,17 @@ static NODE_TYPE str2node(char *node_type, node *n)
 					case 'i':
 						_t = tree_list;
 						break;
+					case 'a':
+						_t = truth_andif_expr;
+						n->to_dot = truth_andif_to_dot;
+						break;
+					case 'o':
+						_t = truth_orif_expr;
+						n->to_dot = truth_orif_to_dot;
+						break;
+					default:
+						DEBUF("Unknown node type %s", node_type);
+						exit(0);
 				}
 			}
 			else if(*(node_type+9) == 'y')
@@ -1459,7 +1554,7 @@ static node **parse_stmt(node **node_list)
 {
 	// first parse the statement
 	int num_node;
-	int expr[NUM_EXPR];	// we assume there is NUM_EXPR=1024 expr
+	int expr[NUM_EXPR];	// we assume there is NUM_EXPR=64 expr
 	int counter = 0;
 	node *statement = *node_list;	// first stmt in the list is the statement_list
 	char *inner = statement->_inner;
@@ -1478,19 +1573,28 @@ static node **parse_stmt(node **node_list)
 		counter++;	
 	}
 
-	node **expr_list = (node **)calloc(num_node, sizeof(node));
+	node **expr_list = (node **)calloc(num_node+2, sizeof(node*));
 	// find the node from the node_list and add to the expr_list
+
+/*	*expr_list = search_pool(expr[0], pool, n_inpool);
+	for(int i=1; i<num_node+1;i++)
+	{
+	*(expr_list+i) = search_pool(expr[i], pool, n_inpool);
+	(*(expr_list+i))->prev = *(expr_list+i-1);
+	}*/
 	counter = 1;
 	int nelms = 1;
 	node *temp = *(node_list+counter);
+
+	DEBUF("%s", (**node_list)._inner);
 	do
 	{
+	//	DEBUG(debug);
 		for(int i=0; i<= num_node; i++)
 		{
 			if(temp->_id == expr[i])
 			{
 				// Add local decl to local symboltable
-				// TODO
 				if(temp->_ntype == decl_expr)
 					;
 				else
@@ -1575,7 +1679,54 @@ static void eval_statement(node *n, char *scope)
 	// from this node we found our love
 	// n contains name of the scope
 	node **node_list;
+	node *temp;
+	do
+	{
+		n = get_next(n, pool, n_inpool);
+	}while(n->_ntype != statement_list);
 
+	int num_op = 0;
+	int op[NUM_EXPR];
+	int counter=0;
+	char *inner = n->_inner;
+	while(1)
+	{
+//	op = read_op_inner(n->_inner, &num_op);	
+		if(*(inner+counter) == '\0')
+			break;
+		if(*(inner+counter) == '@')
+		{
+			sscanf(inner+counter-6, "%d ", &num_op);
+			sscanf(inner+counter+1, "%d ", &op[num_op]);		
+		}
+		counter++;
+	}
+	num_op++;
+	
+
+	node_list = calloc(num_op+1, sizeof(node*));
+	*node_list = n;
+	n->_dot_id = 1;
+	counter = 1;
+
+	for(int i=1; i <= num_op; i++)
+	{
+		temp = search_pool((*(op+i-1)), pool, n_inpool);
+		if(temp->_ntype == decl_expr)
+			continue;
+		*(node_list+counter) = temp;
+		(*(node_list+counter))->prev = (*(node_list+counter-1));
+		counter++;
+	}
+
+	for(int i=1; i < counter ; i++)
+	{
+		temp = *(node_list+i);
+		(*(node_list+i))->to_dot(*(node_list+i));
+	}
+
+	free(node_list);
+	return ;
 	node_list = read_statement(n);
 	// read up coming statements utill return
 	dump_list(node_list, scope, n);
@@ -1603,13 +1754,12 @@ eval_file(char *name)
 	node *n;// = (node *)calloc(1, sizeof(node)); 
 	// n will be the root of ast
 	// identifier node of main function, in our example
-	int target_id = -1;
+	int target_id = INT_MAX;
 	// in this case we only have one target
 	assert(NULL != name);
 	char *scp_name = calloc(16+strlen(name), sizeof(char));
 	sprintf(scp_name, "strg: %s", name);
 
-	DEBUF("%s", scp_name);
 	while(1)
 	{
 		n = eval_node();
@@ -1621,20 +1771,20 @@ eval_file(char *name)
 		if(check_inner(n, scp_name))
 		{
 			target_id = n->_id;
-		//	free(scp_name);
 		}
-		//memset(n, 0, sizeof(node));
 	}
-	if(target_id == -1)
+	if(target_id == INT_MAX)
 	{
 		DEBUF("Scope %s not found.", name);
 		exit(0);
 	}
+
 	node *target_n = search_pool(target_id, pool, n_inpool);
 	// eval a scope with name "main"
 	assert(NULL != target_n);
 	emit_header(name, target_n->_id);
-	eval_statement(target_n, "main");
+	eval_statement(target_n, name);
+
 
 
         if( fclose(fp) == EOF)

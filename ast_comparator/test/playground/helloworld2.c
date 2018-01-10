@@ -9,7 +9,7 @@ int main(void)
   int a;
   
   int b;
-/*  int d;
+  int d;
   int f;
 
   a = 22419;
@@ -17,7 +17,7 @@ int main(void)
   b = a*a;
   d = 55519 % a;
   f = 77719;
-*/
+
 
   if( a == 0)
   { 

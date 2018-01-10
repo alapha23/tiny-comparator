@@ -63,7 +63,7 @@ void dump_file(char *name)
 //	printf("File size=%d\n", size);
 
 	char *buffer = (char *)calloc(1, size);
-	char line[96];
+	char line[256];
 	
 	while(1)
 	{

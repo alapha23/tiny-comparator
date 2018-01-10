@@ -12,7 +12,6 @@
 #define record_type	0x008
 #define function_type 	0x009
 #define identifier_node	0x00a
-#define enumeral_type	0x00b
 
 
 // result_decl: result of all the decl in the scope
@@ -55,13 +54,10 @@
 #define case_label_expr	0x127
 #define minus_expr	0x128
 #define parm_decl	0x129
-#define truth_andif_expr	0x12a
-#define truth_orif_expr		0x12b
 
 
 #define integer_cst	0x201
 #define string_cst	0x202
-#define error_mark	0x203
 
 #define statement_list	0x1000
 

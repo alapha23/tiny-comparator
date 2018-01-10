@@ -5,7 +5,6 @@
 #include <string.h>
 #include <stdlib.h>
 #include <assert.h>
-#include <limits.h>
 #include "def.h"
 
 #define DEBUG(a) fprintf(stderr, #a"\n"); \
@@ -29,12 +28,6 @@
 	    (*(pool+num)); \
 	    })
 #define search_pool(id, pool, n_inpool) ({ \
-		int __i;\
-		for(__i=0; __i < n_inpool; __i++) \
-		{if(id == (get_by_num(__i, pool, n)->_id)) break;} \
-		get_by_num(__i, pool, n); \
-		})
-/*#define search_pool(id, pool, n_inpool) ({ \
 		int i, check;	\
 	       	for(i=id-1; i < n_inpool; i++) \
 		{if(id == (get_by_num(i, pool, n)->_id)) {check=1;break;}} \
@@ -43,12 +36,12 @@
 		else for(i=0; i < n_inpool; i++) \
 		{if(id == (get_by_num(i, pool, n)->_id)) break;} \
 		get_by_num(i, pool, n); \
-		})*/
+		})
 #define get_next(n, pool, n_inpool) (get_by_num(n->_id, pool, n_inpool))
 
-#define INNER_SIZE	1024
-#define NUM_EXPR	64
-#define NUM_NODE	64
+#define INNER_SIZE	512
+#define NUM_EXPR	1024
+#define NUM_NODE	128
 // Assume number of stmt within a stmt list is within 1024
 // TODO
 // Only check 128 nodes in the statement list
@@ -186,8 +179,6 @@ static void switch_to_dot(node *);
 static void case_label_to_dot(node *);
 
 static void parm_decl_to_dot(node *);
-
-static void truth_andif_to_dot(node *);
 #endif
 
 // TODO
