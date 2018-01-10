@@ -177,6 +177,8 @@ static void label_to_dot(node *);
 static void switch_to_dot(node *);
 
 static void case_label_to_dot(node *);
+
+static void parm_decl_to_dot(node *);
 #endif
 
 // TODO

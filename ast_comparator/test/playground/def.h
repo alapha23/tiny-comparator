@@ -51,6 +51,7 @@
 #define switch_expr	0x126
 #define case_label_expr	0x127
 #define minus_expr	0x128
+#define parm_decl	0x129
 
 
 #define integer_cst	0x201

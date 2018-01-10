@@ -9,7 +9,7 @@ int main(int argc, char **argv)
 	filesize = get_filesize();
 	
 	pool = (node **)calloc(filesize/70, sizeof(node*));
-	eval_file(argv[1]);
+	eval_file(argv[2]);
 	free(pool);
 }
 
@@ -820,6 +820,20 @@ static void binary_to_dot(node *n, char*type)
 	dot_link_dt(n->prev->_dot_id, n->_dot_id);
 }
 
+static void parm_decl_to_dot(node *n)
+{
+	int name_i;
+	node *name_n;
+	char name_c[32];
+	sscanf(n->_inner, " name: @%d ", &name_i);
+	name_n = search_pool(name_i, pool, n_inpool);
+	
+	sscanf(name_n->_inner, " strg: %s ", name_c);
+
+	n->_dot_id = dot_shape(n->_id, name_c);
+	dot_link(n->prev->_dot_id, n->_dot_id);
+}
+
 static void var_decl_to_dot(node *n)
 {
 	int name_i;
@@ -1246,8 +1260,15 @@ static NODE_TYPE str2node(char *node_type, node *n)
 					n->to_dot = post_dec_to_dot;
 					break;
 				case '_':
-					_t = plus_expr;
-					n->to_dot = plus_to_dot;
+					if(*(node_type + 5) == 'e')
+					{
+						_t = plus_expr;
+						n->to_dot = plus_to_dot;
+					}else if(*(node_type + 5) == 'd')
+					{
+						_t = parm_decl;
+						n->to_dot = parm_decl_to_dot;
+					}
 					break;
 				default:
 					fprintf(stderr, "Unknown node type:%s\n", node_type);
@@ -1582,8 +1603,13 @@ eval_file(char *name)
 	node *n;// = (node *)calloc(1, sizeof(node)); 
 	// n will be the root of ast
 	// identifier node of main function, in our example
-	int target_id;
+	int target_id = -1;
 	// in this case we only have one target
+	assert(NULL != name);
+	char *scp_name = calloc(16+strlen(name), sizeof(char));
+	sprintf(scp_name, "strg: %s", name);
+
+	DEBUF("%s", scp_name);
 	while(1)
 	{
 		n = eval_node();
@@ -1592,17 +1618,22 @@ eval_file(char *name)
 		// EOF
 			break;
 
-		if(check_inner(n, "strg: main"))
+		if(check_inner(n, scp_name))
 		{
 			target_id = n->_id;
+		//	free(scp_name);
 		}
 		//memset(n, 0, sizeof(node));
 	}
-
+	if(target_id == -1)
+	{
+		DEBUF("Scope %s not found.", name);
+		exit(0);
+	}
 	node *target_n = search_pool(target_id, pool, n_inpool);
 	// eval a scope with name "main"
 	assert(NULL != target_n);
-	emit_header("main", target_n->_id);
+	emit_header(name, target_n->_id);
 	eval_statement(target_n, "main");
 
 

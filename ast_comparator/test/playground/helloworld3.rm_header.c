@@ -1,5 +1,7 @@
 int add(int n, int a)
 {
+	n++;
+	a++;
 	return n-1-a;
 }
 
