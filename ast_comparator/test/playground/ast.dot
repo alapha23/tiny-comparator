@@ -29,7 +29,7 @@ digraph AST {
   node14 [label="cache_on",shape=ellipse];
   node13->node14;
   node15 [label="call strcmp",shape=ellipse];
-  node16 [label="off      Ë94”?Ú´LD{oÿ",shape=ellipse];
+  node16 [label="off      ",shape=ellipse];
   node15->node16;
   node17 [label="*",shape=ellipse];
   node18 [label="poiner_plus",shape=ellipse];
@@ -108,7 +108,7 @@ digraph AST {
   node48 -> node50 [style=dotted]
   node53 [label="call printf",shape=ellipse];
   node54 [label="cache is off.
-  ÿÿÿÿÿÿÿÿ",shape=ellipse];
+  ",shape=ellipse];
   node53->node54;
   node44 -> node53 [style=dotted]
   node41 -> node44 [style=dotted]

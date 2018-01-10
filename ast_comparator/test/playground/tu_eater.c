@@ -229,6 +229,7 @@ static void string_cst_to_dot(node *n)
 	sscanf(size_n->_inner, " type: @%*d %*s %d ", &size);
 
 	char value[size];
+	memset(value, 0, size);
 	int pos = 0;
 	char *inner = n->_inner + 12;
 	while(pos != strlen(inner))
