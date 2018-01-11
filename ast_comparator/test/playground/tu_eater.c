@@ -360,7 +360,7 @@ static void addr_to_dot(node *n)
 	sscanf(ptr_type->_inner, " %*s %*s %*s %*d ptd : @%d", &type_id);
 	type = search_pool(type_id, pool, n_inpool);
 
-	if(type->_ntype == array_type)
+	if(type->_ntype == array_type )
 	{
 		// print if it is needed
 		node *op;
@@ -373,7 +373,13 @@ static void addr_to_dot(node *n)
 	else
 	{
 		n->_dot_id = dot_shape(n->_id, "&");
-		dot_link(n->prev->_dot_id, n->_dot_id);	
+		dot_link(n->prev->_dot_id, n->_dot_id);
+		node *op;
+		int op_id;
+		sscanf(n->_inner, " type: @%*d op 0: @%d ", &op_id);
+		op = search_pool(op_id, pool, n_inpool);
+		op->prev = n;
+		op->to_dot(op);
 	}
 }
 
