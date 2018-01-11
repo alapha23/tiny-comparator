@@ -1780,8 +1780,9 @@ check_inner(node *n, char *name)
 {
 	assert(n != NULL);
 	assert(name != NULL);
-
-	if(NULL == strstr(n->_inner, name))
+	char value[4+strlen(name)];
+	sprintf(value, "%s ", name);
+	if(NULL == strstr(n->_inner, value))
 	{
 		return 0;
 	}
