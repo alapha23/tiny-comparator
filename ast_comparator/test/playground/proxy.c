@@ -1,386 +1,298 @@
-/* AnrewID:ruiz1
- * Name:Rui Zhang
+/*
+ * proxy.c - CS:APP Web proxy
  *
- * Content:
- * 1. Implement my own thread-safe getbyhostname function getbyhostname_ts
- * 2. Modify the writen,readn,readlineb,readnb to recognize EPIPE and ECONNRESET *    errors
- * 3. Modify the error functions not to terminate
- * 4. Implement the concurrent proxy program
- * 5. Implement the cache
- */
+ * TEAM MEMBERS:
+ *     Andrew Carnegie, ac00@cs.cmu.edu 
+ *     Harry Q. Bovik, bovik@cs.cmu.edu
+ * 
+ * IMPORTANT: Give a high level description of your code here. You
+ * must also provide a header comment at the beginning of each
+ * function that describes what that function does.
+ */ 
 
-#include <stdio.h>
-
-#include "cache.h"
 #include "csapp.h"
+#include "cache.h"
+#include "tswrapper.h"
+#include "assert.h"
+ 
+/*
+ * Consts
+ */
+const char* user_agent = "Mozilla/5.0 (X11; Linux x86_64; rv:10.0.3)Gecko/20120305 Firefox/10.0.3";
+const char* accept_str = "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8";
+const char* accept_encoding = "gzip, deflate";
 
-#define MAX_CACHE_SIZE 1049000
-#define MAX_OBJECT_SIZE 102400
+extern sem_t *mutexp;
+extern sem_t *w;
+extern int ca_readcnt;
 
-#define MAX_PORT_NUMBER 65536
+#define MAX_HDR_LEN 1024
+/*
+ * Function prototypes
+ */
+int parse_uri(char *uri, char *target_addr, char *path, int  *port);
+void format_log_entry(char *logstring, struct sockaddr_in *sockaddr, char *uri, int size);
+int serve(int fd, char *cache_buf, char *request, int *cnt);
+void clienterror(int fd, char *msg);
+void build_requesthdrs(rio_t *rp, char *hdrstr, char *hostname);
+void *thread(void *argvp);
 
-static const char *user_agent = "User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:10.0.3) Gecko/20120305 Firefox/10.0.3\r\n";
-static const char *accept_str = "Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8\r\n";
-static const char *accept_encoding = "Accept-Encoding: gzip, deflate\r\n";
+void server_log(struct sockaddr_in *sockaddr) {
+    char msg[MAXLINE];
+    
+    format_log_entry(msg, sockaddr, NULL, 0);
 
-/* headers that don't change */
-static const char *connection = "Connection: close\r\n";
-static const char *proxy_connection = "Proxy-Connection: close\r\n";
-static const char *init_version = "HTTP/1.0\r\n";
-static const char *dns_fail_str = "HTTP/1.0 400 \
-Bad Request\r\nServer: RUI_Proxy\r\nContent-Length: 137\r\nConnection: \
-close\r\nContent-Type: text/html\r\n\r\n<html><head></head><body><p>\
-This server coulnd't be connected, because DNS lookup failed.</p><p>\
-Powered by Rui Zhang.</p></body></html>";
-static const char *connect_fail_str = "HTTP/1.0 400 \
-Bad Request\r\nServer: RUI_Proxy\r\nContent-Length: 108\r\nConnection: \
-close\r\nContent-Type: text/html\r\n\r\n<html><head></head><body><p>\
-This server coulnd't be connected.</p><p>\
-Powered by Rui Zhang.</p></body></html>";
+    printf("%s\n", msg);
+}
 
-
-c_list *cache_list;
-
-/* function prototypes */
-void usage();
-void proxy_process(int *arg);
-int read_request(char *str, int client_fd, char *host, char *port, char *cache_index, char *resource);
-int forward_to_server(char *host, char *port, int *server_fd, char *request_str);
-int read_and_forward_response(int server_fd, int client_fd, char *cache_index, char *content);
-int forward_content_to_client(int client_fd, char *content, unsigned int len);
-
-int append(char *content, char *str, unsigned int add_size, unsigned int *prev_size);
-int parse_request(char *str, char *method, char *protocol, char *host_port, char *resource, char *version);
-void get_host_and_port(char *host_port, char *host, char *port);
-void close_fd(int *client_fd, int *server_fd);
-
-int main(int argc, char *argv [])
+void sigint_handler() 
 {
-	int cache_on = 1;
-	int port;
-	struct sockaddr_in clientaddr;
-	int clientlen = sizeof(clientaddr);
-	int listenfd;
-	
-	if (argc < 2)
-		usage(argv[0]);
-		
-	if (argc >= 3)
-		cache_on = (strcmp(argv[2],"off"));
-	
-	port = atoi(argv[1]);
-	if (port <= 0 || port >= MAX_PORT_NUMBER){
-		printf("invalid port number: %d. Please input a port number from 1 to 65535.\n", port);
-		exit(1);
-	}
-	
-	cache_list = NULL;
-	
-	if (cache_on){
-		printf("cache is on.\n");
-		cache_list = init_cache_list();
-	}
-	else
-		printf("cache is off.\n");
-	
-	// ignore SIGPIPE
-    	Signal(SIGPIPE, SIG_IGN);
-	
-	listenfd = Open_listenfd(port);
-	while (1){
-		pthread_t tid;
-		int *connfdp = Malloc(sizeof(int));
-		*connfdp = -1;
-		*connfdp = Accept(listenfd, (SA *) &clientaddr, (socklen_t *)&clientlen);
-		Pthread_create(&tid, NULL, (void *)proxy_process, (void *)connfdp);
-	}
-	
-    //printf("%s%s%s", user_agent, accept, accept_encoding);
-	delete_list(cache_list);
-	return 0;
+    cache_deinit();
+
+    tswrapper_deinit();
+}
+/* 
+ * main - Main routine for the proxy program 
+ */
+int main(int argc, char **argv)
+{
+    int port, listenfd, *connfdp;
+    unsigned clientlen;
+    struct sockaddr_in clientaddr;
+    pthread_t tid;
+    /* Ignore SIGPIPE */
+    Signal(SIGPIPE, SIG_IGN);
+    Signal(SIGINT, sigint_handler);
+
+    /* Check arguments */
+    if (argc != 2) {
+	   fprintf(stderr, "Usage: %s <port number>\n", argv[0]);
+	   exit(0);
+    }
+
+    port = atoi(argv[1]);
+
+    listenfd = Open_listenfd(port);
+
+    cache_init();
+    tswrapper_init();
+    while (1) {
+        clientlen = sizeof(clientaddr);
+        connfdp = Malloc(sizeof(int));
+        *connfdp = Accept(listenfd, (SA *)&clientaddr, &clientlen);
+        Pthread_create(&tid, NULL, thread, (void *)connfdp);
+    }
+
+    exit(0);
 }
 
-void usage(char *str){
-	printf("usage: %s <port> [cache policy]\n", str);
-	printf("cache policy: 'off' to turn off caching\n");
-	printf("cache policy: 'on' or other string to turn on caching\n");
-	printf("cache policy: the default policy is to turn on caching\n");
-	exit(1);
+/*
+ * serve - the proxy server serves the request after connection 
+ *         with the cliend built.
+ */
+int serve(int fd, char *cache_buf, char *request, int *cnt) {
+    char buf[MAXLINE], method[MAXLINE], uri[MAXLINE], version[MAXLINE];
+    char hdrstr[MAX_HDR_LEN] = {}, hostname[MAXLINE], pathname[MAXLINE];
+    int clientfd, port, readcnt;
+    CE *entry;
+    rio_t rio;
+  
+    /* Read request line and headers */
+    Rio_readinitb(&rio, fd);
+    Rio_readlineb(&rio, buf, MAXLINE);                 
+
+    strcpy(request, buf);
+    if ((entry = is_in_cache(request)) != NULL) {
+        sem_wait(mutexp);
+        ca_readcnt++;
+        if (ca_readcnt == 1) 
+            sem_wait(w);
+        sem_post(mutexp);
+
+        Rio_writen(fd, entry->content, entry->content_size);
+
+        sem_wait(mutexp);
+        ca_readcnt--;
+        if (ca_readcnt == 0)
+            sem_post(w);
+        sem_post(mutexp);
+        update_cache(entry);
+        return 0;
+    }
+
+
+    sscanf(buf, "%s %s %s", method, uri, version);       
+    if (strcasecmp(method, "GET")) {                     
+        clienterror(fd, "Sorry, prxoy server servers only GET method now.");
+        return 0;
+    }         
+    parse_uri(uri, hostname, pathname, &port);
+    // printf("Uri parsed result: hostname: %s, pathname: %s, port: %d\n", hostname, pathname, port);
+
+    build_requesthdrs(&rio, hdrstr, hostname);
+
+    /* Following will send request to the `real' server, ignore any error */
+    if ((clientfd = Open_clientfd(hostname, port)) < 0) {
+        return 0;
+    }
+    sprintf(buf, "%s /%s HTTP/1.0\r\n", method, pathname);
+
+    Rio_writen(clientfd, buf, strlen(buf));
+    Rio_writen(clientfd, hdrstr, strlen(hdrstr));
+
+    *cnt = 0;
+    int cached = 1;
+    while ((readcnt = Rio_readn(clientfd, buf, MAXLINE)) > 0) {
+        if (*cnt + readcnt <= MAX_OBJECT_SIZE) {
+            memcpy(cache_buf + *cnt, buf, readcnt);
+            *cnt += readcnt;
+        } else {
+            cached = 0;
+        }
+        Rio_writen(fd, buf, readcnt);
+    }
+    
+    Close(clientfd);
+    
+    return cached;
 }
 
-void proxy_process(int *arg){
-	printf("pid: %u\n",(unsigned int)Pthread_self());
-	Pthread_detach(Pthread_self());
-	
-	int client_fd = (int)(*arg);
-	int server_fd = -1;
-	
-	char tmp_str[MAXBUF];
-	
-	char request_str[MAXBUF];
-	char host[MAXBUF], port[MAXBUF], resource[MAXBUF];
-	char cache_index[MAXBUF], content[MAX_OBJECT_SIZE];
-	
-	unsigned int len;
-	
-	int r_value = read_request(request_str, client_fd, host, port, cache_index, resource);
-	
-	printf("Read data from %s:%s\n",host,port);
-	fflush(stdout);
-	
-	if (!r_value) {
-		if (!read_node_content(cache_list, cache_index, content, &len)) {
-			printf("cache hit!\n");
-			if (forward_content_to_client(client_fd, content, len) == -1)
-				fprintf(stderr, "forward content to client error.\n");
-			Close(client_fd);
-			return;
-		}
-		else {
-			int server_value = forward_to_server(host, port, &server_fd, request_str);
-			if (server_value == -1){
-				fprintf(stderr, "forward content to server error.\n");
-				strcpy(tmp_str, connect_fail_str);
-				Rio_writen(client_fd, tmp_str, strlen(connect_fail_str));
-			}
-			else if (server_value == -2) {
-				// error happens here
-				fprintf(stderr, "forward content to server error(dns look up fail).\n");
-				strcpy(tmp_str, dns_fail_str);
-				Rio_writen(client_fd, tmp_str, strlen(dns_fail_str));
-			}
-			else {
-				//if (Rio_writen(server_fd, request_str, strlen(request_str)) == -1)
-				//	fprintf(stderr, "forward content to server error.\n");
-				
-				int f_value = read_and_forward_response(server_fd, client_fd, cache_index, content);
-				if (f_value == -1)
-					fprintf(stderr, "forward content to client error.\n");
-				else if (f_value == -2 && cache_list)
-					fprintf(stderr, "save content to cache error.\n");
-			}
-		}
-		close_fd(&client_fd, &server_fd);
-	}
-	
-    	return;
+void build_requesthdrs(rio_t *rp, char *hdrstr, char *hostname)
+{
+    char buf[MAXLINE];
+    int provided_host = 0;
+
+    sprintf(hdrstr, "User-Agent: %s\r\n", user_agent);
+    sprintf(hdrstr, "%sAccept: %s\r\n", hdrstr, accept_str);
+    sprintf(hdrstr, "%sAccept-Encoding: %s\r\n", hdrstr, accept_encoding);
+    sprintf(hdrstr, "%sConnection: %s\r\n", hdrstr, "close");
+    sprintf(hdrstr, "%sProxy-Connection: %s\r\n", hdrstr, "close");
+    
+    Rio_readlineb(rp, buf, MAXLINE);
+    while (strcmp(buf, "\r\n")) {
+        if (strstr(buf, "User-Agent") ||
+            strstr(buf, "Accept") ||
+            strstr(buf, "Accept-Encoding") ||
+            strstr(buf, "Connection") ||
+            strstr(buf, "Proxy-Connection"))
+        {
+            /* Ignore them */
+        } else {
+            if (strstr(buf, "Host")) {
+                provided_host = 1;
+            }
+            strcat(hdrstr, buf);
+        }
+        Rio_readlineb(rp, buf, MAXLINE);
+    };
+    if (!provided_host) {
+        sprintf(hdrstr, "%sHost: %s\r\n", hdrstr, hostname);
+    }
+
+    strcat(hdrstr, "\r\n");
+    return;
 }
 
-int read_request(char *str, int client_fd, char *host, char *port, char *cache_index, char *resource) {
-	char tmpstr[MAXBUF];
-	char method[MAXBUF], protocol[MAXBUF], host_port[MAXBUF];
-	char version[MAXBUF];
-	
-	rio_t rio_client;
-	
-//	Rio_readinitb(&rio_client, client_fd);
-//	if (Rio_readlineb(&rio_client, tmpstr, MAXBUF) == -1)
-//		return -1;
-	
-//	if (parse_request(tmpstr, method, protocol, host_port, resource, version) == -1)
-//		return -1;
-	
-//	get_host_and_port(host_port, host, port);
-	
-	if (strstr(method, "GET")) {
-//		strcpy(str, method);
-//		strcat(str, " ");
-//		strcat(str, resource);
-//		strcat(str, " ");
-//		strcat(str, init_version);
-		
-//		if(strlen(host))
-//		{
-//			strcpy(tmpstr, "Host: ");
-//			strcat(tmpstr, host);
-//			strcat(tmpstr, ":");
-//			strcat(tmpstr, port);
-//			strcat(tmpstr, "\r\n");
-//			strcat(str, tmpstr);
-//		}
-		
-//		strcat(str, user_agent);
-//		strcat(str, accept_str);
-//		strcat(str, accept_encoding);
-//		strcat(str, connection);
-//		strcat(str, proxy_connection);
-		
-		while(Rio_readlineb(&rio_client, tmpstr, MAXBUF) > 0) {
-			if (!strcmp(tmpstr, "\r\n")){
-				strcat(str,"\r\n");
-				break;
-			}
-			else if(strstr(tmpstr, "User-Agent:") || strstr(tmpstr, "Accept:") ||
-//				strstr(tmpstr, "Accept-Encoding:") || strstr(tmpstr, "Connection:") ||
-				strstr(tmpstr, "Proxy Connection:") || strstr(tmpstr, "Cookie:"))
-				continue;
-/*			else if (strstr(tmpstr, "Host:")) {
-				if (!strlen(host)) {
-//					sscanf(tmpstr, "Host: %s", host_port);
-//					get_host_and_port(host_port, host, port);
-//					strcpy(tmpstr, "Host: ");
-//					strcat(tmpstr, host);
-//					strcat(tmpstr, ":");
-//					strcat(tmpstr, port);
-					strcat(tmpstr, "\r\n");
-					strcat(str, tmpstr);
-				}
-			}
-			else
-				strcat(str, tmpstr);*/
-		}
-		
-//		strcpy(cache_index, host);
-//		strcat(cache_index, ":");
-//		strcat(cache_index, port);
-		strcat(cache_index, resource);
-		
-		return 0;
-	}
-	
-	return 1;
+/*
+ * thread - thread routine
+ */
+void *thread(void *vargp)
+{
+    int connfd = *((int *)vargp), cnt;
+    char cache_buf[MAX_OBJECT_SIZE], request[MAXLINE];
+    Pthread_detach(pthread_self());
+    Free(vargp);
+
+    int cached = serve(connfd, cache_buf, request, &cnt);
+    Close(connfd);
+    if (cached) {
+        add_cache_entry(request, cache_buf, cnt);
+    }
+    
+    return NULL;
 }
 
-int forward_to_server(char *host, char *port, int *server_fd, char *request_str) {
-	*server_fd = Open_clientfd(host, atoi(port));
-	
-	if (*server_fd < 0) {
-		if (*server_fd == -1)
-			return -1;
-		else 
-			return -2;
-	}
-	if(Rio_writen(*server_fd, request_str, strlen(request_str)) == -1)
-		return -1;
-	
-	return 0;
+void clienterror(int fd, char *msg) {
+    char buf[MAXLINE] = {};
+
+    sprintf(buf, "%s\n", msg);
+    Rio_writen(fd, buf, strlen(buf));
 }
 
-int forward_content_to_client(int client_fd, char *content, unsigned int len) {
-	if (Rio_writen(client_fd, content, len) == -1)
-		return -1;
-		
-	return 0;
+/*
+ * parse_uri - URI parser
+ * 
+ * Given a URI from an HTTP proxy GET request (i.e., a URL), extract
+ * the host name, path name, and port.  The memory for hostname and
+ * pathname must already be allocated and should be at least MAXLINE
+ * bytes. Return -1 if there are any problems.
+ */
+int parse_uri(char *uri, char *hostname, char *pathname, int *port)
+{
+    char *hostbegin;
+    char *hostend;
+    char *pathbegin;
+    int len;
+
+/*  if (strncasecmp(uri, "http://", 7) != 0) {
+	hostname[0] = '\0';
+	return -1;
+    }
+   */    
+    hostbegin = uri + 7;
+    hostend = strpbrk(hostbegin, " :/\r\n\0");
+    len = hostend - hostbegin;
+    strncpy(hostname, hostbegin, len);
+    hostname[len] = '\0';
+  
+  /*  *port = 80; 
+    if (*hostend == ':')   
+	*port = atoi(hostend + 1);
+    
+    pathbegin = strchr(hostbegin, '/');
+    if (pathbegin == NULL) {
+	pathname[0] = '\0';
+    }
+    else {
+	pathbegin++;	
+	strcpy(pathname, pathbegin);
+    }
+*/
+    return 0;
 }
 
-int read_and_forward_response(int server_fd, int client_fd, 
-		char *cache_index, char *content) {
-		
-	rio_t rio_server;
-	char tmp_str[MAXBUF];
-	unsigned int size = 0, len = 0, cache_size = 0;
-	int valid_size = 1;
-	
-	content[0] = '\0';
-	
-	Rio_readinitb(&rio_server, server_fd);
-	
-	do {
-		if(Rio_readlineb(&rio_server, tmp_str, MAXBUF) == -1)
-			return -1;
-		
-		if(valid_size)
-			valid_size = append(content, tmp_str, strlen(tmp_str), &cache_size);
-			
-		if (strstr(tmp_str, "Content-length")) 
-			sscanf(tmp_str, "Content-length: %d", &size);
+/*
+ * format_log_entry - Create a formatted log entry in logstring. 
+ * 
+ * The inputs are the socket address of the requesting client
+ * (sockaddr), the URI from the request (uri), and the size in bytes
+ * of the response from the server (size).
+ */
+void format_log_entry(char *logstring, struct sockaddr_in *sockaddr, 
+		      char *uri, int size)
+{
+    time_t now;
+    char time_str[MAXLINE];
+    unsigned long host;
+    unsigned char a, b, c, d;
 
-		if (strstr(tmp_str, "Content-Length")) 
-			sscanf(tmp_str, "Content-Length: %d", &size);
-		
-		if (Rio_writen(client_fd, tmp_str, strlen(tmp_str)) == -1)
-			return -1;
-			
-	}while(strcmp(tmp_str, "\r\n") != 0 && strlen(tmp_str));
-	
-	if(size) {
-		while(size > MAXBUF) {
-			if((len = Rio_readnb(&rio_server, tmp_str, MAXBUF)) == -1)
-				return -1;
-				
-			if(valid_size)
-				valid_size = append(content, tmp_str, MAXBUF, &cache_size); 
-			if (Rio_writen(client_fd, tmp_str, len) == -1)
-				return -1;
-			
-			size -= MAXBUF;
-		}
-		
-		if(size) {
-			if((len = Rio_readnb(&rio_server, tmp_str, size)) == -1)
-				return -1;
-				
-			if(valid_size)
-				valid_size = append(content, tmp_str, size, &cache_size);
-				
-			if (Rio_writen(client_fd, tmp_str, len) == -1)
-				return -1;
-		}
-	}
-	else {
-		while((len = Rio_readnb(&rio_server, tmp_str, MAXLINE)) > 0) {
-			if(valid_size)
-				valid_size = append(content, tmp_str, len, &cache_size);
-				
-			if (Rio_writen(client_fd, tmp_str, len) == -1)
-				return -1;
-		}
-	}
-	
-	if (valid_size) {
-		if (insert_content_node(cache_list, cache_index, content, cache_size) == -1)
-			return -2;
-		printf("insert correct!\n");
-	}
-	
-	return 0;
-}
+    /* Get a formatted time string */
+    now = time(NULL);
+    strftime(time_str, MAXLINE, "%a %d %b %Y %H:%M:%S %Z", localtime(&now));
 
-int append(char *content, char *str, unsigned int len1, unsigned int *len2) {
-	
-	if(len1 + (*len2) > MAX_OBJECT_SIZE)
-		return 0;
-	
-	memcpy(content + (*len2), str, len1);
-	//strcat(content, str);
-	*len2 += len1;
-	return 1;
-}
+    /* 
+     * Convert the IP address in network byte order to dotted decimal
+     * form. Note that we could have used inet_ntoa, but chose not to
+     * because inet_ntoa is a Class 3 thread unsafe function that
+     * returns a pointer to a static variable (Ch 13, CS:APP).
+     */
+    host = ntohl(sockaddr->sin_addr.s_addr);
+    a = host >> 24;
+    b = (host >> 16) & 0xff;
+    c = (host >> 8) & 0xff;
+    d = host & 0xff;
 
-int parse_request(char *str, char *method, char *protocol, 
-	char *host_port, char *resource, char *version){
-	char url[MAXBUF];
-	
-	if((!strstr(str, "/")) || !strlen(str))
-		return -1;
-	
-	strcpy(resource, "/");
-	sscanf(str,"%s %s %s", method, url, version);
-	
-	if (strstr(url, "://")) 
-		sscanf(url, "%[^:]://%[^/]%s", protocol, host_port, resource);
-	else
-		sscanf(url, "%[^/]%s", host_port, resource);
-		
-	return 0;
-}
 
-void get_host_and_port(char *host_port, char *host, char *port){
-	char *tmpstr = strstr(host_port,":");
-	if (tmpstr) {
-		*tmpstr = '\0';
-		strcpy(port, tmpstr + 1);
-	}
-	else
-		strcpy(port, "80");
-	
-	strcpy(host, host_port);
-}
-
-void close_fd(int *client_fd, int *server_fd) {
-	if(client_fd && *client_fd >=0)
-		Close(*client_fd);
-		
-	if(server_fd && *server_fd >=0)
-		Close(*server_fd);
+    /* Return the formatted log entry string */
+    sprintf(logstring, "%s: %d.%d.%d.%d %s", time_str, a, b, c, d, uri);
 }

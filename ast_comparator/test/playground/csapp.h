@@ -23,6 +23,7 @@
 #include <netdb.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
+#include "tswrapper.h"
 
 
 /* Default file permissions are DEF_MODE & ~DEF_UMASK */
@@ -124,7 +125,6 @@ int Accept(int s, struct sockaddr *addr, socklen_t *addrlen);
 void Connect(int sockfd, struct sockaddr *serv_addr, int addrlen);
 
 /* DNS wrappers */
-struct hostent *gethostbyname_ts(const char *name);
 struct hostent *Gethostbyname(const char *name);
 struct hostent *Gethostbyaddr(const char *addr, int len, int type);
 
@@ -152,7 +152,7 @@ ssize_t	rio_readlineb(rio_t *rp, void *usrbuf, size_t maxlen);
 
 /* Wrappers for Rio package */
 ssize_t Rio_readn(int fd, void *usrbuf, size_t n);
-ssize_t Rio_writen(int fd, void *usrbuf, size_t n);
+void Rio_writen(int fd, void *usrbuf, size_t n);
 void Rio_readinitb(rio_t *rp, int fd); 
 ssize_t Rio_readnb(rio_t *rp, void *usrbuf, size_t n);
 ssize_t Rio_readlineb(rio_t *rp, void *usrbuf, size_t maxlen);

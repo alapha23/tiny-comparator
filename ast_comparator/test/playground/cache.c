@@ -1,173 +1,186 @@
-#include "cache.h" 
-c_list *init_cache_list(){
-	c_list *list = Malloc(sizeof(*list));
-	list->head = list->tail = NULL;
-	list->lock = Malloc(sizeof(*(list->lock)));
-	pthread_rwlock_init((list->lock), NULL);
-	list->bytes_left = MAX_CACHE_SIZE;
+#include "cache.h"
+#include "assert.h"
+#include <stdio.h>
 
-	return list;
-}
-void init_node(c_node *node){
-	if(node) {
-		node->next = NULL;
-		node->prev = NULL;
-		node->length = 0;
-	}
-}
+sem_t *mutexp;
+sem_t *w;
+int ca_readcnt = 0;
 
-void set_node(c_node *node, char *index, unsigned int len){
-	if(node) {
-		node->index = Malloc(sizeof(char)*len);
-		memcpy(node->index, index,len);
-		node->length = len;
-	}
+void cache_init() 
+{
+    ca_readcnt = 0;
+
+    sem_unlink("mutexp");
+    sem_unlink("w");
+
+    mutexp = sem_open("mutexp", O_CREAT, DEF_MODE, 1);
+    w = sem_open("w", O_CREAT, DEF_MODE, 1);
+
+    cache.ca_head = cache.ca_tail = NULL;
+    cache.ca_size = 0;
+    printf("init cache\n");
 }
 
-void delete_node(c_node *node){
-	if(node){
-		if(node->index)
-			free(node->index);
-		if(node->content)
-			free(node->content);
-		free(node);
-	}
+void cache_deinit()
+{
+    CE *ptr = cache.ca_head;
+    sem_destroy(mutexp);
+    sem_destroy(w);
+
+    if (ptr == NULL) return;
+
+    CE *next = ptr->next_entry;
+    while (ptr) {
+        free(ptr->content);
+        free(ptr);
+        ptr = next;
+        if (ptr)
+            next = ptr->next_entry;
+    }
 }
 
-void delete_list(c_list *list) {
-	if(list) {
-		c_node *tmp = list->head;
-		while(tmp) {
-			c_node *tmp2 = tmp;
-			tmp = tmp2->next;
-			delete_node(tmp2);
-		}
-		
-		pthread_rwlock_destroy((list->lock));
-		free(list->lock);
-		free(list);
-	}
+CE *is_in_cache(char *request) {
+    sem_wait(mutexp);
+    check_cache();
+    printf("Finding cache\n");
+    ca_readcnt++;
+    if (ca_readcnt == 1)
+        sem_wait(w);
+    sem_post(mutexp);
+    CE *res = cache.ca_tail;
+    int key = crc32(request);
+
+    while (res) {
+        if (key == res->key) {
+            printf("Cache hit! %s\n", request);
+            return res;
+        }
+        res = res->prev_entry;
+    }
+
+    sem_wait(mutexp);
+    ca_readcnt--;
+    if (ca_readcnt == 0)
+        sem_post(w);
+    sem_post(mutexp);
+    if (res == NULL)
+        printf("cache not found\n");
+    return res;
+}
+void remove_cache_entry(CE *entry) {
+    printf("Remove cache entry\n");
+    if (entry == NULL) return;
+    int size = entry->content_size;
+    printf("free cache entry of size %d\n", size);
+    Free(entry->content);
+
+    if (entry == cache.ca_head) {
+        cache.ca_head = entry->next_entry;
+        if (cache.ca_head)
+            cache.ca_head->prev_entry = NULL;
+        Free(entry);
+    } else if (entry == cache.ca_tail) {
+        cache.ca_tail = entry->prev_entry;
+        if (cache.ca_tail)
+            cache.ca_tail->next_entry = NULL;
+        Free(entry);
+    } else {
+        entry->prev_entry->next_entry = entry->next_entry;
+        entry->next_entry->prev_entry = entry->prev_entry;
+        Free(entry);
+    }
+    cache.ca_size -= size;
+    check_cache();
 }
 
-c_node *search_node(c_list *list, char *index) {
-	if(list) {
-		c_node *tmp = list->head;
-		while(tmp) {
-			if(!strcmp(tmp->index, index))
-				return tmp;
-			tmp = tmp->next;
-		}
-	}
-	return NULL;
+
+CE *add_cache_entry(char *request, char *content, int len) {
+    sem_wait(w);
+
+    check_cache();
+    fflush(stdout);
+    CE *res;
+    // Rio_writen(1, content, len);
+    printf("add object of size %d -- ", len);
+    while (cache.ca_size + len > MAX_CACHE_SIZE) {
+        printf("1\n");
+        remove_cache_entry(cache.ca_head);
+    }
+    cache.ca_size += len;
+    printf("cache size: %ld\n", cache.ca_size);
+    printf("%s\n", request);
+
+    if (cache.ca_head == NULL) {
+        cache.ca_head = Malloc(sizeof(CE));
+        cache.ca_tail = cache.ca_head;
+        res = cache.ca_head;
+
+        res->content = Malloc(len);
+        memcpy(res->content, content, len);
+        res->content_size = len;
+        res->next_entry = NULL;
+        res->prev_entry = NULL;
+        res->key = crc32(request);
+    } else {
+        cache.ca_tail->next_entry = Malloc(sizeof(CE));
+        res = cache.ca_tail->next_entry;
+
+        res->content = Malloc(len);
+        memcpy(res->content, content, len);
+        res->content_size = len;
+        res->next_entry = NULL;
+        res->prev_entry = cache.ca_tail;
+        res->key = crc32(request);
+        cache.ca_tail = res;
+    }
+    check_cache();
+    sem_post(w);
+    printf("added object of size %d\n", len);
+    return res;
 }
 
-void add_node(c_node *node, c_list *list){
-	if(list) {
-		//pthread_rwlock_wrlock((list->lock));
-		if(node){
-			while(list->bytes_left < node->length) {
-				c_node *tmp_node = evict_list(list);
-				delete_node(tmp_node);
-			}
-			if(!list->tail) {
-				list->head = list->tail = node;
-				list->bytes_left -= node->length;
-			}
-			else {
-				list->tail->next = node;
-				node->prev = list->tail;
-				list->tail = node;
-				list->bytes_left -= node->length;
-			}
-		}
-		//pthread_rwlock_unlock((list->lock));
-	}
+void update_cache(CE *entry) {
+    sem_wait(w);
+    printf("cache updatint\n");
+    check_cache();
+    if (entry->next_entry != NULL) {
+        if (entry->prev_entry != NULL) {
+            entry->next_entry->prev_entry = entry->prev_entry;
+            entry->prev_entry->next_entry = entry->next_entry;
+            entry->next_entry = NULL;
+            entry->prev_entry = cache.ca_tail;
+            cache.ca_tail->next_entry = entry;
+            cache.ca_tail = entry;
+        } else {
+            entry->next_entry->prev_entry = NULL;
+            cache.ca_head = entry->next_entry;
+            entry->next_entry = NULL;
+            entry->prev_entry = cache.ca_tail;
+            cache.ca_tail->next_entry = entry;
+            cache.ca_tail = entry;
+        }
+    }
+    check_cache();
+    sem_post(w);
+    printf("cache updated\n");
 }
 
-c_node *remove_node(char *index, c_list *list){
-	if(list){
-		//pthread_rwlock_wrlock((list->lock));
-		c_node *tmp = search_node(list, index);
-		if(tmp) {
-			if(tmp == list->head)
-				tmp = evict_list(list);
-			else {
-				if(tmp->prev) 
-					tmp->prev->next = tmp->next;
-				if(tmp->next)
-					tmp->next->prev = tmp->prev;
-				else
-					list->tail = tmp->prev;
-				list->bytes_left += tmp->length;
-			}
-			tmp->prev = NULL;
-			tmp->next = NULL;
-		}
-		//pthread_rwlock_unlock((list->lock));
-		return tmp;
-	}
-	
-	return NULL;
-}
-
-c_node *evict_list(c_list *list){
-	if(list){
-		c_node *tmp = list->head;
-		if(tmp) {
-			if(tmp->next)
-				tmp->next->prev = NULL;
-			list->bytes_left += tmp->length;
-			if(list->head == list->tail)
-				list->tail = NULL;
-			list->head = tmp->next;
-			return tmp;
-		}
-	}
-	return NULL;
-}
-
-int read_node_content(c_list *list, char *index, char *content, unsigned int *len){
-	if(!list)
-		return -1;
-	
-	pthread_rwlock_rdlock((list->lock));
-	
-	c_node *tmp = search_node(list, index);
-	
-	if(!tmp)
-	{
-		pthread_rwlock_unlock((list->lock));
-		return -1;
-	}
-	
-	*len = tmp->length;
-	memcpy(content, tmp->content,*len);
-	
-	pthread_rwlock_unlock((list->lock));
-	
-	pthread_rwlock_wrlock((list->lock));
-	add_node(remove_node(index, list), list);
-	pthread_rwlock_unlock((list->lock));
-	
-	return 0;
-}
-
-int insert_content_node(c_list *list, char *index, char *content, unsigned int len){
-	if(!list)
-		return -1;
-	
-	c_node *tmp = Malloc(sizeof(*tmp));
-	init_node(tmp);
-	set_node(tmp, index, len);
-	
-	if(!tmp)
-		return -1;
-		
-	tmp->content = Malloc(sizeof(char)*len);
-	memcpy(tmp->content, content,len);
-
-	pthread_rwlock_wrlock((list->lock));
-	add_node(tmp, list);
-	pthread_rwlock_unlock((list->lock));
-	return 0;
+void check_cache() {
+    return ;
+    CE *ptr = cache.ca_head;
+    int size = 0;
+    while (ptr) {
+        if (ptr->next_entry != NULL) {
+            assert(ptr == ptr->next_entry->prev_entry);
+        }
+        size += ptr->content_size;
+        ptr = ptr->next_entry;
+    }
+    assert(size == cache.ca_size);
+    if (cache.ca_head != NULL) {
+        assert(cache.ca_tail != NULL);
+        assert(cache.ca_head->prev_entry == NULL);
+        assert(cache.ca_tail->next_entry == NULL);
+    }
+    printf("check passed\n");
 }

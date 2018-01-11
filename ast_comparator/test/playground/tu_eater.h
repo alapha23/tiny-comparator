@@ -192,6 +192,10 @@ static void truth_andif_to_dot(node *);
 static void bind_to_dot(node *);
 
 static void predict_to_dot(node *);
+
+static void minus_to_dot(node *);
+
+static void negate_to_dot(node *);
 #endif
 
 // TODO

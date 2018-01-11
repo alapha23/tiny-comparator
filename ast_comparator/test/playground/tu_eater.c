@@ -109,6 +109,47 @@ static int *read_op_inner(char *inner, int *num_op)
 	return op;
 }
 
+static void minus_to_dot(node *n)
+{
+// minus_expr is only called when two poiner operators do minus
+// lefthand = op0 - op1
+	int op0_id, op1_id;
+	node *op0;
+	node *op1;
+
+	sscanf(n->_inner, " %*s %*s op 0: @%d op 1: @%d", &op0_id, &op1_id);	
+	op0 = search_pool(op0_id, pool, n_inpool);
+	op1 = search_pool(op1_id, pool, n_inpool);
+
+	assert(NULL != op0);
+	assert(NULL != op1);
+
+	n->_dot_id = dot_shape(n->_id, "-");
+	op0->prev = n;
+	op1->prev = n;
+
+	op0->to_dot(op0);
+	op1->to_dot(op1);
+
+	dot_link(n->prev->_dot_id, n->_dot_id);
+}
+
+static void negate_to_dot(node *n)
+{
+	int op_id;
+	node *op;
+	sscanf(n->_inner, " %*s %*s op 0: @%d", &op_id);
+
+	op = search_pool(op_id, pool, n_inpool);
+	assert(NULL != op);
+
+	n->_dot_id = dot_shape(n->_id, "-");
+	op->prev = n;
+	op->to_dot(op);
+
+	dot_link(n->prev->_dot_id, n->_dot_id);
+}
+
 static void sub_stmt_to_dot(node *n)
 {
 	node **node_list;
@@ -1330,18 +1371,23 @@ static NODE_TYPE str2node(char *node_type, node *n)
 			}
 			break;
 		case 'n':
-			switch(*(node_type+1))
+			switch(*(node_type+2))
 			{
-				case 'e':
+				case '_':
 					_t = ne_expr;
 					n->to_dot = ne_to_dot;
 					break;
-				case 'o':
+				case 'p':
 					_t = nop_expr;
 					n->to_dot = nop_to_dot;
 					break;
+				case 'g':
+					_t = negate_expr;
+					n->to_dot = negate_to_dot;
+					break;
 				default:
 					DEBUF("Unknown node type: %s", node_type);
+					exit(0);
 			}
 			break;
 		case 'e':
@@ -1429,15 +1475,23 @@ static NODE_TYPE str2node(char *node_type, node *n)
 			_t = decl_expr;
 			break;
 		case 'm':
-			if(*(node_type+1) == 'o')
+			switch(*(node_type+1))
 			{
-				_t = modify_expr;
-				n->to_dot = modify_to_dot;
-			}
-			else if(*(node_type+1) == 'u')
-			{
-				_t = mult_expr;
-				n->to_dot = mult_to_dot;
+				case 'o':
+					_t = modify_expr;
+					n->to_dot = modify_to_dot;
+					break;
+				case 'i':
+					_t = minus_expr;
+					n->to_dot = minus_to_dot;
+					break;
+				case 'u':
+					_t = mult_expr;
+					n->to_dot = mult_to_dot;
+					break;
+				default:
+						DEBUF("Unknown node type %s", node_type);
+						exit(0);
 			}
 			break;
 		case 'v':

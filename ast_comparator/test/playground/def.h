@@ -58,6 +58,7 @@
 #define truth_andif_expr	0x12a
 #define truth_orif_expr		0x12b
 #define predict_expr	0x12c
+#define negate_expr	0x12d
 // continue == stmt_list with two expr: predict expr & goto_expr
 
 

@@ -10,8 +10,8 @@ int main(void)
 {
 	int a, b, c, d;
 	
-	a = gua(a) + 1;
-
+	a = gua(a) - 1;
+	a = -a;
 	while(gua(a))
 	{
 		if(a > 5)
