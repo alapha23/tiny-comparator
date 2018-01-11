@@ -15,7 +15,7 @@ int main(void)
 
   int a = i == 2;
   int b = j == 3;
-  if (a || b)
+  if (!add(1,1) || b)
     g();
   else
     h();

@@ -18,7 +18,7 @@ gcc -o tu_eater tu_eater.c tu_eater.h
 #gcc -o rm_header rm_header.c
 #./rm_header $FILENAME > temp.c
 # helloworld.c -> helloworld.rm_header.c
-gcc -fdump-translation-unit -fno-builtin -ffreestanding -c  $FILENAME #temp.c
+gcc -fdump-translation-unit -fno-builtin -ffreestanding -c  $FILENAME 
 ./tu_eater "$FILENAME$foo" $SCOPENAME > ast.dot
 dot -Tpdf -o ast.pdf ast.dot 
 

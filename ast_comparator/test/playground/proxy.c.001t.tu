@@ -22272,7 +22272,7 @@ Content-Type: text/html
 @12354  function_type    size: @12      algn: 8        retn: @151    
                          prms: @12361  
 @12355  function_decl    name: @12362   type: @12363   scpe: @176    
-                         srcp: proxy.c:168             chain: @12364  
+                         srcp: proxy.c:169             chain: @12364  
                          args: @12365   link: extern   body: @12366  
 @12356  parm_decl        name: @12367   type: @523     scpe: @12348  
                          srcp: proxy.c:111             argt: @523    
@@ -22287,10 +22287,10 @@ Content-Type: text/html
 @12363  function_type    size: @12      algn: 8        retn: @3      
                          prms: @12375  
 @12364  function_decl    name: @12376   type: @12377   scpe: @176    
-                         srcp: proxy.c:243             chain: @12378  
+                         srcp: proxy.c:244             chain: @12378  
                          args: @12379   link: extern   body: @12380  
 @12365  parm_decl        name: @12358   type: @1469    scpe: @12355  
-                         srcp: proxy.c:168             chain: @12381  
+                         srcp: proxy.c:169             chain: @12381  
                          argt: @1469    size: @22      algn: 64      
                          used: 1       
 @12366  bind_expr        type: @151     vars: @12382   body: @12383  
@@ -22316,19 +22316,19 @@ Content-Type: text/html
 @12377  function_type    size: @12      algn: 8        retn: @3      
                          prms: @12414  
 @12378  function_decl    name: @12415   type: @12416   scpe: @176    
-                         srcp: proxy.c:265             chain: @12417  
+                         srcp: proxy.c:266             chain: @12417  
                          args: @12418   link: extern   body: @12419  
 @12379  parm_decl        name: @12420   type: @1469    scpe: @12364  
-                         srcp: proxy.c:243             chain: @12421  
+                         srcp: proxy.c:244             chain: @12421  
                          argt: @1469    size: @22      algn: 64      
                          used: 1       
 @12380  bind_expr        type: @151     body: @12422  
 @12381  parm_decl        name: @12384   type: @3       scpe: @12355  
-                         srcp: proxy.c:168             chain: @12423  
+                         srcp: proxy.c:169             chain: @12423  
                          argt: @3       size: @5       algn: 32      
                          used: 1       
 @12382  var_decl         name: @12424   type: @9938    scpe: @12355  
-                         srcp: proxy.c:169             chain: @12425  
+                         srcp: proxy.c:170             chain: @12425  
                          size: @9939    algn: 8        used: 1       
 @12383  statement_list   0   : @12426   1   : @12427   2   : @12428  
                          3   : @12429   4   : @12430   5   : @12431  
@@ -22375,27 +22375,27 @@ Content-Type: text/html
 @12416  function_type    size: @12      algn: 8        retn: @3      
                          prms: @12461  
 @12417  function_decl    name: @12462   type: @12463   scpe: @176    
-                         srcp: proxy.c:258             chain: @12464  
+                         srcp: proxy.c:259             chain: @12464  
                          args: @12465   link: extern   body: @12466  
 @12418  parm_decl        name: @12438   type: @3       scpe: @12378  
-                         srcp: proxy.c:265             chain: @12467  
+                         srcp: proxy.c:266             chain: @12467  
                          argt: @3       size: @5       algn: 32      
                          used: 1       
 @12419  bind_expr        type: @151     vars: @12468   body: @12469  
 @12420  identifier_node  strg: host     lngt: 4       
 @12421  parm_decl        name: @12470   type: @1469    scpe: @12364  
-                         srcp: proxy.c:243             chain: @12471  
+                         srcp: proxy.c:244             chain: @12471  
                          argt: @1469    size: @22      algn: 64      
                          used: 1       
 @12422  statement_list   0   : @12472   1   : @12473   2   : @12474  
                          3   : @12475  
 @12423  parm_decl        name: @12420   type: @1469    scpe: @12355  
-                         srcp: proxy.c:168             chain: @12476  
+                         srcp: proxy.c:169             chain: @12476  
                          argt: @1469    size: @22      algn: 64      
                          used: 1       
 @12424  identifier_node  strg: tmpstr   lngt: 6       
 @12425  var_decl         name: @12477   type: @9938    scpe: @12355  
-                         srcp: proxy.c:170             chain: @12478  
+                         srcp: proxy.c:171             chain: @12478  
                          size: @9939    algn: 8        used: 1       
 @12426  decl_expr        type: @151    
 @12427  decl_expr        type: @151    
@@ -22442,19 +22442,19 @@ Content-Type: text/html
 @12463  function_type    size: @12      algn: 8        retn: @3      
                          prms: @12514  
 @12464  function_decl    name: @12515   type: @12516   scpe: @176    
-                         srcp: proxy.c:338             chain: @12517  
+                         srcp: proxy.c:339             chain: @12517  
                          args: @12518   link: extern   body: @12519  
 @12465  parm_decl        name: @12384   type: @3       scpe: @12417  
-                         srcp: proxy.c:258             chain: @12520  
+                         srcp: proxy.c:259             chain: @12520  
                          argt: @3       size: @5       algn: 32      
                          used: 1       
 @12466  bind_expr        type: @151     body: @12521  
 @12467  parm_decl        name: @12384   type: @3       scpe: @12378  
-                         srcp: proxy.c:265             chain: @12522  
+                         srcp: proxy.c:266             chain: @12522  
                          argt: @3       size: @5       algn: 32      
                          used: 1       
 @12468  var_decl         name: @12523   type: @9897    scpe: @12378  
-                         srcp: proxy.c:268             chain: @12524  
+                         srcp: proxy.c:269             chain: @12524  
                          size: @9894    algn: 64       used: 1       
 @12469  statement_list   0   : @12525   1   : @12526   2   : @12527  
                          3   : @12528   4   : @12529   5   : @12530  
@@ -22465,7 +22465,7 @@ Content-Type: text/html
                          18  : @12543  
 @12470  identifier_node  strg: port     lngt: 4       
 @12471  parm_decl        name: @12438   type: @523     scpe: @12364  
-                         srcp: proxy.c:243             chain: @12544  
+                         srcp: proxy.c:244             chain: @12544  
                          argt: @523     size: @22      algn: 64      
                          used: 1       
 @12472  modify_expr      type: @3       op 0: @12545   op 1: @12546  
@@ -22473,12 +22473,12 @@ Content-Type: text/html
 @12474  cond_expr        type: @151     op 0: @12549   op 1: @12550  
 @12475  return_expr      type: @151     expr: @12551  
 @12476  parm_decl        name: @12470   type: @1469    scpe: @12355  
-                         srcp: proxy.c:168             chain: @12552  
+                         srcp: proxy.c:169             chain: @12552  
                          argt: @1469    size: @22      algn: 64      
                          used: 1       
 @12477  identifier_node  strg: method   lngt: 6       
 @12478  var_decl         name: @12553   type: @9938    scpe: @12355  
-                         srcp: proxy.c:170             chain: @12554  
+                         srcp: proxy.c:171             chain: @12554  
                          size: @9939    algn: 8        used: 1       
 @12479  addr_expr        type: @12555   op 0: @12279  
 @12480  addr_expr        type: @12269   op 0: @12556  
@@ -22538,25 +22538,25 @@ Content-Type: text/html
 @12516  function_type    size: @12      algn: 8        retn: @3      
                          prms: @12614  
 @12517  function_decl    name: @12615   type: @12616   scpe: @176    
-                         srcp: proxy.c:349             chain: @12563  
+                         srcp: proxy.c:350             chain: @12563  
                          args: @12617   link: extern   body: @12618  
 @12518  parm_decl        name: @9949    type: @1469    scpe: @12464  
-                         srcp: proxy.c:338             chain: @12619  
+                         srcp: proxy.c:339             chain: @12619  
                          argt: @1469    size: @22      algn: 64      
                          used: 1       
 @12519  bind_expr        type: @151     body: @12620  
 @12520  parm_decl        name: @9949    type: @1469    scpe: @12417  
-                         srcp: proxy.c:258             chain: @12621  
+                         srcp: proxy.c:259             chain: @12621  
                          argt: @1469    size: @22      algn: 64      
                          used: 1       
 @12521  statement_list   0   : @12622   1   : @12623  
 @12522  parm_decl        name: @12624   type: @1469    scpe: @12378  
-                         srcp: proxy.c:266             chain: @12625  
+                         srcp: proxy.c:267             chain: @12625  
                          argt: @1469    size: @22      algn: 64      
                          used: 1       
 @12523  identifier_node  strg: rio_server              lngt: 10      
 @12524  var_decl         name: @12490   type: @9938    scpe: @12378  
-                         srcp: proxy.c:269             chain: @12626  
+                         srcp: proxy.c:270             chain: @12626  
                          size: @9939    algn: 8        used: 1       
 @12525  decl_expr        type: @151    
 @12526  decl_expr        type: @151    
@@ -22581,7 +22581,7 @@ Content-Type: text/html
 @12542  cond_expr        type: @151     op 0: @12649   op 1: @12650  
 @12543  return_expr      type: @151     expr: @12651  
 @12544  parm_decl        name: @12590   type: @1469    scpe: @12364  
-                         srcp: proxy.c:243             argt: @1469   
+                         srcp: proxy.c:244             argt: @1469   
                          size: @22      algn: 64       used: 1       
 @12545  indirect_ref     type: @3       op 0: @12471  
 @12546  call_expr        type: @3       fn  : @12652   0   : @12379  
@@ -22593,16 +22593,16 @@ Content-Type: text/html
 @12550  return_expr      type: @151     expr: @12659  
 @12551  modify_expr      type: @3       op 0: @12660   op 1: @2457   
 @12552  parm_decl        name: @12624   type: @1469    scpe: @12355  
-                         srcp: proxy.c:168             chain: @12661  
+                         srcp: proxy.c:169             chain: @12661  
                          argt: @1469    size: @22      algn: 64      
                          used: 1       
 @12553  identifier_node  strg: protocol lngt: 8       
 @12554  var_decl         name: @12662   type: @9938    scpe: @12355  
-                         srcp: proxy.c:170             chain: @12663  
+                         srcp: proxy.c:171             chain: @12663  
                          size: @9939    algn: 8        used: 1       
 @12555  pointer_type     size: @22      algn: 64       ptd : @12263  
 @12556  var_decl         name: @12664   type: @9897    scpe: @12355  
-                         srcp: proxy.c:173             size: @9894   
+                         srcp: proxy.c:174             size: @9894   
                          algn: 64       used: 1       
 @12557  call_expr        type: @2025    fn  : @12665   0   : @12666  
                          1   : @12667   2   : @12668  
@@ -22614,7 +22614,7 @@ Content-Type: text/html
 @12561  modify_expr      type: @3       op 0: @12589   op 1: @6626   
 @12562  pointer_type     size: @22      algn: 64       ptd : @12675  
 @12563  function_decl    name: @12676   type: @12675   scpe: @176    
-                         srcp: proxy.c:367             chain: @12677  
+                         srcp: proxy.c:368             chain: @12677  
                          args: @12678   link: extern   body: @12679  
 @12564  addr_expr        type: @12598   op 0: @12554  
 @12565  call_expr        type: @1469    fn  : @12680   0   : @12681  
@@ -22658,7 +22658,7 @@ Content-Type: text/html
 @12587  call_expr        type: @1469    fn  : @12714   0   : @12552  
                          1   : @12715  
 @12588  return_expr      type: @151     expr: @12716  
-@12589  result_decl      type: @3       scpe: @12355   srcp: proxy.c:168    
+@12589  result_decl      type: @3       scpe: @12355   srcp: proxy.c:169    
                          note: artificial              size: @5      
                          algn: 32      
 @12590  identifier_node  strg: request_str             lngt: 11      
@@ -22701,27 +22701,27 @@ Content-Type: text/html
 @12616  function_type    size: @12      algn: 8        retn: @3      
                          prms: @12742  
 @12617  parm_decl        name: @12358   type: @1469    scpe: @12517  
-                         srcp: proxy.c:349             chain: @12743  
+                         srcp: proxy.c:350             chain: @12743  
                          argt: @1469    size: @22      algn: 64      
                          used: 1       
 @12618  bind_expr        type: @151     vars: @12744   body: @12745  
 @12619  parm_decl        name: @12358   type: @1469    scpe: @12464  
-                         srcp: proxy.c:338             chain: @12746  
+                         srcp: proxy.c:339             chain: @12746  
                          argt: @1469    size: @22      algn: 64      
                          used: 1       
 @12620  statement_list   0   : @12747   1   : @12748   2   : @12749  
                          3   : @12750  
 @12621  parm_decl        name: @12751   type: @26      scpe: @12417  
-                         srcp: proxy.c:258             argt: @26     
+                         srcp: proxy.c:259             argt: @26     
                          size: @5       algn: 32       used: 1       
 @12622  cond_expr        type: @151     op 0: @12752   op 1: @12753  
 @12623  return_expr      type: @151     expr: @12754  
 @12624  identifier_node  strg: cache_index             lngt: 11      
 @12625  parm_decl        name: @9949    type: @1469    scpe: @12378  
-                         srcp: proxy.c:266             argt: @1469   
+                         srcp: proxy.c:267             argt: @1469   
                          size: @22      algn: 64       used: 1       
 @12626  var_decl         name: @12755   type: @26      scpe: @12378  
-                         srcp: proxy.c:270             chain: @12756  
+                         srcp: proxy.c:271             chain: @12756  
                          init: @28      size: @5       algn: 32      
                          used: 1       
 @12627  indirect_ref     type: @9       op 0: @12625  
@@ -22765,15 +22765,15 @@ Content-Type: text/html
 @12658  call_expr        type: @2025    fn  : @12801   0   : @12802  
                          1   : @12803   2   : @12804  
 @12659  modify_expr      type: @3       op 0: @12660   op 1: @6626   
-@12660  result_decl      type: @3       scpe: @12364   srcp: proxy.c:243    
+@12660  result_decl      type: @3       scpe: @12364   srcp: proxy.c:244    
                          note: artificial              size: @5      
                          algn: 32      
 @12661  parm_decl        name: @12805   type: @1469    scpe: @12355  
-                         srcp: proxy.c:168             argt: @1469   
+                         srcp: proxy.c:169             argt: @1469   
                          size: @22      algn: 64       used: 1       
 @12662  identifier_node  strg: host_port               lngt: 9       
 @12663  var_decl         name: @12806   type: @9938    scpe: @12355  
-                         srcp: proxy.c:171             chain: @12556  
+                         srcp: proxy.c:172             chain: @12556  
                          size: @9939    algn: 8        used: 1       
 @12664  identifier_node  strg: rio_client              lngt: 10      
 @12665  addr_expr        type: @12807   op 0: @12283  
@@ -22790,10 +22790,10 @@ Content-Type: text/html
                          prms: @12815  
 @12676  identifier_node  strg: get_host_and_port       lngt: 17      
 @12677  function_decl    name: @12816   type: @12817   scpe: @176    
-                         srcp: proxy.c:379             chain: @12818  
+                         srcp: proxy.c:380             chain: @12818  
                          args: @12819   link: extern   body: @12820  
 @12678  parm_decl        name: @12662   type: @1469    scpe: @12563  
-                         srcp: proxy.c:367             chain: @12821  
+                         srcp: proxy.c:368             chain: @12821  
                          argt: @1469    size: @22      algn: 64      
                          used: 1       
 @12679  bind_expr        type: @151     vars: @12822   body: @12823  
@@ -22817,7 +22817,7 @@ Content-Type: text/html
 @12696  addr_expr        type: @12827   op 0: @5880   
 @12697  addr_expr        type: @12827   op 0: @5880   
 @12698  addr_expr        type: @12827   op 0: @5880   
-@12699  label_decl       type: @151     scpe: @12355   srcp: proxy.c:215    
+@12699  label_decl       type: @151     scpe: @12355   srcp: proxy.c:216    
                          note: artificial 
 @12700  label_decl       type: @151     scpe: @12355   note: artificial 
 @12701  eq_expr          type: @3       op 0: @12839   op 1: @2457   
@@ -22827,7 +22827,7 @@ Content-Type: text/html
 @12704  gt_expr          type: @3       op 0: @12845   op 1: @12846  
 @12705  goto_expr        type: @151     labl: @12700  
 @12706  goto_expr        type: @151     labl: @12707  
-@12707  label_decl       type: @151     scpe: @12355   srcp: proxy.c:210    
+@12707  label_decl       type: @151     scpe: @12355   srcp: proxy.c:211    
                          note: artificial 
 @12708  addr_expr        type: @12827   op 0: @5857   
 @12709  nop_expr         type: @2053    op 0: @12423  
@@ -22874,16 +22874,16 @@ Content-Type: text/html
 @12741  tree_list        valu: @1469    chan: @12873  
 @12742  tree_list        valu: @1469    chan: @12874  
 @12743  parm_decl        name: @12477   type: @1469    scpe: @12517  
-                         srcp: proxy.c:349             chain: @12875  
+                         srcp: proxy.c:350             chain: @12875  
                          argt: @1469    size: @22      algn: 64      
                          used: 1       
 @12744  var_decl         name: @12876   type: @9938    scpe: @12517  
-                         srcp: proxy.c:351             size: @9939   
+                         srcp: proxy.c:352             size: @9939   
                          algn: 8        used: 1       
 @12745  statement_list   0   : @12877   1   : @12878   2   : @12879  
                          3   : @12880   4   : @12881   5   : @12882  
 @12746  parm_decl        name: @12883   type: @26      scpe: @12464  
-                         srcp: proxy.c:338             chain: @12884  
+                         srcp: proxy.c:339             chain: @12884  
                          argt: @26      size: @5       algn: 32      
                          used: 1       
 @12747  cond_expr        type: @151     op 0: @12885   op 1: @12886  
@@ -22897,14 +22897,14 @@ Content-Type: text/html
 @12754  modify_expr      type: @3       op 0: @12896   op 1: @2457   
 @12755  identifier_node  strg: size     lngt: 4       
 @12756  var_decl         name: @12751   type: @26      scpe: @12378  
-                         srcp: proxy.c:270             chain: @12897  
+                         srcp: proxy.c:271             chain: @12897  
                          init: @28      size: @5       algn: 32      
                          used: 1       
 @12757  call_expr        type: @2025    fn  : @12898   0   : @12899  
                          1   : @12900   2   : @12668  
 @12758  modify_expr      type: @3       op 0: @12794   op 1: @6626   
 @12759  var_decl         name: @12901   type: @3       scpe: @12378  
-                         srcp: proxy.c:271             init: @2475   
+                         srcp: proxy.c:272             init: @2475   
                          size: @5       algn: 32       used: 1       
 @12760  call_expr        type: @3       fn  : @12902   0   : @12625  
                          1   : @12903   2   : @12904   3   : @12905  
@@ -22946,7 +22946,7 @@ Content-Type: text/html
 @12791  label_expr       type: @151     name: @12946  
 @12792  cond_expr        type: @151     op 0: @12947   op 1: @12948  
 @12793  call_expr        type: @3       fn  : @12949   0   : @12950  
-@12794  result_decl      type: @3       scpe: @12378   srcp: proxy.c:265    
+@12794  result_decl      type: @3       scpe: @12378   srcp: proxy.c:266    
                          note: artificial              size: @5      
                          algn: 32      
 @12795  pointer_type     size: @22      algn: 64       ptd : @12287  
@@ -22977,16 +22977,16 @@ Content-Type: text/html
                          srcp: proxy.c:57              args: @12959  
                          link: extern   body: @12960  
 @12819  parm_decl        name: @12384   type: @523     scpe: @12677  
-                         srcp: proxy.c:379             chain: @12961  
+                         srcp: proxy.c:380             chain: @12961  
                          argt: @523     size: @22      algn: 64      
                          used: 1       
 @12820  bind_expr        type: @151     body: @12962  
 @12821  parm_decl        name: @12420   type: @1469    scpe: @12563  
-                         srcp: proxy.c:367             chain: @12963  
+                         srcp: proxy.c:368             chain: @12963  
                          argt: @1469    size: @22      algn: 64      
                          used: 1       
 @12822  var_decl         name: @12424   type: @1469    scpe: @12563  
-                         srcp: proxy.c:368             init: @12964  
+                         srcp: proxy.c:369             init: @12964  
                          size: @22      algn: 64       used: 1       
 @12823  statement_list   0   : @12965   1   : @12966   2   : @12967  
 @12824  pointer_type     size: @22      algn: 64       ptd : @6040   
@@ -23058,7 +23058,7 @@ Content-Type: text/html
 @12873  tree_list        valu: @26      chan: @13028  
 @12874  tree_list        valu: @1469    chan: @13029  
 @12875  parm_decl        name: @12553   type: @1469    scpe: @12517  
-                         srcp: proxy.c:349             chain: @13030  
+                         srcp: proxy.c:350             chain: @13030  
                          argt: @1469    size: @22      algn: 64      
                          used: 1       
 @12876  identifier_node  strg: url      lngt: 3       
@@ -23074,7 +23074,7 @@ Content-Type: text/html
 @12882  return_expr      type: @151     expr: @13044  
 @12883  identifier_node  strg: len1     lngt: 4       
 @12884  parm_decl        name: @13045   type: @2013    scpe: @12464  
-                         srcp: proxy.c:338             argt: @2013   
+                         srcp: proxy.c:339             argt: @2013   
                          size: @22      algn: 64       used: 1       
 @12885  gt_expr          type: @3       op 0: @13046   op 1: @13047  
 @12886  return_expr      type: @151     expr: @13048  
@@ -23088,11 +23088,11 @@ Content-Type: text/html
 @12894  call_expr        type: @2025    fn  : @13052   0   : @12465  
                          1   : @13053   2   : @13054  
 @12895  modify_expr      type: @3       op 0: @12896   op 1: @6626   
-@12896  result_decl      type: @3       scpe: @12417   srcp: proxy.c:258    
+@12896  result_decl      type: @3       scpe: @12417   srcp: proxy.c:259    
                          note: artificial              size: @5      
                          algn: 32      
 @12897  var_decl         name: @13055   type: @26      scpe: @12378  
-                         srcp: proxy.c:270             chain: @12759  
+                         srcp: proxy.c:271             chain: @12759  
                          init: @28      size: @5       algn: 32      
                          used: 1       
 @12898  addr_expr        type: @12807   op 0: @12283  
@@ -23164,11 +23164,11 @@ Content-Type: text/html
                          used: 1       
 @12960  bind_expr        type: @151     vars: @13098   body: @13099  
 @12961  parm_decl        name: @12438   type: @523     scpe: @12677  
-                         srcp: proxy.c:379             argt: @523    
+                         srcp: proxy.c:380             argt: @523    
                          size: @22      algn: 64       used: 1       
 @12962  statement_list   0   : @13100   1   : @13101  
 @12963  parm_decl        name: @12470   type: @1469    scpe: @12563  
-                         srcp: proxy.c:367             argt: @1469   
+                         srcp: proxy.c:368             argt: @1469   
                          size: @22      algn: 64       used: 1       
 @12964  call_expr        type: @1469    fn  : @13102   0   : @13103  
                          1   : @13104  
@@ -23247,14 +23247,14 @@ Content-Type: text/html
 @13028  tree_list        valu: @2013    chan: @191    
 @13029  tree_list        valu: @1469    chan: @13152  
 @13030  parm_decl        name: @12662   type: @1469    scpe: @12517  
-                         srcp: proxy.c:350             chain: @13034  
+                         srcp: proxy.c:351             chain: @13034  
                          argt: @1469    size: @22      algn: 64      
                          used: 1       
 @13031  truth_orif_expr  type: @3       op 0: @13153   op 1: @13154  
 @13032  return_expr      type: @151     expr: @13155  
 @13033  addr_expr        type: @12827   op 0: @5857   
 @13034  parm_decl        name: @12805   type: @1469    scpe: @12517  
-                         srcp: proxy.c:350             chain: @13040  
+                         srcp: proxy.c:351             chain: @13040  
                          argt: @1469    size: @22      algn: 64      
                          used: 1       
 @13035  nop_expr         type: @2053    op 0: @13156  
@@ -23263,7 +23263,7 @@ Content-Type: text/html
 @13038  nop_expr         type: @2053    op 0: @13157  
 @13039  nop_expr         type: @1469    op 0: @13158  
 @13040  parm_decl        name: @12806   type: @1469    scpe: @12517  
-                         srcp: proxy.c:350             argt: @1469   
+                         srcp: proxy.c:351             argt: @1469   
                          size: @22      algn: 64       used: 1       
 @13041  ne_expr          type: @3       op 0: @13159   op 1: @12566  
 @13042  call_expr        type: @3       fn  : @13160   0   : @13161  
@@ -23278,7 +23278,7 @@ Content-Type: text/html
 @13048  modify_expr      type: @3       op 0: @13051   op 1: @2457   
 @13049  pointer_type     size: @22      algn: 64       ptd : @5802   
 @13050  pointer_plus_expr type: @1469    op 0: @12518   op 1: @13168  
-@13051  result_decl      type: @3       scpe: @12464   srcp: proxy.c:338    
+@13051  result_decl      type: @3       scpe: @12464   srcp: proxy.c:339    
                          note: artificial              size: @5      
                          algn: 32      
 @13052  addr_expr        type: @12952   op 0: @12276  
@@ -23422,7 +23422,7 @@ Content-Type: text/html
 @13163  addr_expr        type: @12909   op 0: @2756   
 @13164  nop_expr         type: @2053    op 0: @13288  
 @13165  nop_expr         type: @2053    op 0: @13289  
-@13166  result_decl      type: @3       scpe: @12517   srcp: proxy.c:349    
+@13166  result_decl      type: @3       scpe: @12517   srcp: proxy.c:350    
                          note: artificial              size: @5      
                          algn: 32      
 @13167  indirect_ref     type: @26      op 0: @12884  
@@ -23560,7 +23560,7 @@ Content-Type: text/html
 @13275  call_expr        type: @2025    fn  : @13391   0   : @12368  
                          1   : @13392   2   : @13393  
 @13276  var_decl         name: @13394   type: @3       scpe: @12348  
-                         srcp: proxy.c:155             init: @13395  
+                         srcp: proxy.c:156             init: @13395  
                          size: @5       algn: 32       used: 1       
 @13277  statement_list   0   : @13396   1   : @13397  
 @13278  tree_list        valu: @1469    chan: @13398  

@@ -247,7 +247,9 @@ static void string_cst_to_dot(node *n)
 		}
 		pos++;
 	}
-	n->_dot_id = dot_shape(n->_id, value);
+	char result[size+4];
+	sprintf(result, "\\\"%s\\\"", value);
+	n->_dot_id = dot_shape(n->_id, result);
 	dot_link(n->prev->_dot_id, n->_dot_id);
 }
 
@@ -536,6 +538,10 @@ static void cond_to_dot(node *n)
 		// do(){}while;
 		// while(){}
  			n->_dot_id = dot_shape(n->_id, "if");
+
+			// connect with the previous node
+			dot_link_dt(n->prev->_dot_id, n->_dot_id);		
+
 			op1->prev = n;
 			op2->prev = n;
 			op3->prev = n;
@@ -544,8 +550,6 @@ static void cond_to_dot(node *n)
 			op2->to_dot(op2);
 			op3->to_dot(op3);
 
-			// connect with the previous node
-			dot_link_dt(n->prev->_dot_id, n->_dot_id);		
 		}
 		else
 		{
@@ -553,6 +557,10 @@ static void cond_to_dot(node *n)
 			// if(){}else if{}
 
  			n->_dot_id = dot_shape(n->_id, "if");
+
+			// connect with the previous node
+			dot_link_dt(n->prev->_dot_id, n->_dot_id);
+
 			op1->prev = n;
 			op2->prev = n;
 			op3->prev = n;
@@ -562,9 +570,6 @@ static void cond_to_dot(node *n)
 			if(op3->_ntype == cond_expr)
 				op3->to_dot = else_to_dot;
 			op3->to_dot(op3);
-
-			// connect with the previous node
-			dot_link_dt(n->prev->_dot_id, n->_dot_id);
 		}
 	}
 	free(op);
@@ -597,17 +602,19 @@ static void else_to_dot(node *n)
 		assert(op2 != NULL);
 
  		n->_dot_id = dot_shape(n->_id, "else if");
+		// connect with the previous node
+		dot_link_dt(n->prev->_dot_id, n->_dot_id);
+
 		op1->prev = n;
 		op2->prev = n;
 		op1->to_dot(op1);
 		// op1 is a vardecl, it should be emiting its name
 		op2->to_dot(op2);
 
-		// connect with the previous node
-		dot_link_dt(n->prev->_dot_id, n->_dot_id);
 	} else
 	{
 		sscanf(n->_inner, "%*s @%*d op 0: @%d op 1: @%d op 2: @%d ", &id1, &id2, &id3);
+
 		node *op1 = search_pool(id1, pool, n_inpool);
 		node *op2 = search_pool(id2, pool, n_inpool);
 		node *op3 = search_pool(id3, pool, n_inpool);
@@ -628,17 +635,19 @@ static void else_to_dot(node *n)
 			// if(){}else{}
 
  			n->_dot_id = dot_shape(n->_id, "if");
+			// connect with the previous node
+			dot_link_dt(n->prev->_dot_id, n->_dot_id);
+
 			op1->prev = n;
 			op2->prev = n;
 			op3->prev = n;
 			op1->to_dot(op1);
 			// op1 is the comparsion
 			op2->to_dot(op2);
-			op3->to_dot = else_to_dot;
+			if(op3->_ntype == cond_expr)
+				op3->to_dot = else_to_dot;
 			op3->to_dot(op3);
 
-			// connect with the previous node
-			dot_link_dt(n->prev->_dot_id, n->_dot_id);
 		}
 	}
 	free(op);
@@ -1202,6 +1211,7 @@ stub_to_dot(node *n)
 {
 	// TODO
 	DEBUG(Stub);
+	DEBUF("%d", n->_id);
 	DEBUF("%s", n->_inner);
 }
 
@@ -1624,7 +1634,6 @@ static node **parse_stmt(node **node_list)
 	DEBUF("%s", (**node_list)._inner);
 	do
 	{
-	//	DEBUG(debug);
 		for(int i=0; i<= num_node; i++)
 		{
 			if(temp->_id == expr[i])

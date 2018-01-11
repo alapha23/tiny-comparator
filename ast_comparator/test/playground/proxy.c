@@ -144,6 +144,7 @@ void proxy_process(int *arg){
 				Rio_writen(client_fd, tmp_str, strlen(connect_fail_str));
 			}
 			else if (server_value == -2) {
+				// error happens here
 				fprintf(stderr, "forward content to server error(dns look up fail).\n");
 				strcpy(tmp_str, dns_fail_str);
 				Rio_writen(client_fd, tmp_str, strlen(dns_fail_str));
