@@ -13,7 +13,8 @@
 #define function_type 	0x009
 #define identifier_node	0x00a
 #define enumeral_type	0x00b
-
+#define real_type	0x00c
+#define reference_type	0x00d
 
 // result_decl: result of all the decl in the scope
 
@@ -41,6 +42,7 @@
 #define ne_expr		0x11a
 #define eq_expr		0x11b
 #define indirect_ref	0x11c
+#define component_ref	0x104
 #define pointer_plus_expr	0x11d
 #define nop_expr	0x11d
 #define goto_expr	0x11e
@@ -59,6 +61,9 @@
 #define truth_orif_expr		0x12b
 #define predict_expr	0x12c
 #define negate_expr	0x12d
+#define rshift_expr	0x12e
+#define lshift_expr	0x12f
+
 // continue == stmt_list with two expr: predict expr & goto_expr
 
 

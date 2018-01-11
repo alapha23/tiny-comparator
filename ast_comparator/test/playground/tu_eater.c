@@ -134,6 +134,100 @@ static void minus_to_dot(node *n)
 	dot_link(n->prev->_dot_id, n->_dot_id);
 }
 
+static void component_to_dot(node *n)
+{
+	// called when function(a->b.c); occurs
+	// component_ref    type: @9141    op 0: @12854   op 1: @9667
+	//
+	int op_id, field_id;
+	node *op;	// op0
+	node *field;	// op1
+
+	sscanf(n->_inner, " %*s %*s op 0: @%d op 1: @%d", &op_id, &field_id);
+	op = search_pool(op_id, pool, n_inpool);	// might be component
+	field = search_pool(field_id, pool, n_inpool);
+	assert(NULL != op);
+	assert(NULL != field);
+
+	n->_dot_id = dot_shape(ref->_id, "*");
+	dot_link(n->prev->_dot_id, n->_dot_id);
+
+	op->prev = n;	// n:  "*"
+	if(op->_ntype == component_ref)
+		op->to_dot(op);
+	else if(op->_ntype == indirect_ref)
+	{
+		int parm_id;
+		node *parm;
+		sscanf(op->_inner, " %*s %*s op 0: @%d ", &parm_id);
+		parm = search_pool(parm_id, pool, n_inpool);
+		parm->prev = op->prev;
+		parm->to_dot(parm);
+	}
+	else
+	{
+		DEBUF("Unknown component op type: %d", op->_ntype);
+	}
+	field->prev = n;
+	field->_dot_id = dot_shape(field->_id, ".");
+	dot_link(field->prev->_dot_id, field->_dot_id);
+	int name_id;
+	node *name;
+	char value[64];
+	sscanf(field->_inner, " name: @%d ", &name_id);
+	name = search_pool(name_id, pool, n_inpool);
+	name->prev = field;		// name connect to field "."
+	sscanf(name->_inner, " strg: %s ", value);
+	name->_dot_id = dot_shape(name->_id, value);
+	dot_link(name->prev->_dot_id, name->_dot_id);
+}
+
+static void lshift_to_dot(node *n)
+{
+	int op0_id, op1_id;
+	node *op0;
+	node *op1;
+
+	sscanf(n->_inner, " %*s %*s op 0: @%d op 1: @%d", &op0_id, &op1_id);	
+	op0 = search_pool(op0_id, pool, n_inpool);
+	op1 = search_pool(op1_id, pool, n_inpool);
+
+	assert(NULL != op0);
+	assert(NULL != op1);
+
+	n->_dot_id = dot_shape(n->_id, "<<");
+	op0->prev = n;
+	op1->prev = n;
+
+	op0->to_dot(op0);
+	op1->to_dot(op1);
+
+	dot_link(n->prev->_dot_id, n->_dot_id);
+}
+
+static void rshift_to_dot(node *n)
+{
+	int op0_id, op1_id;
+	node *op0;
+	node *op1;
+
+	sscanf(n->_inner, " %*s %*s op 0: @%d op 1: @%d", &op0_id, &op1_id);	
+	op0 = search_pool(op0_id, pool, n_inpool);
+	op1 = search_pool(op1_id, pool, n_inpool);
+
+	assert(NULL != op0);
+	assert(NULL != op1);
+
+	n->_dot_id = dot_shape(n->_id, ">>");
+	op0->prev = n;
+	op1->prev = n;
+
+	op0->to_dot(op0);
+	op1->to_dot(op1);
+
+	dot_link(n->prev->_dot_id, n->_dot_id);
+}
+
 static void negate_to_dot(node *n)
 {
 	int op_id;
@@ -256,6 +350,11 @@ static void addr_to_dot(node *n)
 		op = search_pool(op_id, pool, n_inpool);
 		op->prev = n->prev;
 		op->to_dot(op);
+	}
+	else
+	{
+		n->_dot_id = dot_shape(n->_id, "&");
+		dot_link(n->prev->_dot_id, n->_dot_id);	
 	}
 }
 
@@ -1324,6 +1423,10 @@ static NODE_TYPE str2node(char *node_type, node *n)
 					_t = label_expr;
 					n->to_dot = label_to_dot;
 					break;
+				case 'l':
+					_t = lshift_expr;
+					n->to_dot = lshift_to_dot;
+					break;
 				default:
 					fprintf(stderr, "Unknown node type:%s\n", node_type);
 					fflush(stderr);
@@ -1463,12 +1566,31 @@ static NODE_TYPE str2node(char *node_type, node *n)
 			}
 			break;
 		case 'r':
-			if(*(node_type+2) == 's')
- 				_t = result_decl;
-			else if(*(node_type+2) == 't')
+			switch(*(node_type+2))
 			{
-				_t = return_expr;
-				n->to_dot = ret_to_dot;
+				case 's':
+ 					_t = result_decl;
+					break;
+				case 't':
+					_t = return_expr;
+					n->to_dot = ret_to_dot;
+					break;
+				case 'h':
+					_t = rshift_expr;
+					n->to_dot = rshift_to_dot;
+					break;
+				case 'a':
+					_t = real_type;
+					break;
+				case 'c':
+					_t = record_type;
+					break;
+				case 'f':
+					_t = reference_type;
+					break;
+				default:
+					DEBUF("Unknown node type: %s", node_type);
+					exit(0);
 			}
 			break;		
 		case 'd':
@@ -1544,7 +1666,15 @@ static NODE_TYPE str2node(char *node_type, node *n)
 					n->to_dot = call_to_dot;
 					break;
 				case 'p':
-					_t = complex_type;
+					if(*(node_type+4)=='l')
+					{
+						_t = complex_type;
+					}
+					else if(*(node_type+4)=='o')
+					{
+						_t = component_ref;
+						n->to_dot = component_to_dot;
+					}
 					break;
 				case 'd':
 					_t = cond_expr;

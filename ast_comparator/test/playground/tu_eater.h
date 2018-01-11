@@ -196,17 +196,11 @@ static void predict_to_dot(node *);
 static void minus_to_dot(node *);
 
 static void negate_to_dot(node *);
-#endif
 
-// TODO
-// -array == pointer
-// -else
-// -while
-// -cast
-// -do while
-// -switch
-// struct*
-// union*
-// extern*
-// inline 
+static void component_to_dot(node *);
+
+static void rshift_to_dot(node *);
+
+static void lshift_to_dot(node *);
+#endif
 

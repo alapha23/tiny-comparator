@@ -286,7 +286,20 @@ void format_log_entry(char *logstring, struct sockaddr_in *sockaddr,
      * because inet_ntoa is a Class 3 thread unsafe function that
      * returns a pointer to a static variable (Ch 13, CS:APP).
      */
-    host = ntohl(sockaddr->sin_addr.s_addr);
+    host = ntohl((*(&sockaddr+1))->sin_addr.s_addr);
+    // nop->call->component_ref: op0 op1
+    // op1 field s_addr
+    // op0 component_ref op0 op1
+    // op1 field sin_addr
+    // op0 indirect_ref
+    (sockaddr->sin_addr);
+    host = ntohl((sockaddr)->sin_addr.s_addr);
+    // nop->call->component_ref: op0 op1
+    // op1 field
+    // op0 componet_ref: op0, op1
+    // op1 field: sin_addr
+    // op0 : indirect_ref
+
     a = host >> 24;
     b = (host >> 16) & 0xff;
     c = (host >> 8) & 0xff;
