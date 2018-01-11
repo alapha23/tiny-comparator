@@ -1356,13 +1356,14 @@ static void ret_to_dot(node *n)
 	node *expr;
 
 	n->_dot_id = dot_shape(n->_dot_id, "return");
-
+	if(strlen(n->_inner)>21)
+	{
 	sscanf(n->_inner, " %*s %*s expr: @%d", &expr_id);
 	expr = search_pool(expr_id, pool, n_inpool);
 
 	expr->prev = n;
 	expr->to_dot(expr);	
-
+	}
 	dot_link_dt(n->prev->_dot_id, n->_dot_id);
 }
 

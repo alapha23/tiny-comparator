@@ -3,346 +3,271 @@ digraph AST {
   node  [fontname="Courier New",fontsize=10];
   edge  [fontname="Times New Roman",fontsize=10];
 
-  node1 [label="scope serve",shape=box];
-  node2 [label="call Rio_readinitb",shape=ellipse];
-  node3 [label="fd",shape=ellipse];
-  node2->node3;
-  node4 [label="&",shape=ellipse];
-  node2->node4;
-  node5 [label="rio",shape=ellipse];
-  node4->node5;
-  node1 -> node2 [style=dotted]
-  node6 [label="call Rio_readlineb",shape=ellipse];
-  node7 [label="8192",shape=ellipse];
-  node6->node7;
-  node8 [label="buf",shape=ellipse];
-  node6->node8;
-  node9 [label="&",shape=ellipse];
-  node6->node9;
-  node10 [label="rio",shape=ellipse];
-  node9->node10;
-  node2 -> node6 [style=dotted]
-  node11 [label="call strcpy",shape=ellipse];
-  node12 [label="buf",shape=ellipse];
-  node11->node12;
-  node13 [label="request",shape=ellipse];
-  node11->node13;
-  node6 -> node11 [style=dotted]
-  node14 [label="if",shape=ellipse];
-  node15 [label="!=",shape=ellipse];
-  node16 [label="modify",shape=ellipse];
-  node17 [label="entry",shape=ellipse];
-  node16->node17;
-  node18 [label="call is_in_cache",shape=ellipse];
-  node19 [label="request",shape=ellipse];
-  node18->node19;
-  node16 -> node18 [style=dotted]
-  node15 -> node16 [style=dotted]
-  node20 [label="0",shape=ellipse];
-  node15->node20;
-  node14 -> node15 [style=dotted]
-  node21 [label="call sem_wait",shape=ellipse];
-  node22 [label="mutexp",shape=ellipse];
-  node21->node22;
-  node14 -> node21 [style=dotted]
-  node23 [label="post_inc",shape=ellipse];
-  node24 [label="ca_readcnt",shape=ellipse];
-  node23->node24;
-  node25 [label="1",shape=ellipse];
-  node23->node25;
-  node21 -> node23 [style=dotted]
-  node26 [label="if",shape=ellipse];
-  node27 [label="==",shape=ellipse];
-  node28 [label="ca_readcnt",shape=ellipse];
-  node27->node28;
-  node29 [label="1",shape=ellipse];
-  node27->node29;
-  node26 -> node27 [style=dotted]
-  node30 [label="call sem_wait",shape=ellipse];
-  node31 [label="w",shape=ellipse];
-  node30->node31;
-  node26 -> node30 [style=dotted]
-  node23 -> node26 [style=dotted]
-  node32 [label="call sem_post",shape=ellipse];
-  node33 [label="mutexp",shape=ellipse];
-  node32->node33;
-  node26 -> node32 [style=dotted]
-  node34 [label="call Rio_writen",shape=ellipse];
-  node35 [label="component",shape=ellipse];
-  node34->node35;
-  node36 [label="*",shape=ellipse];
-  node37 [label="entry",shape=ellipse];
-  node36->node37;
-  node35->node36;
-  node38 [label=".",shape=ellipse];
-  node35->node38;
-  node39 [label="content_size",shape=ellipse];
-  node38->node39;
-  node40 [label="component",shape=ellipse];
-  node34->node40;
-  node41 [label="*",shape=ellipse];
-  node42 [label="entry",shape=ellipse];
-  node41->node42;
-  node40->node41;
-  node43 [label=".",shape=ellipse];
-  node40->node43;
-  node44 [label="content",shape=ellipse];
-  node43->node44;
-  node45 [label="fd",shape=ellipse];
-  node34->node45;
-  node32 -> node34 [style=dotted]
-  node46 [label="call sem_wait",shape=ellipse];
-  node47 [label="mutexp",shape=ellipse];
-  node46->node47;
-  node34 -> node46 [style=dotted]
-  node48 [label="post_dec",shape=ellipse];
-  node49 [label="ca_readcnt",shape=ellipse];
-  node48->node49;
-  node50 [label="1",shape=ellipse];
-  node48->node50;
-  node46 -> node48 [style=dotted]
-  node51 [label="if",shape=ellipse];
-  node52 [label="==",shape=ellipse];
-  node53 [label="ca_readcnt",shape=ellipse];
-  node52->node53;
-  node54 [label="0",shape=ellipse];
-  node52->node54;
-  node51 -> node52 [style=dotted]
-  node55 [label="call sem_post",shape=ellipse];
-  node56 [label="w",shape=ellipse];
-  node55->node56;
-  node51 -> node55 [style=dotted]
-  node48 -> node51 [style=dotted]
-  node57 [label="call sem_post",shape=ellipse];
-  node58 [label="mutexp",shape=ellipse];
-  node57->node58;
-  node51 -> node57 [style=dotted]
-  node59 [label="call update_cache",shape=ellipse];
-  node60 [label="entry",shape=ellipse];
-  node59->node60;
-  node57 -> node59 [style=dotted]
-  node61 [label="return",shape=ellipse];
-  node62 [label="modify",shape=ellipse];
-  node63 [label="0",shape=ellipse];
-  node62->node63;
-  node61 -> node62 [style=dotted]
-  node59 -> node61 [style=dotted]
-  node11 -> node14 [style=dotted]
-  node64 [label="call sscanf",shape=ellipse];
-  node65 [label="version",shape=ellipse];
-  node64->node65;
-  node66 [label="uri",shape=ellipse];
-  node64->node66;
-  node67 [label="method",shape=ellipse];
-  node64->node67;
-  node68 [label="\"%s %s %s\"",shape=ellipse];
-  node64->node68;
-  node69 [label="buf",shape=ellipse];
-  node64->node69;
-  node14 -> node64 [style=dotted]
-  node70 [label="if",shape=ellipse];
-  node71 [label="!=",shape=ellipse];
-  node72 [label="call strcasecmp",shape=ellipse];
-  node73 [label="\"GET    \"",shape=ellipse];
-  node72->node73;
-  node74 [label="method",shape=ellipse];
-  node72->node74;
-  node71 -> node72 [style=dotted]
-  node75 [label="0",shape=ellipse];
-  node71->node75;
-  node70 -> node71 [style=dotted]
-  node76 [label="call clienterror",shape=ellipse];
-  node77 [label="\"Sorry, prxoy server servers \"",shape=ellipse];
-  node76->node77;
-  node78 [label="fd",shape=ellipse];
-  node76->node78;
-  node70 -> node76 [style=dotted]
-  node79 [label="return",shape=ellipse];
-  node80 [label="modify",shape=ellipse];
-  node81 [label="0",shape=ellipse];
-  node80->node81;
-  node79 -> node80 [style=dotted]
-  node76 -> node79 [style=dotted]
-  node64 -> node70 [style=dotted]
-  node82 [label="call parse_uri",shape=ellipse];
-  node83 [label="&",shape=ellipse];
-  node82->node83;
-  node84 [label="port",shape=ellipse];
-  node83->node84;
-  node85 [label="pathname",shape=ellipse];
-  node82->node85;
-  node86 [label="hostname",shape=ellipse];
-  node82->node86;
-  node87 [label="uri",shape=ellipse];
-  node82->node87;
-  node70 -> node82 [style=dotted]
-  node88 [label="call build_requesthdrs",shape=ellipse];
-  node89 [label="hostname",shape=ellipse];
-  node88->node89;
-  node90 [label="hdrstr",shape=ellipse];
-  node88->node90;
-  node91 [label="&",shape=ellipse];
-  node88->node91;
-  node92 [label="rio",shape=ellipse];
-  node91->node92;
-  node82 -> node88 [style=dotted]
-  node93 [label="if",shape=ellipse];
-  node94 [label="<",shape=ellipse];
-  node95 [label="modify",shape=ellipse];
-  node96 [label="clientfd",shape=ellipse];
-  node95->node96;
-  node97 [label="call Open_clientfd",shape=ellipse];
-  node98 [label="port",shape=ellipse];
-  node97->node98;
-  node99 [label="hostname",shape=ellipse];
-  node97->node99;
-  node95 -> node97 [style=dotted]
-  node94 -> node95 [style=dotted]
-  node100 [label="0",shape=ellipse];
-  node94->node100;
-  node93 -> node94 [style=dotted]
-  node101 [label="return",shape=ellipse];
-  node102 [label="modify",shape=ellipse];
-  node103 [label="0",shape=ellipse];
-  node102->node103;
-  node101 -> node102 [style=dotted]
-  node93 -> node101 [style=dotted]
-  node88 -> node93 [style=dotted]
-  node104 [label="call sprintf",shape=ellipse];
-  node105 [label="pathname",shape=ellipse];
-  node104->node105;
-  node106 [label="method",shape=ellipse];
-  node104->node106;
-  node107 [label="\"%s /%s HTTP/1.0
+  node1 [label="scope remove_cache_entry",shape=box];
+  node2 [label="call printf",shape=ellipse];
+  node3 [label="\"Remove cache entry
 \"",shape=ellipse];
-  node104->node107;
-  node108 [label="buf",shape=ellipse];
-  node104->node108;
-  node93 -> node104 [style=dotted]
-  node109 [label="call Rio_writen",shape=ellipse];
-  node110 [label="call strlen",shape=ellipse];
-  node111 [label="buf",shape=ellipse];
-  node110->node111;
-  node109 -> node110 [style=dotted]
-  node112 [label="buf",shape=ellipse];
-  node109->node112;
-  node113 [label="clientfd",shape=ellipse];
-  node109->node113;
-  node104 -> node109 [style=dotted]
-  node114 [label="call Rio_writen",shape=ellipse];
-  node115 [label="call strlen",shape=ellipse];
-  node116 [label="hdrstr",shape=ellipse];
+  node2->node3;
+  node1 -> node2 [style=dotted]
+  node4 [label="if",shape=ellipse];
+  node5 [label="==",shape=ellipse];
+  node6 [label="entry",shape=ellipse];
+  node5->node6;
+  node7 [label="0",shape=ellipse];
+  node5->node7;
+  node4 -> node5 [style=dotted]
+  node8 [label="return",shape=ellipse];
+  node4 -> node8 [style=dotted]
+  node2 -> node4 [style=dotted]
+  node9 [label="call printf",shape=ellipse];
+  node10 [label="size",shape=ellipse];
+  node9->node10;
+  node11 [label="\"free cache entry of size %d
+\"",shape=ellipse];
+  node9->node11;
+  node4 -> node9 [style=dotted]
+  node12 [label="call Free",shape=ellipse];
+  node13 [label="component",shape=ellipse];
+  node12->node13;
+  node14 [label="*",shape=ellipse];
+  node15 [label="entry",shape=ellipse];
+  node14->node15;
+  node13->node14;
+  node16 [label=".",shape=ellipse];
+  node13->node16;
+  node17 [label="content",shape=ellipse];
+  node16->node17;
+  node9 -> node12 [style=dotted]
+  node18 [label="if",shape=ellipse];
+  node12 -> node18 [style=dotted]
+  node19 [label="==",shape=ellipse];
+  node20 [label="component",shape=ellipse];
+  node19->node20;
+  node21 [label="cache",shape=ellipse];
+  node20->node21;
+  node22 [label=".",shape=ellipse];
+  node20->node22;
+  node23 [label="ca_head",shape=ellipse];
+  node22->node23;
+  node24 [label="entry",shape=ellipse];
+  node19->node24;
+  node18 -> node19 [style=dotted]
+  node25 [label="modify",shape=ellipse];
+  node26 [label="component",shape=ellipse];
+  node25->node26;
+  node27 [label="cache",shape=ellipse];
+  node26->node27;
+  node28 [label=".",shape=ellipse];
+  node26->node28;
+  node29 [label="ca_head",shape=ellipse];
+  node28->node29;
+  node30 [label="component",shape=ellipse];
+  node25->node30;
+  node31 [label="*",shape=ellipse];
+  node32 [label="entry",shape=ellipse];
+  node31->node32;
+  node30->node31;
+  node33 [label=".",shape=ellipse];
+  node30->node33;
+  node34 [label="next_entry",shape=ellipse];
+  node33->node34;
+  node18 -> node25 [style=dotted]
+  node35 [label="if",shape=ellipse];
+  node36 [label="!=",shape=ellipse];
+  node37 [label="component",shape=ellipse];
+  node36->node37;
+  node38 [label="cache",shape=ellipse];
+  node37->node38;
+  node39 [label=".",shape=ellipse];
+  node37->node39;
+  node40 [label="ca_head",shape=ellipse];
+  node39->node40;
+  node41 [label="0",shape=ellipse];
+  node36->node41;
+  node35 -> node36 [style=dotted]
+  node42 [label="modify",shape=ellipse];
+  node43 [label="component",shape=ellipse];
+  node42->node43;
+  node44 [label="*",shape=ellipse];
+  node45 [label="component",shape=ellipse];
+  node44->node45;
+  node46 [label="cache",shape=ellipse];
+  node45->node46;
+  node47 [label=".",shape=ellipse];
+  node45->node47;
+  node48 [label="ca_head",shape=ellipse];
+  node47->node48;
+  node43->node44;
+  node49 [label=".",shape=ellipse];
+  node43->node49;
+  node50 [label="prev_entry",shape=ellipse];
+  node49->node50;
+  node51 [label="0",shape=ellipse];
+  node42->node51;
+  node35 -> node42 [style=dotted]
+  node25 -> node35 [style=dotted]
+  node52 [label="call Free",shape=ellipse];
+  node53 [label="entry",shape=ellipse];
+  node52->node53;
+  node35 -> node52 [style=dotted]
+  node54 [label="else if",shape=ellipse];
+  node18 -> node54 [style=dotted]
+  node55 [label="==",shape=ellipse];
+  node56 [label="component",shape=ellipse];
+  node55->node56;
+  node57 [label="cache",shape=ellipse];
+  node56->node57;
+  node58 [label=".",shape=ellipse];
+  node56->node58;
+  node59 [label="ca_tail",shape=ellipse];
+  node58->node59;
+  node60 [label="entry",shape=ellipse];
+  node55->node60;
+  node54 -> node55 [style=dotted]
+  node61 [label="modify",shape=ellipse];
+  node62 [label="component",shape=ellipse];
+  node61->node62;
+  node63 [label="cache",shape=ellipse];
+  node62->node63;
+  node64 [label=".",shape=ellipse];
+  node62->node64;
+  node65 [label="ca_tail",shape=ellipse];
+  node64->node65;
+  node66 [label="component",shape=ellipse];
+  node61->node66;
+  node67 [label="*",shape=ellipse];
+  node68 [label="entry",shape=ellipse];
+  node67->node68;
+  node66->node67;
+  node69 [label=".",shape=ellipse];
+  node66->node69;
+  node70 [label="prev_entry",shape=ellipse];
+  node69->node70;
+  node54 -> node61 [style=dotted]
+  node71 [label="if",shape=ellipse];
+  node72 [label="!=",shape=ellipse];
+  node73 [label="component",shape=ellipse];
+  node72->node73;
+  node74 [label="cache",shape=ellipse];
+  node73->node74;
+  node75 [label=".",shape=ellipse];
+  node73->node75;
+  node76 [label="ca_tail",shape=ellipse];
+  node75->node76;
+  node77 [label="0",shape=ellipse];
+  node72->node77;
+  node71 -> node72 [style=dotted]
+  node78 [label="modify",shape=ellipse];
+  node79 [label="component",shape=ellipse];
+  node78->node79;
+  node80 [label="*",shape=ellipse];
+  node81 [label="component",shape=ellipse];
+  node80->node81;
+  node82 [label="cache",shape=ellipse];
+  node81->node82;
+  node83 [label=".",shape=ellipse];
+  node81->node83;
+  node84 [label="ca_tail",shape=ellipse];
+  node83->node84;
+  node79->node80;
+  node85 [label=".",shape=ellipse];
+  node79->node85;
+  node86 [label="next_entry",shape=ellipse];
+  node85->node86;
+  node87 [label="0",shape=ellipse];
+  node78->node87;
+  node71 -> node78 [style=dotted]
+  node61 -> node71 [style=dotted]
+  node88 [label="call Free",shape=ellipse];
+  node89 [label="entry",shape=ellipse];
+  node88->node89;
+  node71 -> node88 [style=dotted]
+  node90 [label="modify",shape=ellipse];
+  node91 [label="component",shape=ellipse];
+  node90->node91;
+  node92 [label="*",shape=ellipse];
+  node93 [label="component",shape=ellipse];
+  node92->node93;
+  node94 [label="*",shape=ellipse];
+  node95 [label="entry",shape=ellipse];
+  node94->node95;
+  node93->node94;
+  node96 [label=".",shape=ellipse];
+  node93->node96;
+  node97 [label="prev_entry",shape=ellipse];
+  node96->node97;
+  node91->node92;
+  node98 [label=".",shape=ellipse];
+  node91->node98;
+  node99 [label="next_entry",shape=ellipse];
+  node98->node99;
+  node100 [label="component",shape=ellipse];
+  node90->node100;
+  node101 [label="*",shape=ellipse];
+  node102 [label="entry",shape=ellipse];
+  node101->node102;
+  node100->node101;
+  node103 [label=".",shape=ellipse];
+  node100->node103;
+  node104 [label="next_entry",shape=ellipse];
+  node103->node104;
+  node54 -> node90 [style=dotted]
+  node105 [label="modify",shape=ellipse];
+  node106 [label="component",shape=ellipse];
+  node105->node106;
+  node107 [label="*",shape=ellipse];
+  node108 [label="component",shape=ellipse];
+  node107->node108;
+  node109 [label="*",shape=ellipse];
+  node110 [label="entry",shape=ellipse];
+  node109->node110;
+  node108->node109;
+  node111 [label=".",shape=ellipse];
+  node108->node111;
+  node112 [label="next_entry",shape=ellipse];
+  node111->node112;
+  node106->node107;
+  node113 [label=".",shape=ellipse];
+  node106->node113;
+  node114 [label="prev_entry",shape=ellipse];
+  node113->node114;
+  node115 [label="component",shape=ellipse];
+  node105->node115;
+  node116 [label="*",shape=ellipse];
+  node117 [label="entry",shape=ellipse];
+  node116->node117;
   node115->node116;
-  node114 -> node115 [style=dotted]
-  node117 [label="hdrstr",shape=ellipse];
-  node114->node117;
-  node118 [label="clientfd",shape=ellipse];
-  node114->node118;
-  node109 -> node114 [style=dotted]
-  node119 [label="modify",shape=ellipse];
-  node120 [label="*",shape=ellipse];
-  node121 [label="cnt",shape=ellipse];
+  node118 [label=".",shape=ellipse];
+  node115->node118;
+  node119 [label="prev_entry",shape=ellipse];
+  node118->node119;
+  node90 -> node105 [style=dotted]
+  node120 [label="call Free",shape=ellipse];
+  node121 [label="entry",shape=ellipse];
   node120->node121;
-  node119->node120;
-  node122 [label="0",shape=ellipse];
-  node119->node122;
-  node114 -> node119 [style=dotted]
-  node123 [label="goto label12550",shape=ellipse];
-  node119->node123;
-  node124 [label="label12551:",shape=ellipse];
-  node123 -> node124 [style=dotted]
-  node125 [label="if",shape=ellipse];
-  node124 -> node125 [style=dotted]
-  node126 [label="<=",shape=ellipse];
-  node127 [label="plus_expr",shape=ellipse];
-  node128 [label="*",shape=ellipse];
-  node129 [label="cnt",shape=ellipse];
-  node128->node129;
+  node105 -> node120 [style=dotted]
+  node122 [label="modify",shape=ellipse];
+  node123 [label="component",shape=ellipse];
+  node122->node123;
+  node124 [label="cache",shape=ellipse];
+  node123->node124;
+  node125 [label=".",shape=ellipse];
+  node123->node125;
+  node126 [label="ca_size",shape=ellipse];
+  node125->node126;
+  node127 [label="-",shape=ellipse];
+  node128 [label="component",shape=ellipse];
   node127->node128;
-  node130 [label="readcnt",shape=ellipse];
-  node127->node130;
-  node126 -> node127 [style=dotted]
-  node131 [label="102400",shape=ellipse];
-  node126->node131;
-  node125 -> node126 [style=dotted]
-  node132 [label="call memcpy",shape=ellipse];
-  node133 [label="readcnt",shape=ellipse];
-  node132->node133;
-  node134 [label="buf",shape=ellipse];
-  node132->node134;
-  node135 [label="poiner_plus",shape=ellipse];
-  node136 [label="cache_buf",shape=ellipse];
-  node135->node136;
-  node137 [label="*",shape=ellipse];
-  node138 [label="cnt",shape=ellipse];
-  node137->node138;
-  node135->node137;
-  node132 -> node135 [style=dotted]
-  node125 -> node132 [style=dotted]
-  node139 [label="modify",shape=ellipse];
-  node140 [label="*",shape=ellipse];
-  node141 [label="cnt",shape=ellipse];
-  node140->node141;
-  node139->node140;
-  node142 [label="plus_expr",shape=ellipse];
-  node143 [label="*",shape=ellipse];
-  node144 [label="cnt",shape=ellipse];
-  node143->node144;
-  node142->node143;
-  node145 [label="readcnt",shape=ellipse];
-  node142->node145;
-  node139 -> node142 [style=dotted]
-  node132 -> node139 [style=dotted]
-  node146 [label="modify",shape=ellipse];
-  node147 [label="cached",shape=ellipse];
-  node146->node147;
-  node148 [label="0",shape=ellipse];
-  node146->node148;
-  node125 -> node146 [style=dotted]
-  node149 [label="call Rio_writen",shape=ellipse];
-  node150 [label="readcnt",shape=ellipse];
-  node149->node150;
-  node151 [label="buf",shape=ellipse];
-  node149->node151;
-  node152 [label="fd",shape=ellipse];
-  node149->node152;
-  node125 -> node149 [style=dotted]
-  node153 [label="label12550:",shape=ellipse];
-  node149 -> node153 [style=dotted]
-  node154 [label="if",shape=ellipse];
-  node153 -> node154 [style=dotted]
-  node155 [label=">",shape=ellipse];
-  node156 [label="modify",shape=ellipse];
-  node157 [label="readcnt",shape=ellipse];
-  node156->node157;
-  node158 [label="convert_expr (int)",shape=ellipse];
-  node159 [label="call Rio_readn",shape=ellipse];
-  node160 [label="8192",shape=ellipse];
-  node159->node160;
-  node161 [label="buf",shape=ellipse];
-  node159->node161;
-  node162 [label="clientfd",shape=ellipse];
-  node159->node162;
-  node158 -> node159 [style=dotted]
-  node156->node158;
-  node155 -> node156 [style=dotted]
-  node163 [label="0",shape=ellipse];
-  node155->node163;
-  node154 -> node155 [style=dotted]
-  node164 [label="goto label12551",shape=ellipse];
-  node154->node164;
-  node165 [label="goto label12561",shape=ellipse];
-  node154->node165;
-  node166 [label="label12561:",shape=ellipse];
-  node154 -> node166 [style=dotted]
-  node167 [label="call Close",shape=ellipse];
-  node168 [label="clientfd",shape=ellipse];
-  node167->node168;
-  node166 -> node167 [style=dotted]
-  node169 [label="return",shape=ellipse];
-  node170 [label="modify",shape=ellipse];
-  node171 [label="cached",shape=ellipse];
-  node170->node171;
-  node169 -> node170 [style=dotted]
-  node167 -> node169 [style=dotted]
+  node129 [label="cache",shape=ellipse];
+  node128->node129;
+  node130 [label=".",shape=ellipse];
+  node128->node130;
+  node131 [label="ca_size",shape=ellipse];
+  node130->node131;
+  node132 [label="size",shape=ellipse];
+  node127->node132;
+  node122->node127;
+  node18 -> node122 [style=dotted]
+  node133 [label="call check_cache",shape=ellipse];
+  node122 -> node133 [style=dotted]
 } 
