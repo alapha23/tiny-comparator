@@ -149,14 +149,26 @@ static void component_to_dot(node *n)
 	assert(NULL != op);
 	assert(NULL != field);
 
+	// DEBUG
+	n->_dot_id = dot_shape(ref->_id, "component");
+	dot_link(n->prev->_dot_id, n->_dot_id);
+
+	op->prev = n;
+	op->to_dot(op);
+	// n:  "*"
+/*
+	if(op->_ntype == component_ref)
+	{
 	n->_dot_id = dot_shape(ref->_id, "*");
 	dot_link(n->prev->_dot_id, n->_dot_id);
 
-	op->prev = n;	// n:  "*"
-	if(op->_ntype == component_ref)
 		op->to_dot(op);
+	}
 	else if(op->_ntype == indirect_ref)
 	{
+	n->_dot_id = dot_shape(ref->_id, "*");
+	dot_link(n->prev->_dot_id, n->_dot_id);
+
 		int parm_id;
 		node *parm;
 		sscanf(op->_inner, " %*s %*s op 0: @%d ", &parm_id);
@@ -164,10 +176,17 @@ static void component_to_dot(node *n)
 		parm->prev = op->prev;
 		parm->to_dot(parm);
 	}
-	else
+	else if(op->_ntype == var_decl)
 	{
-		DEBUF("Unknown component op type: %d", op->_ntype);
+		op->prev = n->prev;
+		op->to_dot(op);
+		n->_dot_id = op->_dot_id;
+		n = op;
+	}else
+	{
+		DEBUF("Unknown component op type: %p", op->_ntype);
 	}
+*/
 	field->prev = n;
 	field->_dot_id = dot_shape(field->_id, ".");
 	dot_link(field->prev->_dot_id, field->_dot_id);

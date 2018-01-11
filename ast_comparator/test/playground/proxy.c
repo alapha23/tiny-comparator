@@ -268,6 +268,8 @@ int parse_uri(char *uri, char *hostname, char *pathname, int *port)
  * (sockaddr), the URI from the request (uri), and the size in bytes
  * of the response from the server (size).
  */
+typedef struct _s
+{int a; int b ;} sss;
 void format_log_entry(char *logstring, struct sockaddr_in *sockaddr, 
 		      char *uri, int size)
 {
@@ -292,8 +294,10 @@ void format_log_entry(char *logstring, struct sockaddr_in *sockaddr,
     // op0 component_ref op0 op1
     // op1 field sin_addr
     // op0 indirect_ref
-    (sockaddr->sin_addr);
-    host = ntohl((sockaddr)->sin_addr.s_addr);
+  //  (sockaddr->sin_addr);
+    //sss test;
+//    test.a;
+    host = ntohl(sockaddr->sin_addr.s_addr);
     // nop->call->component_ref: op0 op1
     // op1 field
     // op0 componet_ref: op0, op1
