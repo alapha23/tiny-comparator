@@ -1945,7 +1945,6 @@ emit_header(char *scpe, int start_id)
 
 static void eval_statement(node *n, char *scope)
 {
-	// from this node we found our love
 	// n contains name of the scope
 	node **node_list;
 	node *temp;
@@ -1970,7 +1969,7 @@ static void eval_statement(node *n, char *scope)
 	sscanf(body, "body: @%d", &body_id);
 	temp = search_pool(body_id, pool, n_inpool);
 	int bind_id;
-	sscanf(temp->_inner, " %*s %*s %*s %*s body: @%d", &bind_id);
+	sscanf(temp->_inner, " %*[^b] body: @%d", &bind_id);
 	n = search_pool(bind_id, pool, n_inpool);
 	if(n->_ntype != statement_list)
 	{
