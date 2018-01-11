@@ -188,6 +188,12 @@ static void sub_stmt_to_dot(node *n)
 	}
 }
 
+static void predict_to_dot(node *n)
+{
+	// predict expr exists in continue expr
+	n->_dot_id = n->prev->_dot_id;
+}
+
 static void addr_to_dot(node *n)
 {
 	node *ptr_type;
@@ -238,7 +244,7 @@ static void string_cst_to_dot(node *n)
 		{
 			pos += 2;
 			int counter = 0;
-			while((*(inner+pos+counter) != 'l') && counter <= size)
+			while((*(inner+pos+counter+2) != 'l') && counter <= size)
 			{
 				value[counter] = *(inner+pos+counter);	
 				counter++;
@@ -634,7 +640,7 @@ static void else_to_dot(node *n)
 		{
 			// if(){}else{}
 
- 			n->_dot_id = dot_shape(n->_id, "if");
+ 			n->_dot_id = dot_shape(n->_id, "else if");
 			// connect with the previous node
 			dot_link_dt(n->prev->_dot_id, n->_dot_id);
 
@@ -1378,8 +1384,16 @@ static NODE_TYPE str2node(char *node_type, node *n)
 					n->to_dot = pre_dec_to_dot;
 					break;
 				case 'i':
-					_t = postincrement_expr;
-					n->to_dot = post_inc_to_dot;
+					if(*(node_type+5) == 'c')
+					{
+						_t = predict_expr;
+						n->to_dot = predict_to_dot;
+					}
+					else
+					{
+						_t = postincrement_expr;
+						n->to_dot = post_inc_to_dot;
+					}
 					break;
 				case 'd':
 					_t = postdecrement_expr;

@@ -173,37 +173,37 @@ int read_request(char *str, int client_fd, char *host, char *port, char *cache_i
 	
 	rio_t rio_client;
 	
-	Rio_readinitb(&rio_client, client_fd);
-	if (Rio_readlineb(&rio_client, tmpstr, MAXBUF) == -1)
-		return -1;
+//	Rio_readinitb(&rio_client, client_fd);
+//	if (Rio_readlineb(&rio_client, tmpstr, MAXBUF) == -1)
+//		return -1;
 	
-	if (parse_request(tmpstr, method, protocol, host_port, resource, version) == -1)
-		return -1;
+//	if (parse_request(tmpstr, method, protocol, host_port, resource, version) == -1)
+//		return -1;
 	
-	get_host_and_port(host_port, host, port);
+//	get_host_and_port(host_port, host, port);
 	
 	if (strstr(method, "GET")) {
-		strcpy(str, method);
-		strcat(str, " ");
-		strcat(str, resource);
-		strcat(str, " ");
-		strcat(str, init_version);
+//		strcpy(str, method);
+//		strcat(str, " ");
+//		strcat(str, resource);
+//		strcat(str, " ");
+//		strcat(str, init_version);
 		
-		if(strlen(host))
-		{
-			strcpy(tmpstr, "Host: ");
-			strcat(tmpstr, host);
-			strcat(tmpstr, ":");
-			strcat(tmpstr, port);
-			strcat(tmpstr, "\r\n");
-			strcat(str, tmpstr);
-		}
+//		if(strlen(host))
+//		{
+//			strcpy(tmpstr, "Host: ");
+//			strcat(tmpstr, host);
+//			strcat(tmpstr, ":");
+//			strcat(tmpstr, port);
+//			strcat(tmpstr, "\r\n");
+//			strcat(str, tmpstr);
+//		}
 		
-		strcat(str, user_agent);
-		strcat(str, accept_str);
-		strcat(str, accept_encoding);
-		strcat(str, connection);
-		strcat(str, proxy_connection);
+//		strcat(str, user_agent);
+//		strcat(str, accept_str);
+//		strcat(str, accept_encoding);
+//		strcat(str, connection);
+//		strcat(str, proxy_connection);
 		
 		while(Rio_readlineb(&rio_client, tmpstr, MAXBUF) > 0) {
 			if (!strcmp(tmpstr, "\r\n")){
@@ -211,28 +211,28 @@ int read_request(char *str, int client_fd, char *host, char *port, char *cache_i
 				break;
 			}
 			else if(strstr(tmpstr, "User-Agent:") || strstr(tmpstr, "Accept:") ||
-				strstr(tmpstr, "Accept-Encoding:") || strstr(tmpstr, "Connection:") ||
+//				strstr(tmpstr, "Accept-Encoding:") || strstr(tmpstr, "Connection:") ||
 				strstr(tmpstr, "Proxy Connection:") || strstr(tmpstr, "Cookie:"))
 				continue;
-			else if (strstr(tmpstr, "Host:")) {
+/*			else if (strstr(tmpstr, "Host:")) {
 				if (!strlen(host)) {
-					sscanf(tmpstr, "Host: %s", host_port);
-					get_host_and_port(host_port, host, port);
-					strcpy(tmpstr, "Host: ");
-					strcat(tmpstr, host);
-					strcat(tmpstr, ":");
-					strcat(tmpstr, port);
+//					sscanf(tmpstr, "Host: %s", host_port);
+//					get_host_and_port(host_port, host, port);
+//					strcpy(tmpstr, "Host: ");
+//					strcat(tmpstr, host);
+//					strcat(tmpstr, ":");
+//					strcat(tmpstr, port);
 					strcat(tmpstr, "\r\n");
 					strcat(str, tmpstr);
 				}
 			}
 			else
-				strcat(str, tmpstr);
+				strcat(str, tmpstr);*/
 		}
 		
-		strcpy(cache_index, host);
-		strcat(cache_index, ":");
-		strcat(cache_index, port);
+//		strcpy(cache_index, host);
+//		strcat(cache_index, ":");
+//		strcat(cache_index, port);
 		strcat(cache_index, resource);
 		
 		return 0;

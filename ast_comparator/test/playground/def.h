@@ -57,6 +57,8 @@
 #define parm_decl	0x129
 #define truth_andif_expr	0x12a
 #define truth_orif_expr		0x12b
+#define predict_expr	0x12c
+// continue == stmt_list with two expr: predict expr & goto_expr
 
 
 #define integer_cst	0x201

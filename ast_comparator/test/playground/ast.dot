@@ -3,186 +3,131 @@ digraph AST {
   node  [fontname="Courier New",fontsize=10];
   edge  [fontname="Times New Roman",fontsize=10];
 
-  node1 [label="scope proxy_process",shape=box];
-  node2 [label="call printf",shape=ellipse];
-  node3 [label="convert_expr (unsigned)",shape=ellipse];
-  node4 [label="call Pthread_self",shape=ellipse];
+  node1 [label="scope read_request",shape=box];
+  node2 [label="if",shape=ellipse];
+  node3 [label="!=",shape=ellipse];
+  node4 [label="call strstr",shape=ellipse];
+  node5 [label="\"GET    \"",shape=ellipse];
+  node4->node5;
+  node6 [label="method",shape=ellipse];
+  node4->node6;
   node3 -> node4 [style=dotted]
-  node2->node3;
-  node5 [label="\"pid: %u
-  \"",shape=ellipse];
-  node2->node5;
-  node1 -> node2 [style=dotted]
-  node6 [label="call Pthread_detach",shape=ellipse];
-  node7 [label="call Pthread_self",shape=ellipse];
-  node6 -> node7 [style=dotted]
-  node2 -> node6 [style=dotted]
-  node8 [label="call printf",shape=ellipse];
-  node9 [label="port",shape=ellipse];
-  node8->node9;
-  node10 [label="host",shape=ellipse];
-  node8->node10;
-  node11 [label="\"Read data from %s:%s
-  \"",shape=ellipse];
-  node8->node11;
-  node6 -> node8 [style=dotted]
-  node12 [label="call fflush",shape=ellipse];
-  node13 [label="stdout",shape=ellipse];
+  node7 [label="0",shape=ellipse];
+  node3->node7;
+  node2 -> node3 [style=dotted]
+  node8 [label="goto label12633",shape=ellipse];
+  node2->node8;
+  node9 [label="label12634:",shape=ellipse];
+  node8 -> node9 [style=dotted]
+  node10 [label="if",shape=ellipse];
+  node9 -> node10 [style=dotted]
+  node11 [label="==",shape=ellipse];
+  node12 [label="call strcmp",shape=ellipse];
+  node13 [label="\"
+     \"",shape=ellipse];
   node12->node13;
-  node8 -> node12 [style=dotted]
-  node14 [label="if",shape=ellipse];
-  node15 [label="==",shape=ellipse];
-  node16 [label="r_value",shape=ellipse];
-  node15->node16;
-  node17 [label="0",shape=ellipse];
-  node15->node17;
-  node14 -> node15 [style=dotted]
-  node18 [label="if",shape=ellipse];
-  node14 -> node18 [style=dotted]
-  node19 [label="==",shape=ellipse];
-  node20 [label="call read_node_content",shape=ellipse];
-  node21 [label="content",shape=ellipse];
-  node20->node21;
-  node22 [label="cache_index",shape=ellipse];
-  node20->node22;
-  node23 [label="cache_list",shape=ellipse];
-  node20->node23;
-  node19 -> node20 [style=dotted]
-  node24 [label="0",shape=ellipse];
-  node19->node24;
-  node18 -> node19 [style=dotted]
-  node25 [label="call printf",shape=ellipse];
-  node26 [label="\"cache hit!
-  \"",shape=ellipse];
+  node14 [label="tmpstr",shape=ellipse];
+  node12->node14;
+  node11 -> node12 [style=dotted]
+  node15 [label="0",shape=ellipse];
+  node11->node15;
+  node10 -> node11 [style=dotted]
+  node16 [label="call strcat",shape=ellipse];
+  node17 [label="\"
+     \"",shape=ellipse];
+  node16->node17;
+  node18 [label="str",shape=ellipse];
+  node16->node18;
+  node10 -> node16 [style=dotted]
+  node19 [label="goto label12641",shape=ellipse];
+  node16->node19;
+  node20 [label="else if",shape=ellipse];
+  node10 -> node20 [style=dotted]
+  node21 [label="||",shape=ellipse];
+  node22 [label="||",shape=ellipse];
+  node23 [label="||",shape=ellipse];
+  node24 [label="!=",shape=ellipse];
+  node25 [label="call strstr",shape=ellipse];
+  node26 [label="\"User-Agent:\"",shape=ellipse];
   node25->node26;
-  node18 -> node25 [style=dotted]
-  node27 [label="if",shape=ellipse];
-  node28 [label="==",shape=ellipse];
-  node29 [label="call forward_content_to_client",shape=ellipse];
-  node30 [label="len",shape=ellipse];
-  node29->node30;
-  node31 [label="content",shape=ellipse];
-  node29->node31;
-  node32 [label="client_fd",shape=ellipse];
-  node29->node32;
-  node28 -> node29 [style=dotted]
-  node33 [label="-1",shape=ellipse];
-  node28->node33;
-  node27 -> node28 [style=dotted]
-  node34 [label="call fprintf",shape=ellipse];
-  node35 [label="\"forward content to c\"",shape=ellipse];
-  node34->node35;
-  node36 [label="stderr",shape=ellipse];
-  node34->node36;
-  node27 -> node34 [style=dotted]
-  node25 -> node27 [style=dotted]
-  node37 [label="call Close",shape=ellipse];
-  node38 [label="client_fd",shape=ellipse];
-  node37->node38;
-  node27 -> node37 [style=dotted]
-  node39 [label="return",shape=ellipse];
-  node37 -> node39 [style=dotted]
-  node40 [label="if",shape=ellipse];
-  node18 -> node40 [style=dotted]
-  node41 [label="==",shape=ellipse];
-  node42 [label="server_value",shape=ellipse];
-  node41->node42;
-  node43 [label="-1",shape=ellipse];
-  node41->node43;
-  node40 -> node41 [style=dotted]
-  node44 [label="call fprintf",shape=ellipse];
-  node45 [label="\"forward content to server error.
-  \"",shape=ellipse];
-  node44->node45;
-  node46 [label="stderr",shape=ellipse];
-  node44->node46;
-  node40 -> node44 [style=dotted]
-  node47 [label="call strcpy",shape=ellipse];
-  node48 [label="connect_fail_str",shape=ellipse];
-  node47->node48;
-  node49 [label="tmp_str",shape=ellipse];
-  node47->node49;
-  node44 -> node47 [style=dotted]
-  node50 [label="call Rio_writen",shape=ellipse];
-  node51 [label="call strlen",shape=ellipse];
-  node52 [label="connect_fail_str",shape=ellipse];
-  node51->node52;
-  node50 -> node51 [style=dotted]
-  node53 [label="tmp_str",shape=ellipse];
-  node50->node53;
-  node54 [label="client_fd",shape=ellipse];
-  node50->node54;
-  node47 -> node50 [style=dotted]
-  node55 [label="if",shape=ellipse];
-  node40 -> node55 [style=dotted]
-  node56 [label="==",shape=ellipse];
-  node57 [label="server_value",shape=ellipse];
-  node56->node57;
-  node58 [label="-2",shape=ellipse];
-  node56->node58;
-  node55 -> node56 [style=dotted]
-  node59 [label="call fprintf",shape=ellipse];
-  node60 [label="\"forward content to server error(dns \"",shape=ellipse];
+  node27 [label="tmpstr",shape=ellipse];
+  node25->node27;
+  node24 -> node25 [style=dotted]
+  node28 [label="0",shape=ellipse];
+  node24->node28;
+  node23 -> node24 [style=dotted]
+  node29 [label="!=",shape=ellipse];
+  node30 [label="call strstr",shape=ellipse];
+  node31 [label="\"Accept:\"",shape=ellipse];
+  node30->node31;
+  node32 [label="tmpstr",shape=ellipse];
+  node30->node32;
+  node29 -> node30 [style=dotted]
+  node33 [label="0",shape=ellipse];
+  node29->node33;
+  node23 -> node29 [style=dotted]
+  node22 -> node23 [style=dotted]
+  node34 [label="!=",shape=ellipse];
+  node35 [label="call strstr",shape=ellipse];
+  node36 [label="\"Proxy Connection:\"",shape=ellipse];
+  node35->node36;
+  node37 [label="tmpstr",shape=ellipse];
+  node35->node37;
+  node34 -> node35 [style=dotted]
+  node38 [label="0",shape=ellipse];
+  node34->node38;
+  node22 -> node34 [style=dotted]
+  node21 -> node22 [style=dotted]
+  node39 [label="!=",shape=ellipse];
+  node40 [label="call strstr",shape=ellipse];
+  node41 [label="\"Cookie:\"",shape=ellipse];
+  node40->node41;
+  node42 [label="tmpstr",shape=ellipse];
+  node40->node42;
+  node39 -> node40 [style=dotted]
+  node43 [label="0",shape=ellipse];
+  node39->node43;
+  node21 -> node39 [style=dotted]
+  node20 -> node21 [style=dotted]
+  node44 [label="goto label12633",shape=ellipse];
+  node20->node44;
+  node45 [label="label12633:",shape=ellipse];
+  node10 -> node45 [style=dotted]
+  node46 [label="if",shape=ellipse];
+  node45 -> node46 [style=dotted]
+  node47 [label=">",shape=ellipse];
+  node48 [label="call Rio_readlineb",shape=ellipse];
+  node49 [label="8192",shape=ellipse];
+  node48->node49;
+  node50 [label="tmpstr",shape=ellipse];
+  node48->node50;
+  node47 -> node48 [style=dotted]
+  node51 [label="0",shape=ellipse];
+  node47->node51;
+  node46 -> node47 [style=dotted]
+  node52 [label="goto label12634",shape=ellipse];
+  node46->node52;
+  node53 [label="goto label12641",shape=ellipse];
+  node46->node53;
+  node54 [label="label12641:",shape=ellipse];
+  node46 -> node54 [style=dotted]
+  node55 [label="call strcat",shape=ellipse];
+  node56 [label="resource",shape=ellipse];
+  node55->node56;
+  node57 [label="cache_index",shape=ellipse];
+  node55->node57;
+  node54 -> node55 [style=dotted]
+  node58 [label="return",shape=ellipse];
+  node59 [label="modify",shape=ellipse];
+  node60 [label="0",shape=ellipse];
   node59->node60;
-  node61 [label="stderr",shape=ellipse];
-  node59->node61;
-  node55 -> node59 [style=dotted]
-  node62 [label="call strcpy",shape=ellipse];
-  node63 [label="dns_fail_str",shape=ellipse];
+  node58 -> node59 [style=dotted]
+  node55 -> node58 [style=dotted]
+  node1 -> node2 [style=dotted]
+  node61 [label="return",shape=ellipse];
+  node62 [label="modify",shape=ellipse];
+  node63 [label="1",shape=ellipse];
   node62->node63;
-  node64 [label="tmp_str",shape=ellipse];
-  node62->node64;
-  node59 -> node62 [style=dotted]
-  node65 [label="call Rio_writen",shape=ellipse];
-  node66 [label="call strlen",shape=ellipse];
-  node67 [label="dns_fail_str",shape=ellipse];
-  node66->node67;
-  node65 -> node66 [style=dotted]
-  node68 [label="tmp_str",shape=ellipse];
-  node65->node68;
-  node69 [label="client_fd",shape=ellipse];
-  node65->node69;
-  node62 -> node65 [style=dotted]
-  node70 [label="if",shape=ellipse];
-  node55 -> node70 [style=dotted]
-  node71 [label="==",shape=ellipse];
-  node72 [label="f_value",shape=ellipse];
-  node71->node72;
-  node73 [label="-1",shape=ellipse];
-  node71->node73;
-  node70 -> node71 [style=dotted]
-  node74 [label="call fprintf",shape=ellipse];
-  node75 [label="\"forward content to c\"",shape=ellipse];
-  node74->node75;
-  node76 [label="stderr",shape=ellipse];
-  node74->node76;
-  node70 -> node74 [style=dotted]
-  node77 [label="else if",shape=ellipse];
-  node70 -> node77 [style=dotted]
-  node78 [label="&&",shape=ellipse];
-  node79 [label="==",shape=ellipse];
-  node80 [label="f_value",shape=ellipse];
-  node79->node80;
-  node81 [label="-2",shape=ellipse];
-  node79->node81;
-  node78 -> node79 [style=dotted]
-  node82 [label="!=",shape=ellipse];
-  node83 [label="cache_list",shape=ellipse];
-  node82->node83;
-  node84 [label="0",shape=ellipse];
-  node82->node84;
-  node78 -> node82 [style=dotted]
-  node77 -> node78 [style=dotted]
-  node85 [label="call fprintf",shape=ellipse];
-  node86 [label="\"save content to cache error.
-  \"",shape=ellipse];
-  node85->node86;
-  node87 [label="stderr",shape=ellipse];
-  node85->node87;
-  node77 -> node85 [style=dotted]
-  node88 [label="call close_fd",shape=ellipse];
-  node18 -> node88 [style=dotted]
-  node12 -> node14 [style=dotted]
-  node89 [label="return",shape=ellipse];
-  node14 -> node89 [style=dotted]
+  node61 -> node62 [style=dotted]
+  node2 -> node61 [style=dotted]
 } 
