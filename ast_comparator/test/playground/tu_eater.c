@@ -439,7 +439,8 @@ static void bind_to_dot(node *n)
 {
 	int body_id;
 	node *body;
-	sscanf(n->_inner, " %*s %*s %*s %*s body: @%d", &body_id);
+
+	sscanf(n->_inner, " %*[^b] body: @%d", &body_id);
 	body = search_pool(body_id, pool, n_inpool);
 	body->prev = n->prev;
 	body->to_dot(body);
@@ -685,6 +686,7 @@ static void cond_to_dot(node *n)
 		assert(op2 != NULL);
 
  		n->_dot_id = dot_shape(n->_id, "if");
+	dot_link_dt(n->prev->_dot_id, n->_dot_id);
 		op1->prev = n;
 		op2->prev = n;
 		op1->to_dot(op1);
@@ -692,7 +694,7 @@ static void cond_to_dot(node *n)
 		op2->to_dot(op2);
 
 		// connect with the previous node
-		dot_link_dt(n->prev->_dot_id, n->_dot_id);
+	
 	} else
 	{
 		sscanf(n->_inner, "%*s @%*d op 0: @%d op 1: @%d op 2: @%d ", &id1, &id2, &id3);
@@ -1256,26 +1258,41 @@ static void convert_to_dot(node *n)
 	node *type;
 	node *name1;
 	node *name2;
+	char sign_s[16];
 	char strg[64];
 	char name[64];
 
 	sscanf(n->_inner, " type: @%d op 0: @%d", &type_id, &op_id);
 
 	type = search_pool(type_id, pool, n_inpool);
-	sscanf(type->_inner, " name: @%d ", &name1_id);
-	name1 = search_pool(name1_id, pool, n_inpool);
-	sscanf(name1->_inner, " name: @%d ", &name2_id);
-	name2 = search_pool(name2_id, pool, n_inpool);	
-	sscanf(name2->_inner, " strg: %s ", strg);
-	
-	name2->prev = n->prev;
-	sprintf(name, "convert_expr (%s)", strg);
-	name2->_dot_id = dot_shape(name2->_id, name);
-
 	op = search_pool(op_id, pool, n_inpool);
-	op->prev = name2;
-	op->to_dot(op);
-	dot_link(name2->prev->_dot_id, name2->_dot_id);
+
+	sscanf(type->_inner, " %*[^s] %*[^s] sign: %s", sign_s);
+	if(*sign_s == 's')
+	{
+		sscanf(type->_inner, " name: @%d ", &name1_id);
+		name1 = search_pool(name1_id, pool, n_inpool);
+		sscanf(name1->_inner, " name: @%d ", &name2_id);
+		name2 = search_pool(name2_id, pool, n_inpool);	
+		sscanf(name2->_inner, " strg: %s ", strg);
+
+		name2->prev = n->prev;
+		sprintf(name, "convert_expr (%s)", strg);
+
+		name2->_dot_id = dot_shape(name2->_id, name);
+		op->prev = name2;
+		op->to_dot(op);
+		dot_link(name2->prev->_dot_id, name2->_dot_id);
+	}
+	else 
+	{
+		sprintf(strg, "unsigned int");
+		n->_dot_id = dot_shape(n->_id, strg);
+		op->prev = n;
+		op->to_dot(op);
+		dot_link(n->prev->_dot_id, n->_dot_id);
+	}
+
 }
 
 static void switch_to_dot(node *n)
@@ -1953,6 +1970,7 @@ static void eval_statement(node *n, char *scope)
 	char value[64];
 	sprintf(value, "name: @%d", ident_id);
 	temp = *pool;
+
 	while(1)
 	{
 		temp = get_next(temp, pool, n_inpool);
@@ -1964,6 +1982,7 @@ static void eval_statement(node *n, char *scope)
 			}
 		}
 	};
+
 	char *body = strstr(temp->_inner, "body:");
 	int body_id;
 	sscanf(body, "body: @%d", &body_id);
@@ -2060,7 +2079,7 @@ eval_file(char *name)
 		// EOF
 			break;
 
-		if(check_inner(n, scp_name))
+		if(check_inner(n, scp_name) && n->_ntype == identifier_node)
 		{
 			target_id = n->_id;
 		}

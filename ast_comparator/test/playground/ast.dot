@@ -3,293 +3,252 @@ digraph AST {
   node  [fontname="Courier New",fontsize=10];
   edge  [fontname="Times New Roman",fontsize=10];
 
-  node1 [label="scope update_cache",shape=box];
-  node2 [label="call sem_wait",shape=ellipse];
-  node3 [label="w",shape=ellipse];
-  node2->node3;
+  node1 [label="scope check_cache",shape=box];
+  node2 [label="return",shape=ellipse];
   node1 -> node2 [style=dotted]
-  node4 [label="call printf",shape=ellipse];
-  node5 [label="\"cache updatint
-\"",shape=ellipse];
-  node4->node5;
-  node2 -> node4 [style=dotted]
-  node6 [label="call check_cache",shape=ellipse];
-  node4 -> node6 [style=dotted]
-  node7 [label="if",shape=ellipse];
-  node8 [label="!=",shape=ellipse];
-  node9 [label="component",shape=ellipse];
+  node3 [label="goto label12575",shape=ellipse];
+  node2->node3;
+  node4 [label="label12576:",shape=ellipse];
+  node3 -> node4 [style=dotted]
+  node5 [label="if",shape=ellipse];
+  node4 -> node5 [style=dotted]
+  node6 [label="!=",shape=ellipse];
+  node7 [label="component",shape=ellipse];
+  node6->node7;
+  node8 [label="*",shape=ellipse];
+  node9 [label="ptr",shape=ellipse];
   node8->node9;
-  node10 [label="*",shape=ellipse];
-  node11 [label="entry",shape=ellipse];
+  node7->node8;
+  node10 [label=".",shape=ellipse];
+  node7->node10;
+  node11 [label="next_entry",shape=ellipse];
   node10->node11;
-  node9->node10;
-  node12 [label=".",shape=ellipse];
-  node9->node12;
-  node13 [label="next_entry",shape=ellipse];
-  node12->node13;
-  node14 [label="0",shape=ellipse];
-  node8->node14;
-  node7 -> node8 [style=dotted]
-  node15 [label="if",shape=ellipse];
-  node7 -> node15 [style=dotted]
-  node16 [label="!=",shape=ellipse];
+  node12 [label="0",shape=ellipse];
+  node6->node12;
+  node5 -> node6 [style=dotted]
+  node13 [label="if",shape=ellipse];
+  node5 -> node13 [style=dotted]
+  node14 [label="==",shape=ellipse];
+  node15 [label="component",shape=ellipse];
+  node14->node15;
+  node16 [label="*",shape=ellipse];
   node17 [label="component",shape=ellipse];
   node16->node17;
   node18 [label="*",shape=ellipse];
-  node19 [label="entry",shape=ellipse];
+  node19 [label="ptr",shape=ellipse];
   node18->node19;
   node17->node18;
   node20 [label=".",shape=ellipse];
   node17->node20;
-  node21 [label="prev_entry",shape=ellipse];
+  node21 [label="next_entry",shape=ellipse];
   node20->node21;
-  node22 [label="0",shape=ellipse];
-  node16->node22;
-  node15 -> node16 [style=dotted]
-  node23 [label="modify",shape=ellipse];
-  node24 [label="component",shape=ellipse];
-  node23->node24;
-  node25 [label="*",shape=ellipse];
-  node26 [label="component",shape=ellipse];
-  node25->node26;
-  node27 [label="*",shape=ellipse];
-  node28 [label="entry",shape=ellipse];
-  node27->node28;
+  node15->node16;
+  node22 [label=".",shape=ellipse];
+  node15->node22;
+  node23 [label="prev_entry",shape=ellipse];
+  node22->node23;
+  node24 [label="ptr",shape=ellipse];
+  node14->node24;
+  node13 -> node14 [style=dotted]
+  node25 [label="0",shape=ellipse];
+  node13->node25;
+  node26 [label="call __assert_fail",shape=ellipse];
+  node27 [label="__PRETTY_FUNCTION__",shape=ellipse];
   node26->node27;
-  node29 [label=".",shape=ellipse];
+  node28 [label="174",shape=ellipse];
+  node26->node28;
+  node29 [label="\"cache.c\"",shape=ellipse];
   node26->node29;
-  node30 [label="next_entry",shape=ellipse];
-  node29->node30;
-  node24->node25;
-  node31 [label=".",shape=ellipse];
-  node24->node31;
-  node32 [label="prev_entry",shape=ellipse];
+  node30 [label="\"ptr == ptr->next_entry->prev_entry\"",shape=ellipse];
+  node26->node30;
+  node13 -> node26 [style=dotted]
+  node31 [label="modify",shape=ellipse];
+  node32 [label="size",shape=ellipse];
   node31->node32;
-  node33 [label="component",shape=ellipse];
-  node23->node33;
-  node34 [label="*",shape=ellipse];
-  node35 [label="entry",shape=ellipse];
+  node33 [label="plus_expr",shape=ellipse];
+  node34 [label="unsigned int",shape=ellipse];
+  node35 [label="component",shape=ellipse];
   node34->node35;
-  node33->node34;
-  node36 [label=".",shape=ellipse];
-  node33->node36;
-  node37 [label="prev_entry",shape=ellipse];
+  node36 [label="*",shape=ellipse];
+  node37 [label="ptr",shape=ellipse];
   node36->node37;
-  node15 -> node23 [style=dotted]
-  node38 [label="modify",shape=ellipse];
-  node39 [label="component",shape=ellipse];
+  node35->node36;
+  node38 [label=".",shape=ellipse];
+  node35->node38;
+  node39 [label="content_size",shape=ellipse];
   node38->node39;
-  node40 [label="*",shape=ellipse];
-  node41 [label="component",shape=ellipse];
-  node40->node41;
-  node42 [label="*",shape=ellipse];
-  node43 [label="entry",shape=ellipse];
-  node42->node43;
+  node33->node34;
+  node40 [label="size",shape=ellipse];
+  node33->node40;
+  node31 -> node33 [style=dotted]
+  node5 -> node31 [style=dotted]
+  node41 [label="modify",shape=ellipse];
+  node42 [label="ptr",shape=ellipse];
   node41->node42;
-  node44 [label=".",shape=ellipse];
-  node41->node44;
-  node45 [label="prev_entry",shape=ellipse];
+  node43 [label="component",shape=ellipse];
+  node41->node43;
+  node44 [label="*",shape=ellipse];
+  node45 [label="ptr",shape=ellipse];
   node44->node45;
-  node39->node40;
+  node43->node44;
   node46 [label=".",shape=ellipse];
-  node39->node46;
+  node43->node46;
   node47 [label="next_entry",shape=ellipse];
   node46->node47;
-  node48 [label="component",shape=ellipse];
-  node38->node48;
-  node49 [label="*",shape=ellipse];
-  node50 [label="entry",shape=ellipse];
-  node49->node50;
-  node48->node49;
-  node51 [label=".",shape=ellipse];
-  node48->node51;
-  node52 [label="next_entry",shape=ellipse];
-  node51->node52;
-  node23 -> node38 [style=dotted]
-  node53 [label="modify",shape=ellipse];
-  node54 [label="component",shape=ellipse];
-  node53->node54;
-  node55 [label="*",shape=ellipse];
-  node56 [label="entry",shape=ellipse];
-  node55->node56;
-  node54->node55;
-  node57 [label=".",shape=ellipse];
-  node54->node57;
-  node58 [label="next_entry",shape=ellipse];
+  node31 -> node41 [style=dotted]
+  node48 [label="label12575:",shape=ellipse];
+  node41 -> node48 [style=dotted]
+  node49 [label="if",shape=ellipse];
+  node48 -> node49 [style=dotted]
+  node50 [label="!=",shape=ellipse];
+  node51 [label="ptr",shape=ellipse];
+  node50->node51;
+  node52 [label="0",shape=ellipse];
+  node50->node52;
+  node49 -> node50 [style=dotted]
+  node53 [label="goto label12576",shape=ellipse];
+  node49->node53;
+  node54 [label="goto label12584",shape=ellipse];
+  node49->node54;
+  node55 [label="label12584:",shape=ellipse];
+  node49 -> node55 [style=dotted]
+  node56 [label="if",shape=ellipse];
+  node55 -> node56 [style=dotted]
+  node57 [label="==",shape=ellipse];
+  node58 [label="size",shape=ellipse];
   node57->node58;
-  node59 [label="0",shape=ellipse];
-  node53->node59;
-  node38 -> node53 [style=dotted]
-  node60 [label="modify",shape=ellipse];
-  node61 [label="component",shape=ellipse];
-  node60->node61;
-  node62 [label="*",shape=ellipse];
-  node63 [label="entry",shape=ellipse];
-  node62->node63;
+  node59 [label="component",shape=ellipse];
+  node57->node59;
+  node60 [label="cache",shape=ellipse];
+  node59->node60;
+  node61 [label=".",shape=ellipse];
+  node59->node61;
+  node62 [label="ca_size",shape=ellipse];
   node61->node62;
-  node64 [label=".",shape=ellipse];
-  node61->node64;
-  node65 [label="prev_entry",shape=ellipse];
+  node56 -> node57 [style=dotted]
+  node63 [label="0",shape=ellipse];
+  node56->node63;
+  node64 [label="call __assert_fail",shape=ellipse];
+  node65 [label="__PRETTY_FUNCTION__",shape=ellipse];
   node64->node65;
-  node66 [label="component",shape=ellipse];
-  node60->node66;
-  node67 [label="cache",shape=ellipse];
-  node66->node67;
-  node68 [label=".",shape=ellipse];
-  node66->node68;
-  node69 [label="ca_tail",shape=ellipse];
-  node68->node69;
-  node53 -> node60 [style=dotted]
-  node70 [label="modify",shape=ellipse];
+  node66 [label="179",shape=ellipse];
+  node64->node66;
+  node67 [label="\"cache.c\"",shape=ellipse];
+  node64->node67;
+  node68 [label="\"size == cache.ca_size\"",shape=ellipse];
+  node64->node68;
+  node56 -> node64 [style=dotted]
+  node69 [label="if",shape=ellipse];
+  node64 -> node69 [style=dotted]
+  node70 [label="!=",shape=ellipse];
   node71 [label="component",shape=ellipse];
   node70->node71;
-  node72 [label="*",shape=ellipse];
-  node73 [label="component",shape=ellipse];
-  node72->node73;
-  node74 [label="cache",shape=ellipse];
-  node73->node74;
-  node75 [label=".",shape=ellipse];
-  node73->node75;
-  node76 [label="ca_tail",shape=ellipse];
-  node75->node76;
+  node72 [label="cache",shape=ellipse];
   node71->node72;
-  node77 [label=".",shape=ellipse];
-  node71->node77;
-  node78 [label="next_entry",shape=ellipse];
+  node73 [label=".",shape=ellipse];
+  node71->node73;
+  node74 [label="ca_head",shape=ellipse];
+  node73->node74;
+  node75 [label="0",shape=ellipse];
+  node70->node75;
+  node69 -> node70 [style=dotted]
+  node76 [label="if",shape=ellipse];
+  node69 -> node76 [style=dotted]
+  node77 [label="!=",shape=ellipse];
+  node78 [label="component",shape=ellipse];
   node77->node78;
-  node79 [label="entry",shape=ellipse];
-  node70->node79;
-  node60 -> node70 [style=dotted]
-  node80 [label="modify",shape=ellipse];
-  node81 [label="component",shape=ellipse];
+  node79 [label="cache",shape=ellipse];
+  node78->node79;
+  node80 [label=".",shape=ellipse];
+  node78->node80;
+  node81 [label="ca_tail",shape=ellipse];
   node80->node81;
-  node82 [label="cache",shape=ellipse];
-  node81->node82;
-  node83 [label=".",shape=ellipse];
-  node81->node83;
-  node84 [label="ca_tail",shape=ellipse];
-  node83->node84;
-  node85 [label="entry",shape=ellipse];
-  node80->node85;
-  node70 -> node80 [style=dotted]
-  node86 [label="modify",shape=ellipse];
-  node87 [label="component",shape=ellipse];
-  node86->node87;
-  node88 [label="*",shape=ellipse];
-  node89 [label="component",shape=ellipse];
-  node88->node89;
-  node90 [label="*",shape=ellipse];
-  node91 [label="entry",shape=ellipse];
+  node82 [label="0",shape=ellipse];
+  node77->node82;
+  node76 -> node77 [style=dotted]
+  node83 [label="0",shape=ellipse];
+  node76->node83;
+  node84 [label="call __assert_fail",shape=ellipse];
+  node85 [label="__PRETTY_FUNCTION__",shape=ellipse];
+  node84->node85;
+  node86 [label="181",shape=ellipse];
+  node84->node86;
+  node87 [label="\"cache.c\"",shape=ellipse];
+  node84->node87;
+  node88 [label="\"cache.ca_t\"",shape=ellipse];
+  node84->node88;
+  node76 -> node84 [style=dotted]
+  node89 [label="if",shape=ellipse];
+  node84 -> node89 [style=dotted]
+  node90 [label="==",shape=ellipse];
+  node91 [label="component",shape=ellipse];
   node90->node91;
-  node89->node90;
-  node92 [label=".",shape=ellipse];
-  node89->node92;
-  node93 [label="next_entry",shape=ellipse];
+  node92 [label="*",shape=ellipse];
+  node93 [label="component",shape=ellipse];
   node92->node93;
-  node87->node88;
-  node94 [label=".",shape=ellipse];
-  node87->node94;
-  node95 [label="prev_entry",shape=ellipse];
-  node94->node95;
-  node96 [label="0",shape=ellipse];
-  node86->node96;
-  node15 -> node86 [style=dotted]
-  node97 [label="modify",shape=ellipse];
-  node98 [label="component",shape=ellipse];
+  node94 [label="cache",shape=ellipse];
+  node93->node94;
+  node95 [label=".",shape=ellipse];
+  node93->node95;
+  node96 [label="ca_head",shape=ellipse];
+  node95->node96;
+  node91->node92;
+  node97 [label=".",shape=ellipse];
+  node91->node97;
+  node98 [label="prev_entry",shape=ellipse];
   node97->node98;
-  node99 [label="cache",shape=ellipse];
-  node98->node99;
-  node100 [label=".",shape=ellipse];
-  node98->node100;
-  node101 [label="ca_head",shape=ellipse];
-  node100->node101;
-  node102 [label="component",shape=ellipse];
-  node97->node102;
-  node103 [label="*",shape=ellipse];
-  node104 [label="entry",shape=ellipse];
-  node103->node104;
-  node102->node103;
-  node105 [label=".",shape=ellipse];
-  node102->node105;
-  node106 [label="next_entry",shape=ellipse];
-  node105->node106;
-  node86 -> node97 [style=dotted]
-  node107 [label="modify",shape=ellipse];
+  node99 [label="0",shape=ellipse];
+  node90->node99;
+  node89 -> node90 [style=dotted]
+  node100 [label="0",shape=ellipse];
+  node89->node100;
+  node101 [label="call __assert_fail",shape=ellipse];
+  node102 [label="__PRETTY_FUNCTION__",shape=ellipse];
+  node101->node102;
+  node103 [label="182",shape=ellipse];
+  node101->node103;
+  node104 [label="\"cache.c\"",shape=ellipse];
+  node101->node104;
+  node105 [label="\"cache.ca_head->prev_entry == NULL\"",shape=ellipse];
+  node101->node105;
+  node89 -> node101 [style=dotted]
+  node106 [label="if",shape=ellipse];
+  node101 -> node106 [style=dotted]
+  node107 [label="==",shape=ellipse];
   node108 [label="component",shape=ellipse];
   node107->node108;
   node109 [label="*",shape=ellipse];
-  node110 [label="entry",shape=ellipse];
+  node110 [label="component",shape=ellipse];
   node109->node110;
+  node111 [label="cache",shape=ellipse];
+  node110->node111;
+  node112 [label=".",shape=ellipse];
+  node110->node112;
+  node113 [label="ca_tail",shape=ellipse];
+  node112->node113;
   node108->node109;
-  node111 [label=".",shape=ellipse];
-  node108->node111;
-  node112 [label="next_entry",shape=ellipse];
-  node111->node112;
-  node113 [label="0",shape=ellipse];
-  node107->node113;
-  node97 -> node107 [style=dotted]
-  node114 [label="modify",shape=ellipse];
-  node115 [label="component",shape=ellipse];
+  node114 [label=".",shape=ellipse];
+  node108->node114;
+  node115 [label="next_entry",shape=ellipse];
   node114->node115;
-  node116 [label="*",shape=ellipse];
-  node117 [label="entry",shape=ellipse];
-  node116->node117;
-  node115->node116;
-  node118 [label=".",shape=ellipse];
-  node115->node118;
-  node119 [label="prev_entry",shape=ellipse];
+  node116 [label="0",shape=ellipse];
+  node107->node116;
+  node106 -> node107 [style=dotted]
+  node117 [label="0",shape=ellipse];
+  node106->node117;
+  node118 [label="call __assert_fail",shape=ellipse];
+  node119 [label="__PRETTY_FUNCTION__",shape=ellipse];
   node118->node119;
-  node120 [label="component",shape=ellipse];
-  node114->node120;
-  node121 [label="cache",shape=ellipse];
-  node120->node121;
-  node122 [label=".",shape=ellipse];
-  node120->node122;
-  node123 [label="ca_tail",shape=ellipse];
-  node122->node123;
-  node107 -> node114 [style=dotted]
-  node124 [label="modify",shape=ellipse];
-  node125 [label="component",shape=ellipse];
-  node124->node125;
-  node126 [label="*",shape=ellipse];
-  node127 [label="component",shape=ellipse];
-  node126->node127;
-  node128 [label="cache",shape=ellipse];
-  node127->node128;
-  node129 [label=".",shape=ellipse];
-  node127->node129;
-  node130 [label="ca_tail",shape=ellipse];
-  node129->node130;
-  node125->node126;
-  node131 [label=".",shape=ellipse];
-  node125->node131;
-  node132 [label="next_entry",shape=ellipse];
-  node131->node132;
-  node133 [label="entry",shape=ellipse];
-  node124->node133;
-  node114 -> node124 [style=dotted]
-  node134 [label="modify",shape=ellipse];
-  node135 [label="component",shape=ellipse];
-  node134->node135;
-  node136 [label="cache",shape=ellipse];
-  node135->node136;
-  node137 [label=".",shape=ellipse];
-  node135->node137;
-  node138 [label="ca_tail",shape=ellipse];
-  node137->node138;
-  node139 [label="entry",shape=ellipse];
-  node134->node139;
-  node124 -> node134 [style=dotted]
-  node6 -> node7 [style=dotted]
-  node140 [label="call check_cache",shape=ellipse];
-  node7 -> node140 [style=dotted]
-  node141 [label="call sem_post",shape=ellipse];
-  node142 [label="w",shape=ellipse];
-  node141->node142;
-  node140 -> node141 [style=dotted]
-  node143 [label="call printf",shape=ellipse];
-  node144 [label="\"cache updated
+  node120 [label="183",shape=ellipse];
+  node118->node120;
+  node121 [label="\"cache.c\"",shape=ellipse];
+  node118->node121;
+  node122 [label="\"cache.ca_t\"",shape=ellipse];
+  node118->node122;
+  node106 -> node118 [style=dotted]
+  node123 [label="call printf",shape=ellipse];
+  node124 [label="\"check passed
 \"",shape=ellipse];
-  node143->node144;
-  node141 -> node143 [style=dotted]
+  node123->node124;
+  node69 -> node123 [style=dotted]
 } 
