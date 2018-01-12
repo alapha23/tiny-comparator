@@ -45,6 +45,7 @@ eval_node(void)
 	char line[72];
 	node *n = (node *)calloc(1, sizeof(node));
 	char next;
+	int inner_len = 0;
 
 	n->_inner = (char *)calloc(INNER_SIZE, 1);
 
@@ -53,22 +54,6 @@ eval_node(void)
 	       return NULL;	
 	// set type, to_do, _inner and id 
 	eval_ntype(line, n);
-	/*if(n->_id >= 12549)
-	{
-		DEBUG(debug);
-		while(((next = peek()) != EOF)&&(next != '@'))
-		{
-			memset(line, 0, 72);
-			fgets(line, 72, fp);
-			strcat(n->_inner, line);
-		}
-		ADD2POOL(n, pool, n_inpool);
-		if(peek() == EOF)
-			return NULL;
-	
-		DEBUF("%d", n->_id);
-		return n;	
-	}*/
 
 	while(((next = peek()) != EOF)&&(next != '@'))
 	// next line belongs to this node unless EOF or @
@@ -76,6 +61,13 @@ eval_node(void)
 		memset(line, 0, 72);
 		fgets(line, 72, fp);
 		strcat(n->_inner, line);
+		inner_len++;
+		if(inner_len*72 > 2000)
+		{
+			DEBUG(Inner content exceed default);
+			DEBUG(Please modify INNER_SIZE in the header file);
+			exit(0);
+		}
 	}
 	ADD2POOL(n, pool, n_inpool);
 	if(peek() == EOF)
@@ -826,6 +818,30 @@ static void else_to_dot(node *n)
 	free(op);
 }
 
+static void function_to_dot(node *n)
+{
+	int name_id;
+	node *name;
+	int value[128];
+
+	sscanf(n->_inner, " name: @%d", &name_id);	
+	name = search_pool(name_id, pool, n_inpool);
+	assert(NULL != name);
+
+	if(name->_ntype == identifier_node)
+	{
+		sscanf(name->_inner, " strg: %s ", value);
+		n->_dot_id = dot_shape(n->_id, value);
+		dot_link(n->prev->_dot_id, n->_dot_id);
+	}
+	else
+	{
+		DEBUG("Not a function pointer");
+		DEBUF("%s", n->_inner);
+	}
+
+}
+
 static void plus_to_dot(node *n)
 {
 	int id1, id2;
@@ -1491,6 +1507,9 @@ static NODE_TYPE str2node(char *node_type, node *n)
 					_t = switch_expr;
 					n->to_dot = switch_to_dot;
 					break;
+				case 'v':
+					_t = save_expr;
+					break;
 				default:
 					DEBUF("Unknown node type: %s", node_type);
 			}
@@ -1665,7 +1684,10 @@ static NODE_TYPE str2node(char *node_type, node *n)
 			break;
 		case 'f':
 			if(*(node_type+9) == 'd')
+			{
 				_t = function_decl;
+				n->to_dot = function_to_dot;
+			}
 			else if(*(node_type+9) == 't')
 				_t = function_type;
 			break;

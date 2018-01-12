@@ -46,7 +46,7 @@
 		})*/
 #define get_next(n, pool, n_inpool) (get_by_num(n->_id, pool, n_inpool))
 
-#define INNER_SIZE	1024
+#define INNER_SIZE	2048
 #define NUM_EXPR	64
 #define NUM_NODE	64
 // Assume number of stmt within a stmt list is within 1024
@@ -202,5 +202,7 @@ static void component_to_dot(node *);
 static void rshift_to_dot(node *);
 
 static void lshift_to_dot(node *);
+
+static void function_to_dot(node *);
 #endif
 

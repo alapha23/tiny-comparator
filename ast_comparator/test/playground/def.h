@@ -63,6 +63,7 @@
 #define negate_expr	0x12d
 #define rshift_expr	0x12e
 #define lshift_expr	0x12f
+#define save_expr	0x130
 
 // continue == stmt_list with two expr: predict expr & goto_expr
 
