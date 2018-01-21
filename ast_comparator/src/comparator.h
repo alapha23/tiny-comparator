@@ -4,28 +4,39 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <assert.h>
 
-#define EXPR_TYPE int
+#define DEBUG(a) fprintf(stderr, #a"\n"); \
+        fflush(stderr)
+#define DEBUF(a, b) fprintf(stderr, a"\n", b); \
+        fflush(stderr)
 
-#define decl_expr 	0x001
-#define modify_expr 	0x002
-#define return_expr	0x003
+FILE *fp;
+int r_sq_brk = 0;
 
-#define var_decl
-#define function_decl
-#define identifier_node
-
-void open_file(const char *name);
-
-void emit_modify_expr(void);
-
-void read_symboltable(void);
-
-typedef struct 
+typedef struct tree
 {
-	int _id;
-	EXPR_TYPE _expr_type;
-	EXPR_TYPE _
-} node;
+        char *nodeN;
+        int _id;
+        int n_child;
+	struct tree *parent;
+        struct tree **l_child;
+} tree_node;
+
+tree_node *root;
+tree_node **pool;
+int     n_inpool=0;
+
+
+void open_file(char **name);
+size_t get_filesize(FILE *fileptr);
+static char peek(FILE *fileptr);
+char *read_line(FILE *fileptr);
+int check_type(char *line);
+void link_n(char *line);
+void decl_n(char *line);
+void dump_tree(tree_node *root);
+
+static tree_node *search_pool(int id);
 
 #endif
