@@ -71,3 +71,5 @@ C++ Boost lib / perl lab: a robust regular expressions library is required for t
 
 * support for c++
 
+* Multiscope tree compare
+
