@@ -13,7 +13,7 @@ if [ -z "$SCOPENAME" ]; then
 fi
 
 gcc -o tu_eater tu_eater.c tu_eater.h
-gcc -std=c99 -lpthread -fdump-translation-unit -fno-builtin -ffreestanding  "../$FILEDIR$FILENAME"
+gcc -std=c99 -lpthread -fdump-translation-unit -fno-builtin -ffreestanding  "../$FILEDIR$FILENAME" -o temp
 
 ./tu_eater "${FILENAME}.001t.tu" $SCOPENAME > ../dot_obj/"${FILENAME}.dot"
 # filename test/xxx.c 
@@ -22,7 +22,7 @@ gcc -std=c99 -lpthread -fdump-translation-unit -fno-builtin -ffreestanding  "../
 dot -Tpdf -o ../dot_obj/"${FILENAME}.pdf" ../dot_obj/"${FILENAME}.dot"
 # atril ../dot_obj/"${FILENAME}.pdf" &
 
-rm *.o  *.*.* tu_eater
+rm  *.*.* tu_eater temp
 unset FILENAME SCOPENAME FILEDIR
 
 # fno-builtin: Don't recognize built-in functions that do not begin with __builtin_ as prefix.

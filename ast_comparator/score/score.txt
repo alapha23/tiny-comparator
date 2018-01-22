@@ -112,3 +112,22 @@ helloworld3.c.tree   empty.tree
 helloworld3_c3.c.tree   helloworld3.c.tree
 215.0
 helloworld3_c3.c.tree   empty.tree
+
+// change order of two if-else
+34.0
+pairA02_copy1.tree   proxy.c.tree
+92.0
+pairA02_copy1.tree   empty.tree
+88.0
+empty.tree   proxy.c.tree
+
+
+// change order of two if-else
+46.0
+pairA02_copy2.tree   proxy.c.tree
+88.0
+pairA02_copy2.tree   empty.tree
+
+
+49.0
+e/pairA02_copy3.tree   e/proxy.c.tree

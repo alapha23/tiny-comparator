@@ -8,12 +8,14 @@ csapp.o: csapp.c csapp.h
 	$(CC) $(CFLAGS) -c csapp.c
 
 proxy.o: proxy.c csapp.h
-	$(CC) $(CFLAGS) -c proxy.c
+	$(CC) $(CFLAGS) -fdump-translation-unit -fno-builtin -ffreestanding -c proxy.c
 
 cache.o: cache.c cache.h
 	$(CC) $(CFLAGS) -c cache.c
 
 proxy: proxy.o csapp.o cache.o
+	gcc -lpthread -fdump-translation-unit -fno-builtin -ffreestanding  proxy.o csapp.o cache.o   -o proxy
+ 
 
 submit:
 	(make clean; cd ..; tar cvf proxylab.tar proxylab-handout)
