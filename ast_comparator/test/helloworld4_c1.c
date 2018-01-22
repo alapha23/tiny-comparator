@@ -8,6 +8,14 @@ int add(int n, int a)
 void g(void){}
 void h(void){}
 
+void partition(int i, int j)
+{
+  if ((i == 2) && (j == 3))
+    g();
+  else
+    h();
+}
+
 int main(void)
 {
   int i, j;
@@ -20,10 +28,7 @@ int main(void)
   else
     h();
 
-  if ((i == 2) && (j == 3))
-    g();
-  else
-    h();
+  partition(i, j);
 
   /*switch(*b)
   {

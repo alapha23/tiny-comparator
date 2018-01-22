@@ -15,7 +15,7 @@ csapp.o: csapp.c csapp.h
 	$(CC) $(CFLAGS) -c csapp.c
 
 proxy.o: proxy.c csapp.h
-	$(CC) $(CFLAGS) -c proxy.c
+	$(CC) $(CFLAGS) -fdump-translation-unit -fno-builtin -ffreestanding  -c proxy.c
 
 proxy: proxy.o csapp.o
 

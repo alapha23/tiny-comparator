@@ -1,65 +1,5 @@
-88.0
-proxy.c.tree   helloworld2.c.tree
-85.0
-proxy.c.tree   helloworld.c.tree
-118.0
-proxy.c.tree   helloworld3.c.tree
-33.0
-cheat.c.tree   proxy.c.tree
-83.0
-cheat.c.tree   proxy.c.tree
-83.0
-cheat.c.tree   proxy.c.tree
-33.0
-cheat.c.tree   proxy.c.tree
-82.0
-cheat.c.tree   proxy.c.tree
-59.0
-cheat.c.tree   proxy.c.tree
-88.0
-empty.tree   proxy.c.tree
-88.0
-empty.tree   proxy.c.tree
-
-88.0
-empty.tree   proxy.c.tree
-
-61.0
-cheat.c.tree   proxy.c.tree
-66.0
-cheat.c.tree   proxy.c.tree
-66.0
-cheat.c.tree   proxy.c.tree
-65.0
-cheat.c.tree   proxy.c.tree
-
-77.0
-cheat_proxy.tree   proxy.c.tree	
-
-59.0
-cheat_proxy.tree   empty.tree
-
-49.0
-cheat_proxy.tree   cheat.c.tree
-43.0
-empty.tree   cheat.c.tree
-59.0
-pairA02_copy1.tree   empty.tree
-77.0
-pairA02_copy1.tree   proxy.c.tree
-
--m
-77.0
-pairA02_copy1.tree   proxy.c.tree
-77.0
-pairA02_copy1.tree   proxy.c.tree
-77.0
-pairA02_copy2.tree   proxy.c.tree
-0.0
-proxy.c.tree   proxy.c.tree
 0.0
 helloworld.c.tree   helloworld_c1.c.tree
-
 
 26.0
 helloworld2_c1.c.tree   helloworld2.c.tree
@@ -73,8 +13,6 @@ empty.tree   helloworld2.c.tree
 helloworld2.c.tree   helloworld2_c2.c.tree
 49.0
 empty.tree   helloworld2_c2.c.tree
-
-
 
 20.0
 helloworld2.c.tree   helloworld2_c3.c.tree
@@ -131,3 +69,20 @@ pairA02_copy2.tree   empty.tree
 
 49.0
 e/pairA02_copy3.tree   e/proxy.c.tree
+
+
+77.0
+pairA03_proxy.tree   proxy.c.tree
+59.0
+pairA03_proxy.tree   empty.tree
+88.0
+empty.tree   proxy.c.tree
+
+
+80.0
+pairA04_proxy.dot   proxy.c.tree
+71.0
+pairA04_proxy.dot   empty.tree
+88.0
+empty.tree   proxy.c.tree
+
