@@ -62,7 +62,7 @@ eval_node(void)
 		fgets(line, 72, fp);
 		strcat(n->_inner, line);
 		inner_len++;
-		if(inner_len*72 > 2000)
+		if(inner_len*72 > INNER_SIZE)
 		{
 			DEBUG(Inner content exceed default);
 			DEBUG(Please modify INNER_SIZE in the header file);

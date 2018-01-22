@@ -12,7 +12,6 @@
         fflush(stderr)
 
 FILE *fp;
-int r_sq_brk = 0;
 
 typedef struct tree
 {

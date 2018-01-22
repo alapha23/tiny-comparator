@@ -1,9 +1,0 @@
-*.o
-*.do
-*.debug
-*.fast
-mm.c
-*.txt
-.noproxy
-.proxy
-proxy

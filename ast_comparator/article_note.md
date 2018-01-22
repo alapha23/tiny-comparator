@@ -8,6 +8,7 @@
 to program source code.
 
 * comment alteration
+* stub statement--> compare average of two tree-to-empty with tree-to-tree
 * whilespace padding
 
 ```clike=
@@ -19,9 +20,16 @@ to program source code.
 	{printf("Aloha");}
 ```
 * identifier renaming
-* code reordering
-* algebraic expressions --> a*b <==> b*a
+* code reordering: order of decl won't affect
 
+* algebraic expressions --> a*b <==> b*a
+there is no difference between * and /
+so a = b -> a = b*a/a*a/a*a/a will crack the comparator
+
+
+do while <--> while
+
+cross difference scopes
 
 ### Objective 
 

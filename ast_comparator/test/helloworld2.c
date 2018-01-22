@@ -31,7 +31,7 @@ int main(void)
   }
 
 
-  int *c;
+ /* int *c;
   a = 100;
 
   do
@@ -47,10 +47,11 @@ int main(void)
  char* c_a = "abc";
   while(a>0)
   {
+//	  printf("test: %d fdfdsa\n", a);
 	  a--;
 	  a -= 3;
   }
 
-
+*/
   return 0;
 }
