@@ -1,4 +1,7 @@
-## tiny-comparator
+## SNU Plagiarism Detector
+
+[Slide](https://hackmd.io/p/rJ0Tp27Sf#)
+---
 
 Usage
 ---
@@ -14,7 +17,7 @@ bash  compare.sh  <result1>  <result2>
 # compare bracket notation under result
 # example:  bash compare.sh result/helloworld.c.tree result/helloworld2.c.tree
 
-# score would be emitted on command line
+# score would be emitted to score/score.txt
 ```
 
 
