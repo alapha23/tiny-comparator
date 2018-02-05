@@ -131,7 +131,7 @@ digraph AST {
   node62 -> node63;
   node56 -> node62 [style=dotted];
   node64 [label="if",shape=ellipse];
-  node0 -> node64 [style=dotted];
+  node35 -> node64 [style=dotted];
   node65 [label="==",shape=ellipse];
   node66 [label="bg",shape=ellipse];
   node65 -> node66;

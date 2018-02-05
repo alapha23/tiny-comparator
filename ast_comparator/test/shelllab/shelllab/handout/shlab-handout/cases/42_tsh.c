@@ -40,6 +40,117 @@
  * At most 1 job can be in the FG state.
  */
 
+/******************************
+ * end job list helper routines
+ ******************************/
+
+
+/***********************
+ * Other helper routines
+ ***********************/
+
+/*
+ * usage - print a help message
+ */
+void usage(void)
+{
+  printf("Usage: shell [-hvp]\n");
+  printf("   -h   print this message\n");
+  printf("   -v   print additional diagnostic information\n");
+  printf("   -p   do not emit a command prompt\n");
+  exit(1);
+}
+
+/*
+ * unix_error - unix-style error routine
+ */
+void unix_error(char *msg)
+{
+  fprintf(stdout, "%s: %s\n", msg, strerror(errno));
+  exit(1);
+}
+
+/*
+ * app_error - application-style error routine
+ */
+void app_error(char *msg)
+{
+  fprintf(stdout, "%s\n", msg);
+  exit(1);
+}
+
+/*
+ * Signal - wrapper for the sigaction function
+ */
+handler_t *Signal(int signum, handler_t *handler)
+{
+  struct sigaction action, old_action;
+
+  action.sa_handler = handler;
+  sigemptyset(&action.sa_mask); /* block sigs of type being handled */
+  action.sa_flags = SA_RESTART; /* restart syscalls if possible */
+
+  if (sigaction(signum, &action, &old_action) < 0)
+    unix_error("Signal error");
+  return (old_action.sa_handler);
+}
+
+/*
+ * sigquit_handler - The driver program can gracefully terminate the
+ *    child shell by sending it a SIGQUIT signal.
+ */
+void sigquit_handler(int sig)
+{
+  printf("Terminating after receipt of SIGQUIT signal\n");
+  exit(1);
+}
+
+/*
+ * Custom Wrapper
+ * */
+ pid_t Fork() {
+	pid_t pid;
+	
+	if((pid = fork()) < 0) 
+		exit(0);
+	return pid;
+ }
+ void Sigprocmask(int how, const sigset_t *set, sigset_t *oldset) {
+	if(sigprocmask(how, set, oldset) < 0)
+		exit(0);
+ }
+ void Sigemptyset(sigset_t *set) {
+	if(sigemptyset(set) < 0)
+		exit(0);
+ }
+ void Sigfillset(sigset_t *set) {
+	if(sigfillset(set) < 0)
+		exit(0);
+ }
+ void Sigaddset(sigset_t *set, int signum) {
+	if(sigaddset(set, signum) < 0)
+		exit(0);
+ }
+ void Sigdelset(sigset_t *set, int signum) {
+	if(sigdelset(set, signum) < 0)
+		exit(0);
+ }
+ void Addjob(struct job_t *jobs, pid_t pid, int state, char *cmdline) {
+	if(addjob(jobs, pid, state, cmdline) == 0) 
+		exit(0);
+ }
+ void Deletejob(struct job_t *jobs, pid_t pid) {
+	if(deletejob(jobs, pid) == 0 )
+		exit(0);
+ }
+ void Kill(pid_t pid, int sig) {
+	if(kill(pid, sig) == -1)
+		exit(0);
+ }
+ 
+ 
+
+
 /* Global variables */
 extern char **environ;      /* defined in libc */
 char prompt[] = "tsh> ";    /* command line prompt (DO NOT CHANGE) */
@@ -646,114 +757,4 @@ void listjobs(struct job_t *jobs)
     }
   }
 }
-/******************************
- * end job list helper routines
- ******************************/
-
-
-/***********************
- * Other helper routines
- ***********************/
-
-/*
- * usage - print a help message
- */
-void usage(void)
-{
-  printf("Usage: shell [-hvp]\n");
-  printf("   -h   print this message\n");
-  printf("   -v   print additional diagnostic information\n");
-  printf("   -p   do not emit a command prompt\n");
-  exit(1);
-}
-
-/*
- * unix_error - unix-style error routine
- */
-void unix_error(char *msg)
-{
-  fprintf(stdout, "%s: %s\n", msg, strerror(errno));
-  exit(1);
-}
-
-/*
- * app_error - application-style error routine
- */
-void app_error(char *msg)
-{
-  fprintf(stdout, "%s\n", msg);
-  exit(1);
-}
-
-/*
- * Signal - wrapper for the sigaction function
- */
-handler_t *Signal(int signum, handler_t *handler)
-{
-  struct sigaction action, old_action;
-
-  action.sa_handler = handler;
-  sigemptyset(&action.sa_mask); /* block sigs of type being handled */
-  action.sa_flags = SA_RESTART; /* restart syscalls if possible */
-
-  if (sigaction(signum, &action, &old_action) < 0)
-    unix_error("Signal error");
-  return (old_action.sa_handler);
-}
-
-/*
- * sigquit_handler - The driver program can gracefully terminate the
- *    child shell by sending it a SIGQUIT signal.
- */
-void sigquit_handler(int sig)
-{
-  printf("Terminating after receipt of SIGQUIT signal\n");
-  exit(1);
-}
-
-/*
- * Custom Wrapper
- * */
- pid_t Fork() {
-	pid_t pid;
-	
-	if((pid = fork()) < 0) 
-		exit(0);
-	return pid;
- }
- void Sigprocmask(int how, const sigset_t *set, sigset_t *oldset) {
-	if(sigprocmask(how, set, oldset) < 0)
-		exit(0);
- }
- void Sigemptyset(sigset_t *set) {
-	if(sigemptyset(set) < 0)
-		exit(0);
- }
- void Sigfillset(sigset_t *set) {
-	if(sigfillset(set) < 0)
-		exit(0);
- }
- void Sigaddset(sigset_t *set, int signum) {
-	if(sigaddset(set, signum) < 0)
-		exit(0);
- }
- void Sigdelset(sigset_t *set, int signum) {
-	if(sigdelset(set, signum) < 0)
-		exit(0);
- }
- void Addjob(struct job_t *jobs, pid_t pid, int state, char *cmdline) {
-	if(addjob(jobs, pid, state, cmdline) == 0) 
-		exit(0);
- }
- void Deletejob(struct job_t *jobs, pid_t pid) {
-	if(deletejob(jobs, pid) == 0 )
-		exit(0);
- }
- void Kill(pid_t pid, int sig) {
-	if(kill(pid, sig) == -1)
-		exit(0);
- }
- 
- 
-
 

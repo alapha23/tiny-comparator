@@ -349,7 +349,7 @@ void waitfg(pid_t pid)
     return;
 }
 
- * sigchld_handler - The kernel sends a SIGCHLD to the shell whenever
+/* * sigchld_handler - The kernel sends a SIGCHLD to the shell whenever
  *     a child job terminates (becomes a zombie), or stops because it
  *     received a SIGSTOP or SIGTSTP signal. The handler reaps all
  *     available zombie children, but doesn't wait for any other
