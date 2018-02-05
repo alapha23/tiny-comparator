@@ -1,0 +1,250 @@
+97.0
+Empty Distance: 63_tsh.c.eval.tree
+84.0
+Empty Distance: 62_tsh.c.eval.tree
+114.0
+Empty Distance: 61_tsh.c.eval.tree
+104.0
+Empty Distance: 60_tsh.c.eval.tree
+98.0
+Empty Distance: 59_tsh.c.eval.tree
+141.0
+Empty Distance: 58_tsh.c.eval.tree
+90.0
+Empty Distance: 57_tsh.c.eval.tree
+307.0
+Empty Distance: 56_tsh.c.eval.tree
+109.0
+Empty Distance: 55_tsh.c.eval.tree
+124.0
+Empty Distance: 54_tsh.c.eval.tree
+117.0
+Empty Distance: 53_tsh.c.eval.tree
+106.0
+Empty Distance: 52_tsh.c.eval.tree
+132.0
+Empty Distance: 51_tsh.c.eval.tree
+153.0
+Empty Distance: 50_tsh.c.eval.tree
+81.0
+Empty Distance: 49_tsh.c.eval.tree
+95.0
+Empty Distance: 48_tsh.c.eval.tree
+116.0
+Empty Distance: 47_tsh.c.eval.tree
+82.0
+Empty Distance: 46_tsh.c.eval.tree
+116.0
+Empty Distance: 45_tsh.c.eval.tree
+119.0
+Empty Distance: 44_tsh.c.eval.tree
+101.0
+Empty Distance: 43_tsh.c.eval.tree
+TREE1 argument has wrong format
+Empty Distance: 42_tsh.c.eval.tree
+83.0
+Empty Distance: 41_tsh.c.eval.tree
+85.0
+Empty Distance: 40_tsh.c.eval.tree
+115.0
+Empty Distance: 39_tsh.c.eval.tree
+84.0
+Empty Distance: 38_tsh.c.eval.tree
+77.0
+Empty Distance: 37_tsh.c.eval.tree
+70.0
+Empty Distance: 36_tsh.c.eval.tree
+77.0
+Empty Distance: 35_tsh.c.eval.tree
+115.0
+Empty Distance: 34_tsh.c.eval.tree
+121.0
+Empty Distance: 33_tsh.c.eval.tree
+98.0
+Empty Distance: 32_tsh.c.eval.tree
+114.0
+Empty Distance: 31_tsh.c.eval.tree
+89.0
+Empty Distance: 30_tsh.c.eval.tree
+115.0
+Empty Distance: 29_tsh.c.eval.tree
+84.0
+Empty Distance: 28_tsh.c.eval.tree
+121.0
+Empty Distance: 27_tsh.c.eval.tree
+85.0
+Empty Distance: 26_tsh.c.eval.tree
+108.0
+Empty Distance: 25_tsh.c.eval.tree
+133.0
+Empty Distance: 24_tsh.c.eval.tree
+80.0
+Empty Distance: 23_tsh.c.eval.tree
+85.0
+Empty Distance: 22_tsh.c.eval.tree
+55.0
+Empty Distance: 21_tsh.c.eval.tree
+98.0
+Empty Distance: 20_tsh.c.eval.tree
+114.0
+Empty Distance: 19_tsh.c.eval.tree
+136.0
+Empty Distance: 18_tsh.c.eval.tree
+86.0
+Empty Distance: 17_tsh.c.eval.tree
+89.0
+Empty Distance: 16_tsh.c.eval.tree
+80.0
+Empty Distance: 15_tsh.c.eval.tree
+91.0
+Empty Distance: 14_tsh.c.eval.tree
+79.0
+Empty Distance: 13_tsh.c.eval.tree
+80.0
+Empty Distance: 12_tsh.c.eval.tree
+139.0
+Empty Distance: 11_tsh.c.eval.tree
+82.0
+Empty Distance: 10_tsh.c.eval.tree
+84.0
+Empty Distance: 9_tsh.c.eval.tree
+78.0
+Empty Distance: 8_tsh.c.eval.tree
+118.0
+Empty Distance: 7_tsh.c.eval.tree
+51.0
+Empty Distance: 6_tsh.c.eval.tree
+81.0
+Empty Distance: 5_tsh.c.eval.tree
+78.0
+Empty Distance: 4_tsh.c.eval.tree
+78.0
+Empty Distance: 3_tsh.c.eval.tree
+72.0
+Empty Distance: 2_tsh.c.eval.tree
+116.0
+Empty Distance: 1_tsh.c.eval.tree
+100.0
+Empty Distance: 0_tsh.c.eval.tree
+78.0
+Empty Distance: prev_22_tsh.c.eval.tree
+137.0
+Empty Distance: prev_21_tsh.c.eval.tree
+114.0
+Empty Distance: prev_20_tsh.c.eval.tree
+106.0
+Empty Distance: prev_19_tsh.c.eval.tree
+75.0
+Empty Distance: prev_18_tsh.c.eval.tree
+100.0
+Empty Distance: prev_17_tsh.c.eval.tree
+60.0
+Empty Distance: prev_16_tsh.c.eval.tree
+77.0
+Empty Distance: prev_15_tsh.c.eval.tree
+95.0
+Empty Distance: prev_14_tsh.c.eval.tree
+127.0
+Empty Distance: prev_13_tsh.c.eval.tree
+102.0
+Empty Distance: prev_12_tsh.c.eval.tree
+103.0
+Empty Distance: prev_11_tsh.c.eval.tree
+120.0
+Empty Distance: prev_10_tsh.c.eval.tree
+81.0
+Empty Distance: prev_9_tsh.c.eval.tree
+81.0
+Empty Distance: prev_8_tsh.c.eval.tree
+108.0
+Empty Distance: prev_7_tsh.c.eval.tree
+86.0
+Empty Distance: prev_6_tsh.c.eval.tree
+113.0
+Empty Distance: prev_5_tsh.c.eval.tree
+65.0
+Empty Distance: prev_4_tsh.c.eval.tree
+83.0
+Empty Distance: prev_3_tsh.c.eval.tree
+51.0
+Empty Distance: prev_2_tsh.c.eval.tree
+113.0
+Empty Distance: prev_1_tsh.c.eval.tree
+57.0
+Empty Distance: prev_0_tsh.c.eval.tree
+TREE1 argument has wrong format
+Empty Distance: reference_39_tsh.c.eval.tree
+TREE1 argument has wrong format
+Empty Distance: reference_38_tsh.c.eval.tree
+TREE1 argument has wrong format
+Empty Distance: reference_37_tsh.c.eval.tree
+TREE1 argument has wrong format
+Empty Distance: reference_36_tsh.c.eval.tree
+TREE1 argument has wrong format
+Empty Distance: reference_35_tsh.c.eval.tree
+TREE1 argument has wrong format
+Empty Distance: reference_34_tsh.c.eval.tree
+TREE1 argument has wrong format
+Empty Distance: reference_33_tsh.c.eval.tree
+TREE1 argument has wrong format
+Empty Distance: reference_32_tsh.c.eval.tree
+TREE1 argument has wrong format
+Empty Distance: reference_31_tsh.c.eval.tree
+TREE1 argument has wrong format
+Empty Distance: reference_30_tsh.c.eval.tree
+TREE1 argument has wrong format
+Empty Distance: reference_29_tsh.c.eval.tree
+TREE1 argument has wrong format
+Empty Distance: reference_28_tsh.c.eval.tree
+107.0
+Empty Distance: reference_27_tsh.c.eval.tree
+339.0
+Empty Distance: reference_26_tsh.c.eval.tree
+155.0
+Empty Distance: reference_25_tsh.c.eval.tree
+188.0
+Empty Distance: reference_24_tsh.c.eval.tree
+140.0
+Empty Distance: reference_23_tsh.c.eval.tree
+3.0
+Empty Distance: reference_22_tsh.c.eval.tree
+56.0
+Empty Distance: reference_21_tsh.c.eval.tree
+40.0
+Empty Distance: reference_20_tsh.c.eval.tree
+196.0
+Empty Distance: reference_19_tsh.c.eval.tree
+284.0
+Empty Distance: reference_18_tsh.c.eval.tree
+45.0
+Empty Distance: reference_17_tsh.c.eval.tree
+323.0
+Empty Distance: reference_16_tsh.c.eval.tree
+307.0
+Empty Distance: reference_15_tsh.c.eval.tree
+287.0
+Empty Distance: reference_14_tsh.c.eval.tree
+87.0
+Empty Distance: reference_13_tsh.c.eval.tree
+71.0
+Empty Distance: reference_12_tsh.c.eval.tree
+53.0
+Empty Distance: reference_11_tsh.c.eval.tree
+90.0
+Empty Distance: reference_10_tsh.c.eval.tree
+125.0
+Empty Distance: reference_7_tsh.c.eval.tree
+83.0
+Empty Distance: reference_6_tsh.c.eval.tree
+182.0
+Empty Distance: reference_5_tsh.c.eval.tree
+67.0
+Empty Distance: reference_4_tsh.c.eval.tree
+125.0
+Empty Distance: reference_3_tsh.c.eval.tree
+113.0
+Empty Distance: reference_2_tsh.c.eval.tree
+126.0
+Empty Distance: reference_1_tsh.c.eval.tree
+60.0
+Empty Distance: reference_0_tsh.c.eval.tree
