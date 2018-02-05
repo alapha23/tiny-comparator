@@ -13,7 +13,6 @@ DIR=../../../../../
 echo " " >> $DIR/score/"${SCOPE}_tsh.txt"
 echo " " >> $DIR/score/"${SCOPE}_tsh.txt"
 echo "Current students vs. reference " >> $DIR/score/"${SCOPE}_tsh.txt"
-echo " " >> $DIR/score/"${SCOPE}_tsh.txt"
 	
 i=63
 j=39
@@ -23,7 +22,6 @@ do
 	FILENAME2="reference_${j}_tsh.c.${SCOPE}.tree"
 
 	echo " " >> $DIR/score/"${SCOPE}_tsh.txt" 
-	echo " " >> $DIR/score/"${SCOPE}_tsh.txt"
 	echo "${FILENAME1} vs. ALL REFERENCES" >> $DIR/score/"${SCOPE}_tsh.txt" 
 	echo "${FILENAME1} vs. ALL REFERENCES" 
 
@@ -70,7 +68,6 @@ done
 echo " " >> $DIR/score/"${SCOPE}_tsh.txt"
 echo " " >> $DIR/score/"${SCOPE}_tsh.txt"
 echo "Current students vs. prev " >> $DIR/score/"${SCOPE}_tsh.txt"
-echo " " >> $DIR/score/"${SCOPE}_tsh.txt"
 	
 i=63
 j=22
@@ -79,7 +76,6 @@ do
 	FILENAME1="${i}_tsh.c.${SCOPE}.tree"
 	FILENAME2="prev_${j}_tsh.c.${SCOPE}.tree"
 
-	echo " " >> $DIR/score/"${SCOPE}_tsh.txt" 
 	echo " " >> $DIR/score/"${SCOPE}_tsh.txt"
 	echo "${FILENAME1} vs. ALL PREV" >> $DIR/score/"${SCOPE}_tsh.txt" 
 	echo "${FILENAME1} vs. ALL PREV" 
@@ -103,14 +99,12 @@ j=63
 echo " " >> $DIR/score/"${SCOPE}_tsh.txt"
 echo " " >> $DIR/score/"${SCOPE}_tsh.txt"
 echo "Current students vs. Current students " >> $DIR/score/"${SCOPE}_tsh.txt"
-echo " " >> $DIR/score/"${SCOPE}_tsh.txt"
 	
 while [ $i -ge 0 ]
 do
 	FILENAME1="${i}_tsh.c.${SCOPE}.tree"
 	FILENAME2="${j}_tsh.c.${SCOPE}.tree"
 
-	echo " " >> $DIR/score/"${SCOPE}_tsh.txt" 
 	echo " " >> $DIR/score/"${SCOPE}_tsh.txt"
 	echo "${FILENAME1} vs. ALL CURRENT" >> $DIR/score/"${SCOPE}_tsh.txt" 
 	echo "${FILENAME1} vs. ALL CURRENT" 
