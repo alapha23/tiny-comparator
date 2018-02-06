@@ -143,10 +143,8 @@ void cur_ref(char *scope)
 				// GUILTY
 				EMIT(filename1, filename2, GUIL, scope);		
 			}
-		//score > bigger(n1->e_dis, n2->e_dis) + bias
 		}
 	}
-
 }
 
 void cur_prev(char *scope)

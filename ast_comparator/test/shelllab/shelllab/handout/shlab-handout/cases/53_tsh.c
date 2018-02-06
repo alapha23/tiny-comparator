@@ -74,7 +74,7 @@ const sigset_t sigchild;       /* sigset_t which only contains sigchild */
  */
 
 void eval(const char *cmdline);
-bool try_execute_builtin_command(char **argv);
+bool builtin_cmd(char **argv);
 void do_bgfg(char **argv);
 void wait_fg_process(pid_t pid);
 
@@ -203,7 +203,7 @@ void eval(const char *cmdline)
 	
 	parse_line(cmdline, argv, &background);
 	
-	if (!try_execute_builtin_command(argv))
+	if (!builtin_cmd(argv))
 	{
 		if (sigprocmask(SIG_BLOCK, &sigchild, NULL) == -1)
 			unix_error("Blocking SIGCHLD failed");
@@ -322,7 +322,7 @@ void parse_line(const char *cmdline, char **argv, bool *bg)
  *    command then execute it immediately.
  * Returns true if given command is built-in command, false otherwise.
  */
-bool try_execute_builtin_command(char **argv)
+bool builtin_cmd(char **argv)
 {
 	if (argv == NULL || argv[0] == NULL)
 		return false; // Goto normal execution routine to print error message

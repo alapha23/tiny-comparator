@@ -80,7 +80,7 @@ void eval(char *cmdline);
 
 /* Helper functions */
 void display_error();
-int cmds_builtin(struct cmdline_tokens tok);
+int builtin_cmd(struct cmdline_tokens tok);
 void call_dup(char *input, char *output);
 
 /* Handlers */
@@ -218,7 +218,7 @@ void eval(char *cmdline)
 
 
     /* If not a built-in command */
-    if (!cmds_builtin(tok)) {
+    if (!builtin_cmd(tok)) {
 
     /* Initializes mask as empty set for sigprocmask */
     if (sigemptyset(&mask) == -1) {
@@ -334,7 +334,7 @@ void display_error()
  *   1:         if built-in command
  *   0:         if not built-in command
  */
-int cmds_builtin(struct cmdline_tokens tok)
+int builtin_cmd(struct cmdline_tokens tok)
 {
     sigset_t mask0;
     sigemptyset(&mask0); //empty the signal set to be used in sigsuspend

@@ -221,7 +221,7 @@ void Suspend(struct job_t* job) {
  * Exec for built-in functions.
  */
 
-void exec_builtin(struct cmdline_tokens *tok)
+void builtin_cmd(struct cmdline_tokens *tok)
 {
     struct job_t* job;
     switch(tok->builtins) {

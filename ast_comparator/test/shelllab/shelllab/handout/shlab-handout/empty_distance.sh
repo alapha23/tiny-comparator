@@ -1,16 +1,18 @@
 #! /bin/bash
 # Empty Distance of all trees
 
-FILENAME=0_tsh.eval.dot
 DIR=../../../../../
+SCOPE=builtin_cmd
+FILENAME=0_tsh.${SCOPE}.dot
+
 
 i=63
 # cat $DIR/brk_tree/"${i}_tsh.c.eval.tree"
 while [ $i -ge 0 ] 
 do
-	FILENAME="${i}_tsh.c.eval.tree"
-	java -jar $DIR/apted.jar -f $DIR/brk_tree/$FILENAME $DIR/brk_tree/empty.tree >> $DIR/score/eval_tsh.txt
-	echo "Empty Distance: $FILENAME" >> $DIR/score/eval_tsh.txt
+	FILENAME="${i}_tsh.c.${SCOPE}.tree"
+	java -jar $DIR/apted.jar -f $DIR/brk_tree/$FILENAME $DIR/brk_tree/empty.tree >> $DIR/score/"${SCOPE}_tsh.txt"
+	echo "Empty Distance: $FILENAME" >> $DIR/score/"${SCOPE}_tsh.txt"
 	echo "Empty Distance: $FILENAME"
 	i=$[$i-1]
 done 
@@ -18,9 +20,9 @@ done
 i=22
 while [ $i -ge 0 ] 
 do
-	FILENAME="prev_${i}_tsh.c.eval.tree"
-	java -jar $DIR/apted.jar -f $DIR/brk_tree/$FILENAME $DIR/brk_tree/empty.tree >> $DIR/score/eval_tsh.txt
-	echo "Empty Distance: $FILENAME" >> $DIR/score/eval_tsh.txt
+	FILENAME="prev_${i}_tsh.c.${SCOPE}.tree"
+	java -jar $DIR/apted.jar -f $DIR/brk_tree/$FILENAME $DIR/brk_tree/empty.tree >> $DIR/score/${SCOPE}_tsh.txt
+	echo "Empty Distance: $FILENAME" >> $DIR/score/${SCOPE}_tsh.txt
 	echo "Empty Distance: $FILENAME"
 	i=$[$i-1]
 done 
@@ -53,9 +55,9 @@ do
 		i=$[$i-1]
 		continue
 	fi
-	FILENAME="reference_${i}_tsh.c.eval.tree"
-	java -jar $DIR/apted.jar -f $DIR/brk_tree/$FILENAME $DIR/brk_tree/empty.tree >> $DIR/score/eval_tsh.txt
-	echo "Empty Distance: $FILENAME" >> $DIR/score/eval_tsh.txt
+	FILENAME="reference_${i}_tsh.c.${SCOPE}.tree"
+	java -jar $DIR/apted.jar -f $DIR/brk_tree/$FILENAME $DIR/brk_tree/empty.tree >> $DIR/score/${SCOPE}_tsh.txt
+	echo "Empty Distance: $FILENAME" >> $DIR/score/${SCOPE}_tsh.txt
 	echo "Empty Distance: $FILENAME"
 	i=$[$i-1]
 done 

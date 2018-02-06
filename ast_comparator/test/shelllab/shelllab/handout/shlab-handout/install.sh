@@ -3,6 +3,7 @@
 
 FILENAME=2_tsh.c
 DIR=../../../../../
+SCOPE=do_bgfg
 
 i=63
 while [ $i -ge 0 ]
@@ -15,9 +16,9 @@ do
 	gcc -fdump-translation-unit -fno-builtin -ffreestanding $FILENAME
 
 	# generate filename.scope.dot under ast_comparator/dot_obj/
-	~/Documents/tiny-comparator/ast_comparator/src/tu_eater "$FILENAME.001t.tu" eval > ../../../../../dot_obj/"${FILENAME}.eval.dot"
+	~/Documents/tiny-comparator/ast_comparator/src/tu_eater "$FILENAME.001t.tu" $SCOPE > ../../../../../dot_obj/"${FILENAME}.${SCOPE}.dot"
 
-	${DIR}/src/comparator ${DIR}/dot_obj/"$FILENAME.eval.dot" > ${DIR}/brk_tree/"$FILENAME.eval.tree"
+	${DIR}/src/comparator ${DIR}/dot_obj/"$FILENAME.${SCOPE}.dot" > ${DIR}/brk_tree/"$FILENAME.${SCOPE}.tree"
 	rm $FILENAME
 	i=$[$i-1]
 done
@@ -33,9 +34,9 @@ do
 	gcc -fdump-translation-unit -fno-builtin -ffreestanding $FILENAME
 
 	# generate filename.scope.dot under ast_comparator/dot_obj/
-	~/Documents/tiny-comparator/ast_comparator/src/tu_eater "$FILENAME.001t.tu" eval > ../../../../../dot_obj/"${FILENAME}.eval.dot"
+	~/Documents/tiny-comparator/ast_comparator/src/tu_eater "$FILENAME.001t.tu" $SCOPE > ../../../../../dot_obj/"${FILENAME}.${SCOPE}.dot"
 
-	${DIR}/src/comparator ${DIR}/dot_obj/"$FILENAME.eval.dot" > ${DIR}/brk_tree/"$FILENAME.eval.tree"
+	${DIR}/src/comparator ${DIR}/dot_obj/"$FILENAME.${SCOPE}.dot" > ${DIR}/brk_tree/"$FILENAME.${SCOPE}.tree"
 	i=$[$i-1]
 	rm $FILENAME
 done
@@ -81,9 +82,9 @@ do
 	gcc -fdump-translation-unit -fno-builtin -ffreestanding $FILENAME
 
 	# generate filename.scope.dot under ast_comparator/dot_obj/
-	~/Documents/tiny-comparator/ast_comparator/src/tu_eater "$FILENAME.001t.tu" eval > ../../../../../dot_obj/"${FILENAME}.eval.dot"
+	~/Documents/tiny-comparator/ast_comparator/src/tu_eater "$FILENAME.001t.tu" ${SCOPE} > ../../../../../dot_obj/"${FILENAME}.${SCOPE}.dot"
 
-	${DIR}/src/comparator ${DIR}/dot_obj/"$FILENAME.eval.dot" > ${DIR}/brk_tree/"$FILENAME.eval.tree"
+	${DIR}/src/comparator ${DIR}/dot_obj/"$FILENAME.${SCOPE}.dot" > ${DIR}/brk_tree/"$FILENAME.${SCOPE}.tree"
 	i=$[$i-1]
 	rm $FILENAME
 done

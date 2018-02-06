@@ -107,7 +107,7 @@ handler_t *Signal(int signum, handler_t *handler);
 /*
  * Helper functions add by jianf
  */
-int check_builtin_cmds(struct cmdline_tokens* toks);
+int builtin_cmd(struct cmdline_tokens* toks);
 void exec_jobs_cmd(struct cmdline_tokens* toks);
 void exec_bg_cmd(struct cmdline_tokens* toks);
 void exec_fg_cmd(struct cmdline_tokens* toks);
@@ -217,7 +217,7 @@ eval(char *cmdline)
     if (bg == -1) return;               /* parsing error */
     if (tok.argv[0] == NULL)  return;   /* ignore empty lines */
 
-    if(!check_builtin_cmds(&tok)){
+    if(!builtin_cmd(&tok)){
         sigset_t newset,oldset;
         block_sigs(&newset, &oldset);
         pid_t pid = fork();
@@ -709,7 +709,7 @@ sigquit_handler(int sig)
  * check if the command is builtin command
  */
 int
-check_builtin_cmds(struct cmdline_tokens* toks)
+builtin_cmd(struct cmdline_tokens* toks)
 {
     switch(toks -> builtins){
         case BUILTIN_NONE:
