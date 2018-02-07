@@ -3,7 +3,7 @@
 
 FILENAME=2_tsh.c
 DIR=../../../../../
-SCOPE=sigchld_handler
+SCOPE=builtin_cmd
 
 i=63
 while [ $i -ge 0 ]

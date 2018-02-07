@@ -3,7 +3,7 @@
 
 FILENAME1=0_tsh.c
 FILENAME2=reference_0_tsh.c.eval.tree
-SCOPE=builtin_cmd
+SCOPE=do_bgfg
 DIR=../../../../../
 
 # echo "${SCOPE}.tree"

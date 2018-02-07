@@ -29,7 +29,7 @@ static node *search_pool(char *filename)
 //		printf("Different: %s & %s \n", filename, n->filename);
 		i--;
 	}
-	DEBUG(WE SHOULD NOT GET HERE);
+	DEBUG(TREE not in Pool);
 	return NULL;
 }
 
@@ -93,9 +93,11 @@ void cur_ref(char *scope)
 			break;
 		}
 	}
+	// Current vs ref is recognized
 
 	while(1)
 	{
+		// ignore empty line
 		if(fgets(line, 128, fp) == NULL)
 		{
 			DEBUG(Unexpected reached EOF);
@@ -107,22 +109,41 @@ void cur_ref(char *scope)
 			return ;
 		}
 
+		// filename1 vs. All REFERENCES
 		sscanf(line, "%s vs. %*s", filename1);
 		n1 = search_pool(filename1);
-
+		// n1 is the current we would like to compare
 		while(1)
 		{
+			// read score line
 			if(fgets(line, 128, fp) == NULL)
 			{
 				DEBUG(Unexpected reached EOF);
 				exit(0);	
 			}
-//			DEBUF("ascii: %d", line[0]);
 			if((line[0] < '0') || (line[0] > 'z'))
 			{
-			// this node have been finished
+			// current has been finished
 				break;	
 			}
+			if(!strncmp(line, "TREE", 4))
+			{
+				// no score
+				DEBUG("Bad tree analysis, abandoned");
+				// ignore line
+				if(fgets(line, 128, fp) == NULL)
+				{
+					DEBUG(Unexpected reached EOF);
+					exit(0);	
+				}
+				continue;
+			}
+			if(n1 == NULL )
+			{
+				DEBUF("Bad Tree selected:%s", filename1);
+				continue;
+			}
+
 			sscanf(line, "%d", &score);
 			if(fgets(line, 128, fp) == NULL)
 			{
@@ -134,14 +155,24 @@ void cur_ref(char *scope)
 
 			n2 = search_pool(filename2);
 			// Two nodes
-	
+			if(n2 == NULL)	
+			{
+			// The second node is bad
+				DEBUG(Second node is bad);
+				continue;
+			}
 			// eval nodes
 			int avg = (n1->e_dis + n2->e_dis)/2;
 			int bias = n1->e_dis > n2->e_dis ? n2->e_dis/10: n1->e_dis/10;
+
 			if(score < smaller(n1->e_dis, n2->e_dis) - bias)
 			{
+				char percent[8];
+	float percent_i = 1 - ((float)score)/((float)smaller(n1->e_dis, n2->e_dis)-(float)bias);
+
+				sprintf(percent, "%f\%", percent_i);
 				// GUILTY
-				EMIT(filename1, filename2, GUIL, scope);		
+				EMIT(filename1, filename2, percent, scope);		
 			}
 		}
 	}
@@ -183,10 +214,29 @@ void cur_prev(char *scope)
 		}
 		if(line[0] < '0' || line[0] > 'z')
 		{
-		// This function is done
+			// This function is done
 			return ;
 		}
+		if(!strncmp(line, "TREE", 4))
+		{
+				// no score
+				DEBUG("Bad tree analysis, abandoned");
+				// ignore line
+				if(fgets(line, 128, fp) == NULL)
+				{
+					DEBUG(Unexpected reached EOF);
+					exit(0);	
+				}
+				continue;
+		}
+		if(n1 == NULL )
+		{
+			DEBUF("Bad Tree selected:%s", filename1);
+			continue;
+		}
 
+
+		// filename1 vs previous
 		sscanf(line, "%s vs. %*s", filename1);
 		n1 = search_pool(filename1);
 
@@ -214,14 +264,24 @@ void cur_prev(char *scope)
 
 			n2 = search_pool(filename2);
 			// Two nodes
-	
+			if(n2 == NULL)	
+			{
+			// The second node is bad
+				DEBUG(Second node is bad);
+				continue;
+			}
+
 			// eval nodes
 			int avg = (n1->e_dis + n2->e_dis)/2;
 			int bias = n1->e_dis > n2->e_dis ? n2->e_dis/10: n1->e_dis/10;
 			if(score < smaller(n1->e_dis, n2->e_dis) - bias)
 			{
+				char percent[8];
+				float percent_i = 1 - ((float)score)/((float)smaller(n1->e_dis, n2->e_dis)-(float)bias);
+				sprintf(percent, "%f\%", percent_i);
+	
 				// GUILTY
-				EMIT(filename1, filename2, GUIL, scope);		
+				EMIT(filename1, filename2, percent, scope);		
 			}
 		//score > bigger(n1->e_dis, n2->e_dis) + bias
 		}
@@ -286,6 +346,25 @@ void cur_cur(char *scope)
 			// this node have been finished
 				break;	
 			}
+			if(!strncmp(line, "TREE", 4))
+			{
+				// no score
+				DEBUG("Bad tree analysis, abandoned");
+				// ignore line
+				if(fgets(line, 128, fp) == NULL)
+				{
+					DEBUG(Unexpected reached EOF);
+					exit(0);	
+				}
+				continue;
+			}
+			if(n1 == NULL )
+			{
+				DEBUF("Bad Tree selected:%s", filename1);
+				continue;
+			}
+
+
 			sscanf(line, "%d", &score);
 			if(fgets(line, 128, fp) == NULL)
 			{
@@ -297,14 +376,23 @@ void cur_cur(char *scope)
 
 			n2 = search_pool(filename2);
 			// Two nodes
-	
+			if(n2 == NULL)	
+			{
+			// The second node is bad
+				DEBUG(Second node is bad);
+				continue;
+			}
 			// eval nodes
 			int avg = (n1->e_dis + n2->e_dis)/2;
 			int bias = n1->e_dis > n2->e_dis ? n2->e_dis/10: n1->e_dis/10;
 			if(score < smaller(n1->e_dis, n2->e_dis) - bias)
 			{
+
+				char percent[8];
+				float percent_i = 1 - ((float)score)/((float)smaller(n1->e_dis, n2->e_dis)-(float)bias);
+				sprintf(percent, "%f\%", percent_i);
 				// GUILTY
-				EMIT(filename1, filename2, GUIL, scope);		
+				EMIT(filename1, filename2, percent, scope);		
 			}
 		//score > bigger(n1->e_dis, n2->e_dis) + bias
 		}

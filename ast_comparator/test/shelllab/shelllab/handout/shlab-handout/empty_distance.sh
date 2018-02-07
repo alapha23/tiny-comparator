@@ -2,7 +2,7 @@
 # Empty Distance of all trees
 
 DIR=../../../../../
-SCOPE=sigichld_handler
+SCOPE=builtin_cmd
 FILENAME=0_tsh.${SCOPE}.dot
 
 
