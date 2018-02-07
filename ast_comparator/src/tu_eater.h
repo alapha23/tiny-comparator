@@ -204,5 +204,7 @@ static void rshift_to_dot(node *);
 static void lshift_to_dot(node *);
 
 static void function_to_dot(node *);
+
+static void bit_and_to_dot(node *);
 #endif
 

@@ -3,7 +3,7 @@
 
 FILENAME=2_tsh.c
 DIR=../../../../../
-SCOPE=do_bgfg
+SCOPE=sigchld_handler
 
 i=63
 while [ $i -ge 0 ]

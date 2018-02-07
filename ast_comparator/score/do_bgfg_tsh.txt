@@ -1,0 +1,242 @@
+124.0
+Empty Distance: 63_tsh.c.do_bgfg.tree
+24.0
+Empty Distance: 62_tsh.c.do_bgfg.tree
+34.0
+Empty Distance: 61_tsh.c.do_bgfg.tree
+131.0
+Empty Distance: 60_tsh.c.do_bgfg.tree
+215.0
+Empty Distance: 59_tsh.c.do_bgfg.tree
+169.0
+Empty Distance: 58_tsh.c.do_bgfg.tree
+221.0
+Empty Distance: 57_tsh.c.do_bgfg.tree
+74.0
+Empty Distance: 56_tsh.c.do_bgfg.tree
+115.0
+Empty Distance: 55_tsh.c.do_bgfg.tree
+206.0
+Empty Distance: 54_tsh.c.do_bgfg.tree
+210.0
+Empty Distance: 53_tsh.c.do_bgfg.tree
+160.0
+Empty Distance: 52_tsh.c.do_bgfg.tree
+189.0
+Empty Distance: 51_tsh.c.do_bgfg.tree
+163.0
+Empty Distance: 50_tsh.c.do_bgfg.tree
+145.0
+Empty Distance: 49_tsh.c.do_bgfg.tree
+22.0
+Empty Distance: 48_tsh.c.do_bgfg.tree
+215.0
+Empty Distance: 47_tsh.c.do_bgfg.tree
+93.0
+Empty Distance: 46_tsh.c.do_bgfg.tree
+160.0
+Empty Distance: 45_tsh.c.do_bgfg.tree
+209.0
+Empty Distance: 44_tsh.c.do_bgfg.tree
+179.0
+Empty Distance: 43_tsh.c.do_bgfg.tree
+32.0
+Empty Distance: 42_tsh.c.do_bgfg.tree
+6.0
+Empty Distance: 41_tsh.c.do_bgfg.tree
+14.0
+Empty Distance: 40_tsh.c.do_bgfg.tree
+34.0
+Empty Distance: 39_tsh.c.do_bgfg.tree
+34.0
+Empty Distance: 38_tsh.c.do_bgfg.tree
+9.0
+Empty Distance: 37_tsh.c.do_bgfg.tree
+133.0
+Empty Distance: 36_tsh.c.do_bgfg.tree
+6.0
+Empty Distance: 35_tsh.c.do_bgfg.tree
+43.0
+Empty Distance: 34_tsh.c.do_bgfg.tree
+11.0
+Empty Distance: 33_tsh.c.do_bgfg.tree
+222.0
+Empty Distance: 32_tsh.c.do_bgfg.tree
+31.0
+Empty Distance: 31_tsh.c.do_bgfg.tree
+11.0
+Empty Distance: 30_tsh.c.do_bgfg.tree
+46.0
+Empty Distance: 29_tsh.c.do_bgfg.tree
+34.0
+Empty Distance: 28_tsh.c.do_bgfg.tree
+165.0
+Empty Distance: 27_tsh.c.do_bgfg.tree
+51.0
+Empty Distance: 26_tsh.c.do_bgfg.tree
+165.0
+Empty Distance: 25_tsh.c.do_bgfg.tree
+14.0
+Empty Distance: 24_tsh.c.do_bgfg.tree
+132.0
+Empty Distance: 23_tsh.c.do_bgfg.tree
+141.0
+Empty Distance: 22_tsh.c.do_bgfg.tree
+57.0
+Empty Distance: 21_tsh.c.do_bgfg.tree
+9.0
+Empty Distance: 20_tsh.c.do_bgfg.tree
+46.0
+Empty Distance: 19_tsh.c.do_bgfg.tree
+43.0
+Empty Distance: 18_tsh.c.do_bgfg.tree
+54.0
+Empty Distance: 17_tsh.c.do_bgfg.tree
+222.0
+Empty Distance: 16_tsh.c.do_bgfg.tree
+51.0
+Empty Distance: 15_tsh.c.do_bgfg.tree
+38.0
+Empty Distance: 14_tsh.c.do_bgfg.tree
+37.0
+Empty Distance: 13_tsh.c.do_bgfg.tree
+154.0
+Empty Distance: 12_tsh.c.do_bgfg.tree
+11.0
+Empty Distance: 11_tsh.c.do_bgfg.tree
+125.0
+Empty Distance: 10_tsh.c.do_bgfg.tree
+34.0
+Empty Distance: 9_tsh.c.do_bgfg.tree
+9.0
+Empty Distance: 8_tsh.c.do_bgfg.tree
+135.0
+Empty Distance: 7_tsh.c.do_bgfg.tree
+160.0
+Empty Distance: 6_tsh.c.do_bgfg.tree
+34.0
+Empty Distance: 5_tsh.c.do_bgfg.tree
+34.0
+Empty Distance: 4_tsh.c.do_bgfg.tree
+35.0
+Empty Distance: 3_tsh.c.do_bgfg.tree
+22.0
+Empty Distance: 2_tsh.c.do_bgfg.tree
+35.0
+Empty Distance: 1_tsh.c.do_bgfg.tree
+34.0
+Empty Distance: 0_tsh.c.do_bgfg.tree
+35.0
+Empty Distance: prev_22_tsh.c.do_bgfg.tree
+228.0
+Empty Distance: prev_21_tsh.c.do_bgfg.tree
+34.0
+Empty Distance: prev_20_tsh.c.do_bgfg.tree
+197.0
+Empty Distance: prev_19_tsh.c.do_bgfg.tree
+158.0
+Empty Distance: prev_18_tsh.c.do_bgfg.tree
+41.0
+Empty Distance: prev_17_tsh.c.do_bgfg.tree
+136.0
+Empty Distance: prev_16_tsh.c.do_bgfg.tree
+50.0
+Empty Distance: prev_15_tsh.c.do_bgfg.tree
+164.0
+Empty Distance: prev_14_tsh.c.do_bgfg.tree
+34.0
+Empty Distance: prev_13_tsh.c.do_bgfg.tree
+42.0
+Empty Distance: prev_12_tsh.c.do_bgfg.tree
+51.0
+Empty Distance: prev_11_tsh.c.do_bgfg.tree
+205.0
+Empty Distance: prev_10_tsh.c.do_bgfg.tree
+33.0
+Empty Distance: prev_9_tsh.c.do_bgfg.tree
+6.0
+Empty Distance: prev_8_tsh.c.do_bgfg.tree
+21.0
+Empty Distance: prev_7_tsh.c.do_bgfg.tree
+153.0
+Empty Distance: prev_6_tsh.c.do_bgfg.tree
+34.0
+Empty Distance: prev_5_tsh.c.do_bgfg.tree
+139.0
+Empty Distance: prev_4_tsh.c.do_bgfg.tree
+6.0
+Empty Distance: prev_3_tsh.c.do_bgfg.tree
+45.0
+Empty Distance: prev_2_tsh.c.do_bgfg.tree
+34.0
+Empty Distance: prev_1_tsh.c.do_bgfg.tree
+52.0
+Empty Distance: prev_0_tsh.c.do_bgfg.tree
+158.0
+Empty Distance: reference_38_tsh.c.do_bgfg.tree
+32.0
+Empty Distance: reference_37_tsh.c.do_bgfg.tree
+TREE1 argument has wrong format
+Empty Distance: reference_36_tsh.c.do_bgfg.tree
+330.0
+Empty Distance: reference_34_tsh.c.do_bgfg.tree
+138.0
+Empty Distance: reference_33_tsh.c.do_bgfg.tree
+76.0
+Empty Distance: reference_32_tsh.c.do_bgfg.tree
+125.0
+Empty Distance: reference_31_tsh.c.do_bgfg.tree
+82.0
+Empty Distance: reference_30_tsh.c.do_bgfg.tree
+176.0
+Empty Distance: reference_27_tsh.c.do_bgfg.tree
+207.0
+Empty Distance: reference_26_tsh.c.do_bgfg.tree
+46.0
+Empty Distance: reference_25_tsh.c.do_bgfg.tree
+211.0
+Empty Distance: reference_24_tsh.c.do_bgfg.tree
+140.0
+Empty Distance: reference_23_tsh.c.do_bgfg.tree
+3.0
+Empty Distance: reference_22_tsh.c.do_bgfg.tree
+34.0
+Empty Distance: reference_21_tsh.c.do_bgfg.tree
+12.0
+Empty Distance: reference_20_tsh.c.do_bgfg.tree
+TREE1 argument has wrong format
+Empty Distance: reference_19_tsh.c.do_bgfg.tree
+TREE1 argument has wrong format
+Empty Distance: reference_18_tsh.c.do_bgfg.tree
+TREE1 argument has wrong format
+Empty Distance: reference_17_tsh.c.do_bgfg.tree
+TREE1 argument has wrong format
+Empty Distance: reference_16_tsh.c.do_bgfg.tree
+TREE1 argument has wrong format
+Empty Distance: reference_15_tsh.c.do_bgfg.tree
+TREE1 argument has wrong format
+Empty Distance: reference_14_tsh.c.do_bgfg.tree
+14.0
+Empty Distance: reference_13_tsh.c.do_bgfg.tree
+34.0
+Empty Distance: reference_12_tsh.c.do_bgfg.tree
+TREE1 argument has wrong format
+Empty Distance: reference_11_tsh.c.do_bgfg.tree
+219.0
+Empty Distance: reference_10_tsh.c.do_bgfg.tree
+139.0
+Empty Distance: reference_7_tsh.c.do_bgfg.tree
+6.0
+Empty Distance: reference_6_tsh.c.do_bgfg.tree
+TREE1 argument has wrong format
+Empty Distance: reference_5_tsh.c.do_bgfg.tree
+52.0
+Empty Distance: reference_4_tsh.c.do_bgfg.tree
+139.0
+Empty Distance: reference_3_tsh.c.do_bgfg.tree
+34.0
+Empty Distance: reference_2_tsh.c.do_bgfg.tree
+34.0
+Empty Distance: reference_1_tsh.c.do_bgfg.tree
+135.0
+Empty Distance: reference_0_tsh.c.do_bgfg.tree
