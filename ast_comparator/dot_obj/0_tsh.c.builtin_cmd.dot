@@ -1,3 +1,30 @@
+
+
+
+digraph safezone
+{
+  node42 [label="return",shape=ellipse];
+  node43 [label="modify",shape=ellipse];
+  node44 [label="0",shape=ellipse];
+  node43 -> node44;
+
+  node1 [shape=none, margin=0, label=<
+	<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4">
+	<TR>	<TD COLSPAN="5"><FONT COLOR="red">SAFE ZONE A</FONT></TD>
+	</TR>
+	<TR>
+		<TD PORT="here"><FONT COLOR="red">SAFE ZONE B</FONT></TD>
+	</TR>
+	<TR>
+		<TD COLSPAN="5"><FONT COLOR="red">SAFE ZONE C</FONT></TD>
+	</TR>
+	<TR>
+		<TD COLSPAN="5"><FONT COLOR="red">SAFE ZONE D</FONT></TD>
+	</TR>
+
+	</TABLE>>
+	];
+}
 digraph AST {
   graph [fontname="Times New Roman",fontsize=10];
   node  [fontname="Courier New",fontsize=10];

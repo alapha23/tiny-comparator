@@ -1,0 +1,40 @@
+digraph AST {
+  graph [fontname="Times New Roman",fontsize=10];
+  node  [fontname="Courier New",fontsize=10];
+  edge  [fontname="Times New Roman",fontsize=10];
+
+  node0 [label="waitfg  cur vs. prev",shape=box];
+  node58_tsh [label="58_tsh.c.waitfg.tree", shape=box];
+  node59_tsh [label="59_tsh.c.waitfg.tree", shape=ellipse];
+  node58_tsh -> node59_tsh [label="waitfg: 92.3", color=red, fontsize=15];
+  node60_tsh [label="60_tsh.c.waitfg.tree", shape=ellipse];
+  node58_tsh -> node60_tsh [label="waitfg: 42.9", color=red, fontsize=15];
+  node62_tsh [label="62_tsh.c.waitfg.tree", shape=ellipse];
+  node58_tsh -> node62_tsh [label="waitfg: 100.0", color=red, fontsize=15];
+  node59_tsh [label="59_tsh.c.waitfg.tree", shape=box];
+  node58_tsh [label="58_tsh.c.waitfg.tree", shape=ellipse];
+  node59_tsh -> node58_tsh [label="waitfg: 92.3", color=red, fontsize=15];
+  node60_tsh [label="60_tsh.c.waitfg.tree", shape=ellipse];
+  node59_tsh -> node60_tsh [label="waitfg: 38.5", color=red, fontsize=15];
+  node62_tsh [label="62_tsh.c.waitfg.tree", shape=ellipse];
+  node59_tsh -> node62_tsh [label="waitfg: 92.3", color=red, fontsize=15];
+  node60_tsh [label="60_tsh.c.waitfg.tree", shape=box];
+  node58_tsh [label="58_tsh.c.waitfg.tree", shape=ellipse];
+  node60_tsh -> node58_tsh [label="waitfg: 42.9", color=red, fontsize=15];
+  node59_tsh [label="59_tsh.c.waitfg.tree", shape=ellipse];
+  node60_tsh -> node59_tsh [label="waitfg: 38.5", color=red, fontsize=15];
+  node62_tsh [label="62_tsh.c.waitfg.tree", shape=ellipse];
+  node60_tsh -> node62_tsh [label="waitfg: 42.9", color=red, fontsize=15];
+  node62_tsh [label="62_tsh.c.waitfg.tree", shape=box];
+  node58_tsh [label="58_tsh.c.waitfg.tree", shape=ellipse];
+  node62_tsh -> node58_tsh [label="waitfg: 100.0", color=red, fontsize=15];
+  node59_tsh [label="59_tsh.c.waitfg.tree", shape=ellipse];
+  node62_tsh -> node59_tsh [label="waitfg: 92.3", color=red, fontsize=15];
+  node60_tsh [label="60_tsh.c.waitfg.tree", shape=ellipse];
+  node62_tsh -> node60_tsh [label="waitfg: 42.9", color=red, fontsize=15];
+nodesafe [shape=none, margin=0, label=<
+  			<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4">
+ 			<TR> <TD COLSPAN="5"><FONT COLOR="red">SAFE ZONE</FONT></TD>
+ 			</TR>
+</TABLE>>];
+}

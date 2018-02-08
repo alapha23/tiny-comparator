@@ -8,7 +8,7 @@
 
 #define N_REF	2<<14	// Number of references to be compared to
 #define	N_SCOPE	32
-#define N_CUR	128
+#define N_CUR	128*N_SCOPE
 #define Tolerance	30	// threshold. Plagiarism Below are ignored
 
 #define DEBUG(a) fprintf(stderr, #a"\n"); \
@@ -32,7 +32,7 @@
 
 #define dot_ellipse(id,label)	({fprintf(stdout, "  node%s [label=\"%s\", shape=ellipse];\n", id, label); fflush(stdout);\
 		})
-#define dot_link(id1, id2, label)	({fprintf(stdout, "  node%s -> node%s [label=\"%s\"]", id1, id2, label);}) 
+#define dot_link(id1, id2, label)	({fprintf(stdout, "  node%s -> node%s [label=\"%s\", color=red, fontsize=15];\n", id1, id2, label);}) 
 
 
 typedef struct _p
@@ -59,9 +59,13 @@ char scopes[N_SCOPE][64] = {'\0'};
 
 int n_inpool = 0;
 node **pool = NULL;	// pool contains all relationships, namely nodes
+char **scope_p = NULL;
+int n_inscope = 0;
+int safezone[N_CUR];
+int n_insafe = 0;
 
 // Open file
-void open_file(char **argv);
+void open_file(int, char **);
 
 // get file size
 size_t get_filesize(void);
@@ -78,8 +82,16 @@ node *search_pool(char *);
 // decide hertype from her name
 int check_type(char *);
 
+// check if the node has plagiarism according to the scope
+int plagiarism_scope(node *, char*);
+
+// add node to safe zone
+void add_to_safe(node *, char*);
+
 // emit_header
 void emit_header(char *scope, char *whovswho);
+
+void eval_pool(char*, char*);
 
 // Relationship between current & ref > cur_ref_tsh.dot
 void cur_ref_dot(char *);
@@ -92,6 +104,8 @@ void cur_cur_dot(char *);
 
 // Relationship between current & ALL
 void cur_all_dot(char *);
+
+void emit_safe(void);
 
 // only for debugging
 void dump_node(node *);
