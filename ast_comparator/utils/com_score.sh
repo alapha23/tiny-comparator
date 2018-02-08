@@ -3,7 +3,7 @@
 
 FILENAME1=0_tsh.c
 FILENAME2=reference_0_tsh.c.eval.tree
-SCOPE=sigtstp_handler
+SCOPE=sigint_handler
 DIR=../../../../../
 
 # echo "${SCOPE}.tree"
