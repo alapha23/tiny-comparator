@@ -1,7 +1,7 @@
-student;student-label;who to be compared;type of the comparer;simiplarity;
-0_tsh.c;2017-81842;reference0_tsh.c;reference;0.001;
-1_tsh.c;2017-81843;reference1_tsh.c;reference;0.001;
-2_tsh.c;2017-81844;reference2_tsh.c;reference;0.001;
-0_tsh.c;2017-81842;prev0_tsh.c;prev;0.001;
-1_tsh.c;2017-81843;prev1_tsh.c;prev;0.001;
-2_tsh.c;2017-81844;prev2_tsh.c;prev;0.001;
+student,student-label,who to be compared,type of the comparor,simiplarity,
+0_tsh.c,2017-81842,reference0_tsh.c,reference,0.001,
+1_tsh.c,2017-81843,reference1_tsh.c,reference,0.001,
+2_tsh.c,2017-81844,reference2_tsh.c,reference,0.001,
+0_tsh.c,2017-81842,prev0_tsh.c,prev,0.001,
+1_tsh.c,2017-81843,prev1_tsh.c,prev,0.001,
+2_tsh.c,2017-81844,prev2_tsh.c,prev,0.001,
