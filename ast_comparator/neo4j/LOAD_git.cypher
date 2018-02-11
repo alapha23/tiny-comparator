@@ -1,10 +1,17 @@
 
-// NOT WORKING ON A GITHUB
+// LOAD csv file
 LOAD CSV WITH HEADERS FROM "https://raw.githubusercontent.com/alapha23/tiny-comparator/master/ast_comparator/neo4j/sample.csv" AS row
 CREATE (n:Students)
 SET n = row,
- n.similarity = toFloat(row.similarity)
+ n.similarity = toFloat(row.similarity),
  n.number = toInteger(row.number)
+
+LOAD CSV WITH HEADERS FROM "" AS row
+
+
+// LINK csv files together
+
+// CREATE edges
 
 
 // DELETE ALL NODES
