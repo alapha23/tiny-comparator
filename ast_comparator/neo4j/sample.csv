@@ -1,4 +1,4 @@
-number,student,student_id,case_name,case_type,simiplarity,judgement
+number,student,student_id,case_name,case_type,similarity,judgement
 0,0_tsh.c,2017-81842,reference0_tsh.c,reference,0.001,Safe
 1,1_tsh.c,2017-81843,reference1_tsh.c,reference,0.901,Plagiarism
 2,2_tsh.c,2017-81844,reference2_tsh.c,reference,0.001,Safe
