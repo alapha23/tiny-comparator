@@ -1,9 +1,0 @@
-SCOPE: eval
-| 62_tsh.c.eval.tree | reference_13_tsh.c.eval.tree | 0.302632 | eval |
-| 62_tsh.c.eval.tree | reference_10_tsh.c.eval.tree | 0.263158 | eval |
-| 57_tsh.c.eval.tree | reference_30_tsh.c.eval.tree | 0.050000 | eval |
-| 57_tsh.c.eval.tree | reference_13_tsh.c.eval.tree | 0.683544 | eval |
-| 19_tsh.c.eval.tree | prev_5_tsh.c.eval.tree | 0.990196 | eval |
-| 16_tsh.c.eval.tree | prev_6_tsh.c.eval.tree | 0.128205 | eval |
-| 9_tsh.c.eval.tree | 17_tsh.c.eval.tree | 0.236842 | eval |
-| 9_tsh.c.eval.tree | 14_tsh.c.eval.tree | 0.078947 | eval |

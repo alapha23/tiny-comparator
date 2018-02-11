@@ -1,3 +1,0 @@
-# generate multiple tree comparison: right now only comparison between two trees are available
-
-# Directory Change & xml parser
