@@ -93,6 +93,18 @@ void emit_header(char *scope, char *whovswho);
 
 void eval_pool(char*, char*);
 
+void pool_to_neo4j(char*);
+
+// create ref nodes
+void ref_to_neo4j(char*, char*);
+
+// create prev nodes
+void prev_to_neo4j(char*, char*);
+
+// create prev nodes
+void stu_to_neo4j(char*, char*);
+
+
 // Relationship between current & ref > cur_ref_tsh.dot
 void cur_ref_dot(char *);
 

@@ -17,7 +17,8 @@ int main(int argc, char **argv)
 	
 	fill_pool();
 
-	eval_pool(argv[2], argv[3]);
+	pool_to_neo4j(argv[2]);
+//	eval_pool(argv[2], argv[3]);
 
 	fclose(fp);
 	free(pool);
@@ -481,4 +482,134 @@ void cur_cur_dot(char *scope)
 	free(id1);
 	free(id2);
 
+}
+
+void prev_to_neo4j(char*label, char*scope)
+{
+	int prev_counter = 22;
+	char *cypher = calloc(256, sizeof(char));
+
+	assert(NULL != label);
+	assert(NULL != scope);
+	while(prev_counter)	
+	{
+//		sprintf(cypher, "CREATE (ref_%d:REFERENCE {scope:\"%s\"})", ref_counter, scope);
+		sprintf(cypher, "CREATE (prev_%d:%sPREVIOUS {filename:\"prev_%d\"})", prev_counter, label,prev_counter);
+
+		fprintf(stdout, "%s\n", cypher);
+		prev_counter--;
+	}
+	fflush(stdout);
+	free(cypher);
+}
+
+void ref_to_neo4j(char*label, char *scope)
+{
+	int ref_counter = 39;
+	char *cypher = calloc(256, sizeof(char));
+
+	assert(NULL != label);
+	assert(NULL != scope);
+	while(ref_counter)	
+	{
+/*		if(ref_counter == 8 || ref_counter == 9 || ref_counter == 28 \
+				|| ref_counter == 29 || ref_counter == 35 || ref_counter == 39)
+		{
+			ref_counter--;
+			continue;
+		}*/
+//		sprintf(cypher, "CREATE (ref_%d:REFERENCE {scope:\"%s\"})", ref_counter, scope);
+		sprintf(cypher, "CREATE (ref_%d:%sREFERENCE {filename:\"ref_%d\"})", ref_counter, label,ref_counter);
+
+		fprintf(stdout, "%s\n", cypher);
+		ref_counter--;
+	}
+	fflush(stdout);
+	free(cypher);
+}
+
+void stu_to_neo4j(char *label, char *scope)
+{
+// CREATE current students nodes
+	int stu_counter = 63;
+	char *cypher = calloc(256, sizeof(char));
+
+	assert(NULL != label);
+	assert(NULL != scope);
+	while(stu_counter)
+	{
+//		sprintf(cypher, "CREATE (student%d_tsh:student {scope: \"%s\"})", stu_counter-1, scope);
+		sprintf(cypher, "CREATE (student%d_tsh:%sSTUDENT {filename:\"%d_tsh.c\" })", stu_counter-1, label, stu_counter-1);
+
+		fprintf(stdout, "%s\n", cypher);
+		stu_counter--;
+	}
+	fflush(stdout);
+	free(cypher);
+}
+
+void pool_to_neo4j(char *scope)
+{
+        int iter = n_inpool-1;	// iterate through all in the pool
+        node *n;
+        plagiarism *p;
+        char link_label[64];
+	char *cypher = calloc(256, sizeof(char));
+
+	assert(NULL != scope);
+	// CREATE reference nodes
+//	ref_to_neo4j("Test", scope);
+	// CREATE current students nodes
+//	prev_to_neo4j("Test", scope);
+//	stu_to_neo4j("Test", scope);
+	while(iter)
+        {
+                n = *(pool+iter-1);
+                int i = n->n_plagiarism;	// how many plagiarism does node have
+		while(i)
+		{
+			p = n->plag[i-1];
+			if(strcmp(scope,p->scope))
+                        {
+	                       i--;
+		               continue;
+			}
+			if(p->match < 0.9)	// theshold of 90%
+			{
+				i--;
+				continue;
+			}
+/*			if(p->hertype == 0)	// 
+			{
+				i--;
+				continue;
+			}*/
+			int *id_student = calloc(1, sizeof(int));
+			int *id_ref = calloc(1, sizeof(int));
+			sscanf(n->filename, "%d%*[^_]", id_student);
+			if(p->hertype != 0)
+				sscanf(p->hername, "%*[^_]_%d_tsh.c", id_ref);
+			else
+				sscanf(p->hername, "%d%*[^_]", id_ref);
+//			DEBUF("id student: %d", *id_student);
+//			DEBUF("reference: %d", *id_ref);
+//			exit(0);
+			if(p->hertype == 2)
+				sprintf(cypher, "CREATE (student%d_tsh)-[:Plagiarism {conformance:%.2f, scope: \"%s\"}]->(ref_%d)", *id_student, p->match*100, scope,*id_ref);
+			else if(p->hertype == 1)
+				sprintf(cypher, "CREATE (student%d_tsh)-[:Plagiarism {conformance:%.2f, scope: \"%s\"}]->(prev_%d)", *id_student, p->match*100, scope, *id_ref);
+			else 
+			{
+				if(*id_ref == *id_student)
+				{	i--; continue;
+				}
+				sprintf(cypher, "CREATE (student%d_tsh)-[:Plagiarism {conformance:%.2f, scope: \"%s\"}]->(student%d_tsh)", *id_student, p->match*100, scope, *id_ref);
+			}
+
+			fprintf(stdout, "%s\n", cypher);
+			i--;
+		}
+                iter--;
+	}
+	free(cypher);
 }
