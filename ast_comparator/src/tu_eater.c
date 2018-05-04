@@ -2055,7 +2055,8 @@ static void eval_statement(node *n, char *scope)
 		n = search_pool(bind_id, pool, n_inpool);
 		if(n->_ntype != statement_list)
 		{
-			DEBUF("node type %p unexpected, expected statement_list", n->_ntype);
+			DEBUF("Warning: Scope too short, node type %p unexpected, expected statement_list", n->_ntype);
+//			DEBUF("%s", n->_inner);
 			exit(1);
 		}
 

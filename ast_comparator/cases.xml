@@ -1,8 +1,0 @@
--<file1>
-	<dir>test/helloworld.c</dir>
-	<Nscope>1</Nscope>
-	<scope>main</scope>
-</file1>
-
-<!-- File dir should be relative to ~/tiny-comparator/ast-comparator/. -->
-<!-- Please do not put any spaces like: <Nscope> 1 </Nscope>-->

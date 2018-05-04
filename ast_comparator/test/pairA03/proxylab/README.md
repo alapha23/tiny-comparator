@@ -1,4 +1,0 @@
-proxylab
-========
-
-csapp-proxylab

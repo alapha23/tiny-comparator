@@ -81,3 +81,23 @@ C++ Boost lib / perl lab: a robust regular expressions library is required for t
 
 * Multiscope tree compare
 
+
+---
+
+today
+
+read scope
+
+generate dot tree of all scope
+generate brk tree of all scope
+
+read student list
+compare students with references
+
+generate score of each scope
+
+weight overall score & similarity
+
+
+
+
