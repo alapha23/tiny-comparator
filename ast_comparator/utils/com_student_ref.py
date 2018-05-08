@@ -2,23 +2,81 @@ import os
 import subprocess
 
 PATH="/home/gao/Documents/tiny-comparator/ast_comparator/"
+SIGMOID=1
 num_student=63
 num_prev=23
 num_ref=39
 num_scope=0
-scope=[]    # string array
-threshold=90
+scope=[]    # string list
+threshold=0.90
+sigma = 2
+
+
+def sigmoid100(argu):
+    return 1/(1 + exp(- sigma * argu*100))
 
 class student:
     # a student has num_scope scopes
     def __init__(self):
         self.scope = []     # append scopeFile objects to the scope field
+        self.conformance=[[-100 for x in range(num_ref+1)] for y in range(num_scope+1)]
+        self.sim_ref =[[]]
     def overall(self):
-        # calculate overall similarity of this student
+        # calculate overall similarity of this student based on different scopes
+        # for each scope
+        #       if  
+        #           avg(empty_dis, ref_dis) - empty_dis/10 < conformance < avg(empty_dis, ref_dis) - empty_dis/10 
+        #           safe
+        #
+        #   conformance matrix
+        #           ref1    ref2    ref3
+        #   scp1
+        #   scp2
+        #   scp3
+        for x in range(0, num_scope):
+            scope_obj = self.scope[x] 
+            for y in range(1, num_ref+1):
+                if scope_obj.similarity[y] == -1:
+                    continue
+                print(scope_obj.similarity)
+                avg = (scope_obj.similarity[0] + scope_obj.similarity[y])/2
+                bias = scope_obj.similarity[0]/5
+                if scope_obj.similarity[y] > (avg - bias) and scope_obj.similarity[y] < avg + 2*bias:
+                    # safe
+                    self.conformance[x][y]=0
+                else :
+                    # similar
+                    if SIGMOID==1:
+                        similarity = 1 - sigmoid100(scope_obj.similarity[y] / avg )
+                    else:
+                         similarity = 1 - (scope_obj.similarity[y] / avg )
+                    self.conformance[x][y] = (similarity)
+    def listSimilar(self):
+        # return a list of int which are ids of similar references
+        guilty_ref = []
+        for y in range(1, num_ref+1):
+            count=0
+            for x in range(0, num_scope):
+                if self.conformance[x][y] <= -1:
+                    continue
+                print(self.conformance[x][y])
+                if self.conformance[x][y] > threshold :
+                    count = count+1
+            if count >= 1:
+                # calculate weighted avg
+                up = 0   
+                down = 0
+                sim=0
+                for c in range(0, num_scope):
+                    down = down+self.scope[c].similarity[0]
+                for c in range(0, num_scope):
+                    up = up+self.conformance[c][y]*self.scope[c].similarity[0]
 
-        conformance = []
-        # all index of references which is similar to 
-
+                sim = up/down
+                self.sim_ref[len(self.sim_ref)-1].append(y)
+                self.sim_ref[len(self.sim_ref)-1].append(sim)
+    def showConformance(self):
+            print(self.sim_ref)
 
 class scopeFile:
     # one scope corresponds to one file
@@ -34,7 +92,7 @@ class scopeFile:
     # empty distance
     def empty_dis(self):
         p = subprocess.check_output(['java', '-jar', PATH+'apted.jar', '-f', self.filename, PATH+"brk_tree/empty.tree"])
-        self.similarity[0] = p
+        self.similarity[0] = int.from_bytes(p, byteorder='little')
         #print(self.similarity[index][0])
 
     # array distance from all references
@@ -50,7 +108,7 @@ class scopeFile:
 
                 #print("Comparing student {:d} with {:s}".format(self.id, "reference_"+str(y)+"_tsh.c.001t.tu."+scope[self.scope]+".tree"))
                 p = subprocess.check_output(['java', '-jar', PATH+'apted.jar', '-f', self.filename, refer_name])
-                self.similarity[y] = p
+                self.similarity[y] = int.from_bytes(p, byteorder='little')                
             print("Compare student {:d}, scope {:s} with all references".format(self.id, scope[self.scope]))
 
     def myprint(self):
@@ -84,6 +142,8 @@ if __name__ == "__main__":
     for x in range(0, len(students)):
     # calculate overall similarity---in terms of each reference
         students[x].overall()
+        students[x].listsimilar()
+        students[x].showConformance()
     #subprocess.call(['java', '-jar', ])
     #subprocess.Popen()
     print("num of students"+str(len(students)))

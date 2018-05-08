@@ -70,5 +70,5 @@ done
 echo ""
 echo "Now compare tree of students' assignment with references"
 echo ""
-
+python3 utils/com_student_ref.py
 
