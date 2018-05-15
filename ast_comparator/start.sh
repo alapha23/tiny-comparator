@@ -63,12 +63,12 @@ echo ""
 
 for FILENAME in dot_obj/*.dot; do
 	FILENAME=`basename $FILENAME .dot`
-	echo "Dealing with "$FILENAME
-	./bin/comparator dot_obj/"$FILENAME.dot" > brk_tree/"${FILENAME}.tree"
+	#echo "Dealing with "$FILENAME
+	./bin/comparator dot_obj/"$FILENAME.dot" > brk_tree/"${FILENAME}.tree" 3>>log/log.txt 2>>log/log.txt
 done
 
 echo ""
-echo "Now compare tree of students' assignment with references"
+echo "Now compare tree of students' assignment with references. This might take more than 10 mins."
 echo ""
 python3 utils/com_student_ref.py
 
